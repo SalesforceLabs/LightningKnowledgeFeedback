@@ -1,0 +1,40 @@
+<apex:page Controller="ArticleFeedbackConfigCtrl" > 
+ <apex:form id="container">
+
+    <apex:pageBlock title="Settings for Knowledge Feedback Tracking" mode="edit" rendered="{!editMode}">
+
+      <apex:pageBlockButtons >
+
+        <apex:commandButton action="{!save}" value="Save" reRender="container"/>
+        <apex:commandButton action="{!cancel}" value="Cancel" reRender="container"/>
+
+      </apex:pageBlockButtons>
+
+      <apex:pageBlockSection columns="2">
+
+        <apex:inputField value="{!csObj.Hashtag__c}"/>
+
+      </apex:pageBlockSection>
+
+    </apex:pageBlock>
+
+
+    <apex:pageBlock title="Settings for Knowledge Feedback Tracking"  mode="detail" rendered="{!!editMode}">
+
+      <apex:pageBlockButtons >
+
+        <apex:commandButton action="{!edit}" value="Edit" reRender="container"/>
+
+      </apex:pageBlockButtons>
+
+      <apex:pageBlockSection columns="2">
+
+        <apex:outputField value="{!csObj.Hashtag__c}"/>
+
+      </apex:pageBlockSection>
+
+    </apex:pageBlock>
+
+  </apex:form>
+
+</apex:page>
