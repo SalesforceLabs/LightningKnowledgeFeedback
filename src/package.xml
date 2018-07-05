@@ -1,23 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>*</members>
+        <members>ArticleFeedbackConfigCtrl</members>
+        <members>ArticleFeedbackRelatedCtrl</members>
+        <members>ArticleFeedbackRelatedCtrl_Test</members>
+        <members>ArticleFeedbackSecurityHandler</members>
+        <members>InsertArticleFeedback_Test</members>
+        <members>UpdatedArticleFeedback_Test</members>
+        <members>kfk_LightningResponse</members>
+        <members>kfk_WrapperCtrl</members>
         <name>ApexClass</name>
     </types>
     <types>
-        <members>*</members>
+        <members>ArticleFeedbackConfigPage</members>
+        <members>ArticleFeedbackPage</members>
         <name>ApexPage</name>
     </types>
     <types>
-        <members>*</members>
+        <members>ArticleFeedback</members>
+        <members>InsertArticleFeedback</members>
+        <members>UpdatedArticleFeedback</members>
         <name>ApexTrigger</name>
     </types>
     <types>
         <members>Article_Feedback__c</members>
+        <members>Knowledge_feedback__c</members>
         <name>CustomObject</name>
     </types>
     <types>
-        <members>*</members>
+        <members>Article_Feedback__c</members>
         <name>CustomTab</name>
     </types>
     <version>43.0</version>
