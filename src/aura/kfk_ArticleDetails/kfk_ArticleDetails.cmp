@@ -1,0 +1,19 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" 
+access="global" controller="kfk_WrapperCtrl" extends="c:kfk_abstract" >
+	<!-- Attributes -->
+	<aura:attribute name="recordId" type="String" default="" description="Indicates the id for the actual Feedback record" />
+	<aura:attribute name="kavId" type="String" default="" description="Indicates the id for the actual KAv" />
+
+    <!-- Handlers -->
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+	test:[{!v.kavId}]
+   <!-- Knowledge Article detail view -->
+	<aura:renderIf isTrue="{! v.kavId != ''}">
+		[test ing ]
+    	<force:recordView aura:id="recordView" recordId="{!v.kavId}" type="FULL"/>
+	
+		<aura:set attribute="else">
+			Loading...
+		</aura:set>
+	</aura:renderIf>
+</aura:component>

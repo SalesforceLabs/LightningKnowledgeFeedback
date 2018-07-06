@@ -1,8 +1,13 @@
+/**
+ * @author Altimetrik
+ * @description
+ *    started on 07/05/2018
+ *    Trigger on the after insert event of a feedback item
+ **/
 trigger InsertArticleFeedback on FeedItem (after insert) {
+    if(ArticleFeedbackSecurityHandler.isCreateable(Article_Feedback__c.sObjectType)) {
 
-    if(ArticleFeedbackSecurityHandler.isCreateable(Article_Feedback__c.sObjectType)){
-
-		try{
+		try {
 	        Boolean communitiesAvailable = false;
 			Boolean hasRecordType = ArticleFeedbackSecurityHandler.checkForSchemaFieldActive('RecordTypeId');
 			Map<Id,String> recordTypeDetails = ArticleFeedbackSecurityHandler.getAllowedRecordTypesMap();
@@ -13,27 +18,21 @@ trigger InsertArticleFeedback on FeedItem (after insert) {
 	            upsert kf;
 	        }
 
-	        
-system.debug('\n====== trigger.kf.Hashtag__c :'+  kf.Hashtag__c);
-
-	        if (String.isNotEmpty(kf.Hashtag__c) ){
-
+	        if (String.isNotEmpty(kf.Hashtag__c) ) {
 				String netId = '';
 		        String commName = '';
 		        Map<String,String> mapLanguages = new Map<String,String>();
 		        List<Article_Feedback__c> lstAfd = new list<Article_Feedback__c>();
 		        Set<Id> setIds = new Set<Id>();
 		        Map<String,KnowledgeArticleVersion> mKav = new Map<String,KnowledgeArticleVersion>();
-
-
 	            Schema.DescribeFieldResult fieldResult = KnowledgeArticleVersion.Language.getDescribe();
 	            List<Schema.PicklistEntry> picklistValues = fieldResult.getPicklistValues();
-	            for (Schema.PicklistEntry picklistEntry : picklistValues) {
+
+                for (Schema.PicklistEntry picklistEntry : picklistValues) {
 	                mapLanguages.put(picklistEntry.getValue(),picklistEntry.getLabel());
 	            }
-
-
 	            String pubStatus = 'Online';
+
 	            if (Test.isRunningTest()){
 	                pubStatus = 'draft';
 	            }
@@ -49,50 +48,40 @@ system.debug('\n====== trigger.kf.Hashtag__c :'+  kf.Hashtag__c);
 	                }
 	            }
 
-
-	            for (FeedItem f : trigger.new){
+	            for (FeedItem f : trigger.new) {
 	                String parentId = f.parentId;
-                    
-system.debug('\n====== trigger parentId :'+  parentId);
 	                if ( parentId.startsWith('kA') && f.Type == 'TextPost' && f.Body.containsIgnoreCase(kf.Hashtag__c) ){
 	                    setIds.add(f.ParentId);
 	                }
 	            }
 
-system.debug('\n====== trigger setIds :'+  setIds);
-	            if(!setIds.isEmpty()){
+	            if(!setIds.isEmpty()) {
 	                String q = 'select KnowledgeArticleId, CreatedDate, ArticleNumber, Title, VersionNumber, Language, LastPublishedDate, LastModifiedById from KnowledgeArticleVersion where PublishStatus = \'' + pubStatus + '\'' + ' and KnowledgeArticleId IN :setIds';
 	                List<KnowledgeArticleVersion> kavs = Database.query(q);
-
-system.debug('\n====== trigger kavs :'+  kavs);
-                    
-	                for(KnowledgeArticleVersion kav : kavs){
+	                for(KnowledgeArticleVersion kav : kavs) {
 	                    mKav.put(kav.KnowledgeArticleId, kav);
 	                }
 	            }
 
-system.debug('\n====== trigger.new :\n mKav '+  mKav);
-	            for (FeedItem f : trigger.new){
-
-system.debug('\n====== trigger.new :\n'+  f);
+	            for (FeedItem f : trigger.new) {
 	                String parentId = f.parentId;
 
-	                if ( mkav.containsKey(parentId) ){
-
+                    if (mkav.containsKey(parentId)) {
 	                    KnowledgeArticleVersion kav = mkav.get(parentId);
-
 	                    Article_Feedback__c afd = new Article_Feedback__c();
 	                    afd.Article_Number__c = kav.ArticleNumber;
 	                    afd.Article_Link__c = URL.getSalesforceBaseUrl().toExternalForm() + '/' + kav.KnowledgeArticleId;
 	                    afd.Article_Title__c = kav.Title;
 						afd.Article_Type__c = '';
-						if (hasRecordType){
+
+                        if (hasRecordType) {
 							sObject obj = (sObject)kav;
 							String rTypeId = String.valueOf(obj.get('RecordTypeId'));
 							if (recordTypeDetails.containsKey(rTypeId))
 								afd.Article_Type__c = recordTypeDetails.get(rTypeId);
 						}
-	                    afd.Article_Version__c = kav.VersionNumber;
+
+                        afd.Article_Version__c = kav.VersionNumber;
 	                    afd.Feedback__c = f.Body;
 	                    afd.Feedback_Status__c = 'New';
 	                    afd.Language__c = mapLanguages.get(kav.Language);
@@ -101,9 +90,8 @@ system.debug('\n====== trigger.new :\n'+  f);
 	                    afd.Article_Created_Date__c = kav.CreatedDate;
 	                    afd.Parent_FeedItem__c = f.Id;
 
-	                    if(communitiesAvailable){
-
-	                        if(String.isEmpty(netId)){
+	                    if(communitiesAvailable) {
+	                        if(String.isEmpty(netId)) {
 	                            afd.Feedback_Source__c = 'Internal';
 	                        }
 	                        else{
@@ -114,17 +102,13 @@ system.debug('\n====== trigger.new :\n'+  f);
 	                    else{
 	                        afd.Feedback_Source__c = 'Internal';
 	                    }
-
 	                    lstAfd.add(afd);
-
 	                }
-
 	            }
-
 	            insert lstAfd;
-system.debug('\n====== InsertArticleFeedback data :\n'+  lstAfd);
 	        }
-		}catch (System.Exception e){
+		}
+        catch (System.Exception e) {
 			String errorStr = '\n getTypeName : '+e.getTypeName()+
 			'\n getCause : '+e.getCause()+
 			'\n getMessage : '+e.getCause()+
@@ -133,7 +117,5 @@ system.debug('\n====== InsertArticleFeedback data :\n'+  lstAfd);
 			'\n getTypeName : '+e.getTypeName();
 			system.debug('\n====== InsertArticleFeedback Exception :\n'+  errorStr);
 		}
-
     }
-
 }

@@ -1,9 +1,14 @@
+/**
+ * @author Altimetrik
+ * @description
+ *    started on 07/05/2018
+ *    Test class for the UpdateArticleFeedback trigger
+ **/
+
 @isTest
 private class UpdatedArticleFeedback_Test{
 
-
 	static testMethod void testTrigger() {
-
 
         // creates dummy KnowledgeArticleVersion
         string publishStatus = 'draft';
@@ -35,9 +40,7 @@ private class UpdatedArticleFeedback_Test{
         post.Body = 'This is a test post';
         post.Type = 'TextPost';
         post.ParentId = (String)kavObj.get('KnowledgeArticleId');       
-
         insert post;
-
 
 		// creates dummy Article Feedback object
 		Article_Feedback__c afeedback = new Article_Feedback__c();
@@ -47,20 +50,12 @@ private class UpdatedArticleFeedback_Test{
         afeedback.Internal_Notes__c = 'Test notes';
         afeedback.Article_Feed_Update__c = '';
         afeedback.Parent_FeedItem__c = post.Id;
-		
 		insert afeedback;
 
     	System.Test.startTest();
-
         	afeedback.Article_Feed_Update__c = 'Test update';
-
             update afeedback;
-
-            System.assertEquals (afeedback.Article_Feed_Update__c ,'Test update'); 
-
+            System.assertEquals (afeedback.Article_Feed_Update__c ,'Test update');
         System.Test.stopTest();
 	}
-
-
-
 }

@@ -20,7 +20,7 @@ private class ArticleFeedbackRelatedCtrl_Test{
         afeedback2.Article_Type__c = 'Test Article Type';
         afeedback2.Article_Version__c = 1;
         afeedback2.Internal_Notes__c = 'Test notes 2';
-		
+
 		insert afeedback;
         insert afeedback2;
 
@@ -36,7 +36,4 @@ private class ArticleFeedbackRelatedCtrl_Test{
 
         System.Test.stopTest();
 	}
-
-
-
 }

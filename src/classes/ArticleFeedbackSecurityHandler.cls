@@ -1,18 +1,21 @@
+/**
+ * @author Altimetrik
+ * @description
+ *    started on 07/05/2018
+ *    Security Handler class for Article Feedback object
+ **/
 public class ArticleFeedbackSecurityHandler {
-
-
     /**
      * @description
      *  Constants
      **/
-     public static final String  ERROR_OBJECT_NOT_ACCESSIBLE = 'You do not have access to the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
-     public static final String  ERROR_OBJECT_NOT_UPDATEABLE = 'You cannot update the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
-     public static final String  ERROR_OBJECT_NOT_CREATEABLE = 'You cannot create the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
-     public static final String  ERROR_OBJECT_NOT_DELETABLE = 'You cannot delete the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
-     public static final String  ERROR_FIELD_NOT_ACCESSIBLE = 'You do not have access to the following fields: {0} Please contact your Salesforce Administrator for assistance.';
-     public static final String  ERROR_FIELD_NOT_UPDATEABLE = 'You cannot update the following fields: {0} Please contact your Salesforce Administrator for assistance.';
-     public static final String  ERROR_FIELD_NOT_CREATEABLE = 'You cannot create the following fields: {0} Please contact your Salesforce Administrator for assistance.';
-
+    public static final String  ERROR_OBJECT_NOT_ACCESSIBLE = 'You do not have access to the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
+    public static final String  ERROR_OBJECT_NOT_UPDATEABLE = 'You cannot update the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
+    public static final String  ERROR_OBJECT_NOT_CREATEABLE = 'You cannot create the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
+    public static final String  ERROR_OBJECT_NOT_DELETABLE = 'You cannot delete the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
+    public static final String  ERROR_FIELD_NOT_ACCESSIBLE = 'You do not have access to the following fields: {0} Please contact your Salesforce Administrator for assistance.';
+    public static final String  ERROR_FIELD_NOT_UPDATEABLE = 'You cannot update the following fields: {0} Please contact your Salesforce Administrator for assistance.';
+    public static final String  ERROR_FIELD_NOT_CREATEABLE = 'You cannot create the following fields: {0} Please contact your Salesforce Administrator for assistance.';
 
     public static Boolean securityEnabled { get; set; }
     public static Boolean isPrivateSharingEnabled { get; set; }
@@ -21,7 +24,6 @@ public class ArticleFeedbackSecurityHandler {
         securityEnabled = true;
         isPrivateSharingEnabled = true;
     }
-
 
     public static String knowledgeObject {
         get {
@@ -39,7 +41,6 @@ public class ArticleFeedbackSecurityHandler {
         }
         private set;
     }
-
 
 //@Description: (get/set) List of Record Types
      public static List<RecordType> allRecordTypes {
@@ -71,13 +72,12 @@ public class ArticleFeedbackSecurityHandler {
         return result ;
     }
 
-    public static Boolean isGuestUser(){
+    public static Boolean isGuestUser() {
         List<UserLicense> up = [select Name from UserLicense Where Id IN ( select UserLicenseId from Profile where Id = :UserInfo.getProfileId() ) LIMIT 1 ];
         return up[0].Name == 'Guest';
     }
 
     // Batch methods
-
     public static Boolean isAccessible(Schema.SObjectType[] objectTypeList) {
         if (securityEnabled) {
             for (Schema.SObjectType objectType : objectTypeList) {
@@ -155,8 +155,7 @@ public class ArticleFeedbackSecurityHandler {
         return true;
     }
 
-    // single element methods
-
+    // Single element methods
     public static Boolean isAccessible(Schema.SObjectType objectType) {
         return isAccessible(new Schema.SObjectType[] {objectType});
     }
@@ -188,7 +187,6 @@ public class ArticleFeedbackSecurityHandler {
     // Exception throwers
 
     // Batch methods
-
     public static void canAccess(Schema.SObjectType[] objectTypeList) {
         if (!isAccessible(objectTypeList)) {
             throw new SecurityException(formatReplace(ERROR_OBJECT_NOT_ACCESSIBLE, new String[] {toString(objectTypeList)}));
@@ -232,7 +230,6 @@ public class ArticleFeedbackSecurityHandler {
     }
 
     // single element methods
-
     public static void canAccess(Schema.SObjectType objectType) {
         canAccess(new Schema.SObjectType[] {objectType});
     }
@@ -262,7 +259,6 @@ public class ArticleFeedbackSecurityHandler {
     }
 
     // output helper functions
-
     public static String toString(Schema.SObjectType[] objectTypeList) {
         String result = '';
         if (!objectTypeList.isEmpty()) {
@@ -285,7 +281,6 @@ public class ArticleFeedbackSecurityHandler {
         return result;
     }
 
-
     /**
     * Maps the content of a list to another list using a Mapper object.
     * @param oList input list to map
@@ -299,7 +294,6 @@ public class ArticleFeedbackSecurityHandler {
     }*/
 
     public static String formatReplace(String value, List<String> lstStr){
-
         String res = value;
 
         for( Integer i=0; i<lstStr.size(); i++ ){
@@ -308,7 +302,6 @@ public class ArticleFeedbackSecurityHandler {
         }
         return res;
     }
-
 
 /*
     * @description
@@ -327,7 +320,6 @@ public class ArticleFeedbackSecurityHandler {
 
         if (res.size() == 0)
             res = null;
-
         return res;
     }
 
@@ -348,7 +340,6 @@ public class ArticleFeedbackSecurityHandler {
 
         if (res.size() == 0)
             res = null;
-
         return res;
     }
 
@@ -369,5 +360,4 @@ public class ArticleFeedbackSecurityHandler {
     }
 
     public class SecurityException extends Exception {}
-
 }
