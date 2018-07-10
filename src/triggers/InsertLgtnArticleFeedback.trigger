@@ -88,7 +88,7 @@ trigger InsertLgtnArticleFeedback on FeedComment (after insert) {
 	                    afd.Last_Published_Date__c = kav.LastPublishedDate;
 	                    afd.Last_Published_By__c = kav.LastModifiedById;
 	                    afd.Article_Created_Date__c = kav.CreatedDate;
-	                    afd.Parent_FeedItem__c = f.Id;
+	                    afd.Parent_FeedItem__c = f.FeedItemId;
 
 	                    if(communitiesAvailable) {
 	                        if(String.isEmpty(netId)) {
