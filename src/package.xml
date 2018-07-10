@@ -6,6 +6,7 @@
 		<members>ArticleFeedbackRelatedCtrl_Test</members>
 		<members>ArticleFeedbackSecurityHandler</members>
 		<members>InsertArticleFeedback_Test</members>
+		<members>InsertLgtnArticleFeedback_Test</members>
 		<members>UpdatedArticleFeedback_Test</members>
 		<members>kfk_LightningResponse</members>
 		<members>kfk_WrapperCtrl</members>
@@ -19,6 +20,7 @@
 	<types>
 		<members>ArticleFeedback</members>
 		<members>InsertArticleFeedback</members>
+		<members>InsertLgtnArticleFeedback</members>
 		<members>UpdatedArticleFeedback</members>
 		<name>ApexTrigger</name>
 	</types>
