@@ -1,6 +1,11 @@
+/**
+ * @author Altimetrik
+ * @description
+ *    started on 07/05/2018
+ *    Test class for the Article Feedback Related Controller class
+ **/
 @isTest
-private class ArticleFeedbackRelatedCtrl_Test{
-
+private class ArticleFeedbackRelatedCtrl_Test {
 
 	static testMethod void testTrigger() {
 
@@ -27,13 +32,11 @@ private class ArticleFeedbackRelatedCtrl_Test{
         PageReference pageRef = Page.ArticleFeedbackPage;
 
     	System.Test.startTest();
-
         	Test.setCurrentPage(pageRef);
             ApexPages.CurrentPage().getparameters().put('id', afeedback.id);
             ApexPages.StandardController sc = new ApexPages.standardController(afeedback);
             ArticleFeedbackRelatedCtrl afsc = new ArticleFeedbackRelatedCtrl(sc);
             System.assertNotEquals(afsc.records,null);
-
         System.Test.stopTest();
 	}
 }

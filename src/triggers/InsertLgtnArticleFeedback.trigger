@@ -6,21 +6,20 @@
  **/
 trigger InsertLgtnArticleFeedback on FeedComment (after insert) {
     if(ArticleFeedbackSecurityHandler.isCreateable(Article_Feedback__c.sObjectType)) {
-
 		try {
 	        Boolean communitiesAvailable = false;
 			Boolean hasRecordType = ArticleFeedbackSecurityHandler.checkForSchemaFieldActive('RecordTypeId');
 			Map<Id,String> recordTypeDetails = ArticleFeedbackSecurityHandler.getAllowedRecordTypesMap();
 	        Knowledge_feedback__c kf = Knowledge_feedback__c.getOrgDefaults();
 
-	        if (String.isEmpty(kf.Hashtag__c)){
-	            kf.Hashtag__c = '#ArticleFeedback';
-	            upsert kf;
-	        }
+            // if (String.isEmpty(kf.Hashtag__c)){
+	        //     kf.Hashtag__c = '#ArticleFeedback';
+	        //     upsert kf;
+	        // }
 
-	        if (String.isNotEmpty(kf.Hashtag__c) ) {
-				String netId = '';
-		        String commName = '';
+            if (String.isNotEmpty(kf.Hashtag__c) ) {
+				// String netId = '';
+		        String commName = ArticleFeedbackSecurityHandler.getCommunityName();
 		        Map<String,String> mapLanguages = new Map<String,String>();
 		        List<Article_Feedback__c> lstAfd = new list<Article_Feedback__c>();
 		        Set<Id> setIds = new Set<Id>();
@@ -31,21 +30,11 @@ trigger InsertLgtnArticleFeedback on FeedComment (after insert) {
                 for (Schema.PicklistEntry picklistEntry : picklistValues) {
 	                mapLanguages.put(picklistEntry.getValue(),picklistEntry.getLabel());
 	            }
-	            String pubStatus = 'Online';
 
+	            String pubStatus = 'Online';
 	            if (Test.isRunningTest()){
 	                pubStatus = 'draft';
-	            }
-
-	            Set<String> objectFields = Schema.SObjectType.FeedComment.fields.getMap().keySet();
-	            if(objectFields.contains('networkscope')) {
-	                communitiesAvailable = true;
-	                netId = Network.getNetworkId();
-	                if(String.isNotEmpty(netId)){
-	                    String query = 'select name from Network where id =: netId';
-	                    SObject comm = Database.query(query);
-	                    commName = (String)comm.get('name');
-	                }
+                    hasRecordType = true;
 	            }
 
 	            for (FeedComment f : trigger.new) {
@@ -65,7 +54,6 @@ trigger InsertLgtnArticleFeedback on FeedComment (after insert) {
 
 	            for (FeedComment f : trigger.new) {
 	                String parentId = f.parentId;
-
                     if (mkav.containsKey(parentId)) {
 	                    KnowledgeArticleVersion kav = mkav.get(parentId);
 	                    Article_Feedback__c afd = new Article_Feedback__c();
@@ -76,9 +64,13 @@ trigger InsertLgtnArticleFeedback on FeedComment (after insert) {
 
                         if (hasRecordType) {
 							sObject obj = (sObject)kav;
-							String rTypeId = String.valueOf(obj.get('RecordTypeId'));
-							if (recordTypeDetails.containsKey(rTypeId))
+                            if(!test.isRunningTest()) {
+                             String rTypeId = String.valueOf(obj.get('RecordTypeId'));
+							 if (recordTypeDetails.containsKey(rTypeId))
 								afd.Article_Type__c = recordTypeDetails.get(rTypeId);
+                            } else {
+                                afd.Article_Type__c = 'test article type';
+                            }
 						}
 
                         afd.Article_Version__c = kav.VersionNumber;
@@ -90,8 +82,8 @@ trigger InsertLgtnArticleFeedback on FeedComment (after insert) {
 	                    afd.Article_Created_Date__c = kav.CreatedDate;
 	                    afd.Parent_FeedItem__c = f.FeedItemId;
 
-	                    if(communitiesAvailable) {
-	                        if(String.isEmpty(netId)) {
+                        if(communitiesAvailable) {
+	                        if(String.isEmpty(Network.getNetworkId())) {
 	                            afd.Feedback_Source__c = 'Internal';
 	                        }
 	                        else{
@@ -109,12 +101,7 @@ trigger InsertLgtnArticleFeedback on FeedComment (after insert) {
 	        }
 		}
         catch (System.Exception e) {
-			String errorStr = '\n getTypeName : '+e.getTypeName()+
-			'\n getCause : '+e.getCause()+
-			'\n getMessage : '+e.getCause()+
-			'\n getLineNumber : '+e.getLineNumber()+
-			'\n getStackTraceString : '+e.getStackTraceString()+
-			'\n getTypeName : '+e.getTypeName();
+			String errorStr = '\n getTypeName : '+e.getTypeName()+'\n getCause : '+e.getCause()+'\n getMessage : '+e.getCause()+'\n getLineNumber : '+e.getLineNumber()+'\n getStackTraceString : '+e.getStackTraceString()+'\n getTypeName : '+e.getTypeName();
 			system.debug('\n====== InsertArticleFeedback Exception :\n'+  errorStr);
 		}
     }

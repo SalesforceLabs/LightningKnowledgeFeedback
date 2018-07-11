@@ -352,12 +352,57 @@ public class ArticleFeedbackSecurityHandler {
 	*	Boolean
 	*/
     public static Boolean checkForSchemaFieldActive(String fieldName){
-         Schema.DescribeSObjectResult sor = Schema.getGlobalDescribe().get(knowledgeObject).getDescribe();
+        Schema.DescribeSObjectResult sor = Schema.getGlobalDescribe().get(knowledgeObject).getDescribe();
         Map<String,Schema.SObjectField> sofs = sor.fields.getMap();
 
         Set<String> objectFields = sofs.keySet();
         return objectFields.contains(fieldName);
     }
+
+    /*
+    * @description
+    *   Method that returns the first value of a PicklistEntry for the "Language" field of a given Object, if exists
+    * @params
+    *   sObject Name
+    * @return
+    *   String - PicklistEntry value
+    */
+    public static String getValidLanguagePicklistValue(String sObjectName) {
+        Map<String,Schema.SOBjectType> gd = Schema.getGlobalDescribe();
+        if(gd != null) {
+            Schema.DescribeSObjectResult sor = gd.get(sObjectName).getDescribe();
+            Map<String,Schema.SObjectField> sofs = sor.fields.getMap();
+            Schema.DescribeFieldResult dfr = sofs.get('Language').getDescribe();
+            if(dfr != null) {
+                List<Schema.PicklistEntry> ples = dfr.getPicklistValues();
+                return ples.get(0).getValue();
+            }
+        }
+        return null;
+    }
+
+    /*
+    * @description
+    *   Method that returns the user’s current community name
+    * @params
+    *  None
+    * @return
+    *   String - Community name
+    */
+    public static String getCommunityName() {
+        String commName = '';
+        Set<String> objectFields = Schema.SObjectType.FeedItem.fields.getMap().keySet();
+        if(objectFields.contains('networkscope')) {
+            String netId = Network.getNetworkId();
+            if(String.isNotEmpty(netId)){
+                String query = 'select name from Network where id =: netId';
+                SObject comm = Database.query(query);
+                commName = (String)comm.get('name');
+            }
+        }
+        return commName;
+    }
+
 
     public class SecurityException extends Exception {}
 }

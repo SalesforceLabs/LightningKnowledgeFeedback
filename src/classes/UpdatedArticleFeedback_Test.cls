@@ -28,7 +28,7 @@ private class UpdatedArticleFeedback_Test{
         kavObj.put('Title','Foo Foo Foo!!!'+String.valueOf(Crypto.getRandomInteger()));
         kavObj.put('UrlName', 'foo-foo-foo'+String.valueOf(Crypto.getRandomInteger()));
         kavObj.put('Summary', 'This is a summary!!! Foo. Foo. Foo.');
-        kavObj.put('Language', default_language);
+        kavObj.put('Language', ArticleFeedbackSecurityHandler.getValidLanguagePicklistValue(objType));
         insert kavObj;
 
         // requery the kavObj to get the KnowledgeArticleId on it that is created automatically
@@ -39,7 +39,7 @@ private class UpdatedArticleFeedback_Test{
         FeedItem post = new FeedItem();
         post.Body = 'This is a test post';
         post.Type = 'TextPost';
-        post.ParentId = (String)kavObj.get('KnowledgeArticleId');       
+        post.ParentId = (String)kavObj.get('KnowledgeArticleId');
         insert post;
 
 		// creates dummy Article Feedback object

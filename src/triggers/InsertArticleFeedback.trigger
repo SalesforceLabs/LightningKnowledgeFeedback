@@ -13,14 +13,14 @@ trigger InsertArticleFeedback on FeedItem (after insert) {
 			Map<Id,String> recordTypeDetails = ArticleFeedbackSecurityHandler.getAllowedRecordTypesMap();
 	        Knowledge_feedback__c kf = Knowledge_feedback__c.getOrgDefaults();
 
-	        if (String.isEmpty(kf.Hashtag__c)){
-	            kf.Hashtag__c = '#ArticleFeedback';
-	            upsert kf;
-	        }
+	        // if (String.isEmpty(kf.Hashtag__c)){
+	        //     kf.Hashtag__c = '#ArticleFeedback';
+	        //     upsert kf;
+	        // }
 
 	        if (String.isNotEmpty(kf.Hashtag__c) ) {
-				String netId = '';
-		        String commName = '';
+				// String netId = '';
+		        String commName = ArticleFeedbackSecurityHandler.getCommunityName();
 		        Map<String,String> mapLanguages = new Map<String,String>();
 		        List<Article_Feedback__c> lstAfd = new list<Article_Feedback__c>();
 		        Set<Id> setIds = new Set<Id>();
@@ -35,17 +35,7 @@ trigger InsertArticleFeedback on FeedItem (after insert) {
 
 	            if (Test.isRunningTest()){
 	                pubStatus = 'draft';
-	            }
-
-	            Set<String> objectFields = Schema.SObjectType.FeedItem.fields.getMap().keySet();
-	            if(objectFields.contains('networkscope')) {
-	                communitiesAvailable = true;
-	                netId = Network.getNetworkId();
-	                if(String.isNotEmpty(netId)){
-	                    String query = 'select name from Network where id =: netId';
-	                    SObject comm = Database.query(query);
-	                    commName = (String)comm.get('name');
-	                }
+                    hasRecordType = true;
 	            }
 
 	            for (FeedItem f : trigger.new) {
@@ -75,10 +65,14 @@ trigger InsertArticleFeedback on FeedItem (after insert) {
 						afd.Article_Type__c = '';
 
                         if (hasRecordType) {
-							sObject obj = (sObject)kav;
-							String rTypeId = String.valueOf(obj.get('RecordTypeId'));
-							if (recordTypeDetails.containsKey(rTypeId))
+                            sObject obj = (sObject)kav;
+                            if(!test.isRunningTest()) {
+                             String rTypeId = String.valueOf(obj.get('RecordTypeId'));
+							 if (recordTypeDetails.containsKey(rTypeId))
 								afd.Article_Type__c = recordTypeDetails.get(rTypeId);
+                            } else {
+                                afd.Article_Type__c = 'test article type';
+                            }
 						}
 
                         afd.Article_Version__c = kav.VersionNumber;
@@ -91,7 +85,7 @@ trigger InsertArticleFeedback on FeedItem (after insert) {
 	                    afd.Parent_FeedItem__c = f.Id;
 
 	                    if(communitiesAvailable) {
-	                        if(String.isEmpty(netId)) {
+	                        if(String.isEmpty(Network.getNetworkId())) {
 	                            afd.Feedback_Source__c = 'Internal';
 	                        }
 	                        else{

@@ -305,7 +305,10 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Articles Feedback</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <searchFilterFields>OBJECT_ID</searchFilterFields>
+        <searchFilterFields>NAME</searchFilterFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

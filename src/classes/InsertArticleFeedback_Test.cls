@@ -10,33 +10,16 @@ private class InsertArticleFeedback_Test {
 	static testMethod void testTrigger() {
 		// creates Custom Article type
 		string publishStatus = 'draft';
-		Map<String,Schema.SOBjectType> gd = Schema.getGlobalDescribe();
-		List<String> kavNames = new List<String>();
 
-		for (String s : gd.keySet()) {
-          if (s.contains('__kav')) {
-            kavNames.add(s);
-          }
-        }
+		//Create the Knowledge Article
+        SObject kavObj = TestDataFactory.createKnowledgeArticle();
 
-        String default_language = [SELECT LanguageLocaleKey FROM Organization limit 1].LanguageLocaleKey;
-        String objType = kavNames.get(0);
-	    SObject kavObj;
-	    kavObj = Schema.getGlobalDescribe().get(objType).newSObject();
-	    kavObj.put('Title','Foo Foo Foo!!!'+String.valueOf(Crypto.getRandomInteger()));
-	    kavObj.put('UrlName', 'foo-foo-foo'+String.valueOf(Crypto.getRandomInteger()));
-	    kavObj.put('Summary', 'This is a summary!!! Foo. Foo. Foo.');
-	    kavObj.put('Language', default_language);
-	    insert kavObj;
-
-	    // requery the kavObj to get the KnowledgeArticleId on it that is created automatically
+		// requery the kavObj to get the KnowledgeArticleId on it that is created automatically
     	String q = 'select KnowledgeArticleId, Title from KnowledgeArticleVersion where Id = \'' +kavObj.get('Id')+  '\' and PublishStatus = :publishStatus';
     	kavObj = (KnowledgeArticleVersion)Database.query(q);
 
-    	//creates a Custom Setting at the organization level
-		Knowledge_Feedback__c setting= new Knowledge_Feedback__c();
-		setting.Hashtag__c = '#TestHashtag';
-		insert setting;
+		//Create hashtag custom setting
+        TestDataFactory.createHashtagCustomSetting('#TestHashtag');
 
     	System.Test.startTest();
         	FeedItem post = new FeedItem();
@@ -52,12 +35,12 @@ private class InsertArticleFeedback_Test {
 
      public static testMethod void testSecurityEnabled() {
         Profile[] profileList = [select Id, Name from Profile where Name = 'System Administrator' OR Name = 'Standar User' limit 2];
-
         Map<Id,String> profileMap = new Map<Id,String>();
 
         for( Profile p : profileList ){
             profileMap.put( p.id, p.Name );
         }
+
         List<User> u = [select id, profileId from User where Id =: UserInfo.getUserId() limit 1];
 
         if( profileMap.containsKey( UserInfo.getProfileId() ) && profileMap.get( UserInfo.getProfileId() ) == 'System Administrator' ){

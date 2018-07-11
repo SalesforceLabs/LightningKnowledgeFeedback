@@ -1,27 +1,27 @@
 <aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" 
                 access="global" controller="kfk_WrapperCtrl" extends="c:kfk_abstract" >
-	
+
     <aura:attribute access="global" name="ka_vote" type="Vote" default="{ 'sobjectType': 'Vote' }"  />
 	<aura:attribute access="global" name="ka_feedback" type="Article_Feedback__c" default="{ 'sobjectType': 'Article_Feedback__c' }"  />
-	
+
 	<!-- HANDLERS-->
 	<aura:handler name="init" action="{!c.doInit}" value="{!this}" />
       <lightning:card title="Article Feedback POC"  footer="Article Feedback POC Footer">
-        
+
         <p class="slds-p-horizontal_small">
-            Vote : 
-            
+            Vote :
+
         <aura:renderIf isTrue="{! v.ka_vote != null}">
             {!v.ka_vote.Type}
                  <aura:renderIf isTrue="{! v.ka_vote.Type == '1'}">
             		down down down
                  </aura:renderIf>
-                 
+
                      <lightning:buttonIcon iconName="utility:like" variant="border-filled" alternativeText="Dislike" iconClass="dark" onclick="{! c.voteUp }"/>
        		        <lightning:buttonIcon iconName="utility:dislike" variant="border-filled" alternativeText="Like" iconClass="dark" onclick="{! c.voteDown }"/>
-       			 	 
+
             <aura:renderIf isTrue="{! v.ka_vote.Type == '5'}">
-            	    
+
                      up up up
        			 </aura:renderIf>
         </aura:renderIf>
@@ -33,5 +33,5 @@
         </aura:renderIf>
         </p>
     </lightning:card>
-    
+
 </aura:component>
