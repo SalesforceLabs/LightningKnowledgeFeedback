@@ -8,6 +8,8 @@
 		<members>InsertArticleFeedback_Test</members>
 		<members>InsertLgtnArticleFeedback_Test</members>
 		<members>UpdatedArticleFeedback_Test</members>
+		<members>ArticleFeedbackSecurityHandler_Test</members>
+		<members>ArticleFeedbackConfigCtrl_Test</members>
 		<members>TestDataFactory</members>
 		<members>kfk_LightningResponse</members>
 		<members>kfk_WrapperCtrl</members>

@@ -12,24 +12,9 @@ private class UpdatedArticleFeedback_Test{
 
         // creates dummy KnowledgeArticleVersion
         string publishStatus = 'draft';
-        Map<String,Schema.SOBjectType> gd = Schema.getGlobalDescribe();
 
-        List<String> kavNames = new List<String>();
-        for (String s : gd.keySet()) {
-          if (s.contains('__kav')) {
-            kavNames.add(s);
-          }
-        }
-
-        String default_language = [SELECT LanguageLocaleKey FROM Organization limit 1].LanguageLocaleKey;
-        String objType = kavNames.get(0);
-        SObject kavObj;
-        kavObj = Schema.getGlobalDescribe().get(objType).newSObject();
-        kavObj.put('Title','Foo Foo Foo!!!'+String.valueOf(Crypto.getRandomInteger()));
-        kavObj.put('UrlName', 'foo-foo-foo'+String.valueOf(Crypto.getRandomInteger()));
-        kavObj.put('Summary', 'This is a summary!!! Foo. Foo. Foo.');
-        kavObj.put('Language', ArticleFeedbackSecurityHandler.getValidLanguagePicklistValue(objType));
-        insert kavObj;
+		//Create the Knowledge Article
+        SObject kavObj = TestDataFactory.createKnowledgeArticle();
 
         // requery the kavObj to get the KnowledgeArticleId on it that is created automatically
         String q = 'select KnowledgeArticleId, Title from KnowledgeArticleVersion where Id = \'' +kavObj.get('Id')+  '\' and PublishStatus = :publishStatus';
