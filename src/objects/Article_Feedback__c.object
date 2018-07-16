@@ -300,6 +300,92 @@
     </fields>
     <gender>Feminine</gender>
     <label>Article Feedback</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Feedback_Status__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>Assigned_To__c</columns>
+        <columns>Article_Number__c</columns>
+        <columns>Article_Title__c</columns>
+        <columns>Last_Published_By__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>Backlogged_Feedback</fullName>
+        <columns>NAME</columns>
+        <columns>Article_Number__c</columns>
+        <columns>Article_Title__c</columns>
+        <columns>Assigned_To__c</columns>
+        <columns>Feedback_Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Feedback_Status__c</field>
+            <operation>notEqual</operation>
+            <value>Closed</value>
+        </filters>
+        <filters>
+            <field>CREATED_DATE</field>
+            <operation>lessOrEqual</operation>
+            <value>N_DAYS_AGO:7</value>
+        </filters>
+        <label>Backlogged Feedback</label>
+    </listViews>
+    <listViews>
+        <fullName>My_Feedback_All</fullName>
+        <columns>NAME</columns>
+        <columns>Article_Number__c</columns>
+        <columns>Article_Title__c</columns>
+        <columns>Assigned_To__c</columns>
+        <columns>Feedback_Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Is_Current_User__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>My Feedback - All</label>
+    </listViews>
+    <listViews>
+        <fullName>My_Feedback_Open</fullName>
+        <columns>NAME</columns>
+        <columns>Article_Number__c</columns>
+        <columns>Article_Title__c</columns>
+        <columns>Assigned_To__c</columns>
+        <columns>Feedback_Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Feedback_Status__c</field>
+            <operation>notEqual</operation>
+            <value>Closed</value>
+        </filters>
+        <filters>
+            <field>Is_Current_User__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>My Feedback - Open</label>
+    </listViews>
+    <listViews>
+        <fullName>New_Feedback</fullName>
+        <columns>NAME</columns>
+        <columns>Article_Number__c</columns>
+        <columns>Article_Title__c</columns>
+        <columns>Assigned_To__c</columns>
+        <columns>Feedback_Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Feedback_Status__c</field>
+            <operation>equals</operation>
+            <value>New</value>
+        </filters>
+        <filters>
+            <field>Assigned_To__c</field>
+            <operation>equals</operation>
+        </filters>
+        <label>New Feedback</label>
+    </listViews>
     <nameField>
         <label>Article Feedback Name</label>
         <type>Text</type>
