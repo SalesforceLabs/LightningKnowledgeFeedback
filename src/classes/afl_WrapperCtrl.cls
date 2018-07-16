@@ -4,13 +4,13 @@
  *    started on 07/05/2018
  *    Wrapper class that retrieves the values and returns a kfk_LightningResponse class instance
  **/
-public with sharing class kfk_WrapperCtrl {
+public with sharing class afl_WrapperCtrl {
 
-    public kfk_WrapperCtrl() {}
+    public afl_WrapperCtrl() {}
 
     @AuraEnabled
-    public static kfk_LightningResponse getInitData(String recordId) {
-	    kfk_LightningResponse response = new kfk_LightningResponse();
+    public static afl_LightningResponse getInitData(String recordId) {
+	    afl_LightningResponse response = new afl_LightningResponse();
        	Map<String,Object> result = new Map<String,Object>();
 		//get Ka Id from Kav Id
 		List<KnowledgeArticleVersion> kaList = [SELECT Id,KnowledgeArticleId
@@ -44,8 +44,8 @@ public with sharing class kfk_WrapperCtrl {
     }
 
     @AuraEnabled
-    public static kfk_LightningResponse loadKAVId(String recordId) {
-        kfk_LightningResponse response = new kfk_LightningResponse();
+    public static afl_LightningResponse loadKAVId(String recordId) {
+        afl_LightningResponse response = new afl_LightningResponse();
         Map<String,  Object> result = new Map<String,  Object>();
         String kavId = '';
         try {

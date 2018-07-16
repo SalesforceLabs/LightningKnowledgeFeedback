@@ -13,7 +13,7 @@
 		<members>TestDataFactory</members>
 		<members>afl_LightningResponse</members>
         <members>afl_RelatedArticleCtrl</members>
-		<members>kfk_WrapperCtrl</members>
+		<members>afl_WrapperCtrl</members>
 		<name>ApexClass</name>
 	</types>
 	<types>
@@ -36,7 +36,6 @@
 	</types>
 	<types>
 		<members>Article_Feedback__c</members>
-		<members>Knowledge__kav</members>
 		<members>Knowledge_feedback__c</members>
 		<name>CustomObject</name>
 	</types>
