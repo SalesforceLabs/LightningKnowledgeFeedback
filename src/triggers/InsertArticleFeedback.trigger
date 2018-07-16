@@ -62,6 +62,7 @@ trigger InsertArticleFeedback on FeedItem (after insert) {
 	                    afd.Article_Number__c = kav.ArticleNumber;
 	                    afd.Article_Link__c = URL.getSalesforceBaseUrl().toExternalForm() + '/' + kav.KnowledgeArticleId;
 	                    afd.Article_Title__c = kav.Title;
+                        afd.Knowledge_Article_Version_Id__c = kav.Id;
 						afd.Article_Type__c = '';
 
                         if (hasRecordType) {

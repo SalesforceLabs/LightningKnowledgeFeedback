@@ -19,6 +19,7 @@ public class ArticleFeedbackSecurityHandler {
 
     public static Boolean securityEnabled { get; set; }
     public static Boolean isPrivateSharingEnabled { get; set; }
+    public static Boolean isRecordTypeIdActive = checkForSchemaFieldActive('recordtypeid');
 
     static {
         securityEnabled = true;
@@ -37,6 +38,7 @@ public class ArticleFeedbackSecurityHandler {
                     }
                 }
             }
+            System.debug(knowledgeObject);
             return knowledgeObject;
         }
         private set;

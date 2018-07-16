@@ -73,8 +73,6 @@
 				"duration" : 30000
 			});
 			toastEvent.fire();
-		}else{
-			alert('title :'+title+' -  type : '+type+' -  message : '+message);
 		}
 	}
 })
