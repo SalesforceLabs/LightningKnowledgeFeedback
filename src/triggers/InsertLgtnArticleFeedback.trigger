@@ -49,6 +49,7 @@ trigger InsertLgtnArticleFeedback on FeedComment (after insert) {
 	                List<KnowledgeArticleVersion> kavs = Database.query(q);
 	                for(KnowledgeArticleVersion kav : kavs) {
 	                    mKav.put(kav.KnowledgeArticleId, kav);
+
 	                }
 	            }
 
@@ -59,7 +60,8 @@ trigger InsertLgtnArticleFeedback on FeedComment (after insert) {
 	                    Article_Feedback__c afd = new Article_Feedback__c();
 	                    afd.Article_Number__c = kav.ArticleNumber;
 	                    afd.Article_Link__c = URL.getSalesforceBaseUrl().toExternalForm() + '/' + kav.KnowledgeArticleId;
-	                    afd.Article_Title__c = kav.Title;
+                        afd.Article_Title__c = kav.Title;
+                        afd.Knowledge_Article_Version_Id__c = kav.Id;
 						afd.Article_Type__c = '';
 
                         if (hasRecordType) {
@@ -74,14 +76,13 @@ trigger InsertLgtnArticleFeedback on FeedComment (after insert) {
 						}
 
                         afd.Article_Version__c = kav.VersionNumber;
-	                    afd.Feedback__c = f.CommentBody;
+                        afd.Feedback__c = f.CommentBody;
 	                    afd.Feedback_Status__c = 'New';
 	                    afd.Language__c = mapLanguages.get(kav.Language);
 	                    afd.Last_Published_Date__c = kav.LastPublishedDate;
 	                    afd.Last_Published_By__c = kav.LastModifiedById;
 	                    afd.Article_Created_Date__c = kav.CreatedDate;
 	                    afd.Parent_FeedItem__c = f.FeedItemId;
-
                         if(communitiesAvailable) {
 	                        if(String.isEmpty(Network.getNetworkId())) {
 	                            afd.Feedback_Source__c = 'Internal';

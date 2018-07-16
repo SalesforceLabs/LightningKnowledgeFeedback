@@ -11,7 +11,8 @@
 		<members>ArticleFeedbackSecurityHandler_Test</members>
 		<members>ArticleFeedbackConfigCtrl_Test</members>
 		<members>TestDataFactory</members>
-		<members>kfk_LightningResponse</members>
+		<members>afl_LightningResponse</members>
+        <members>afl_RelatedArticleCtrl</members>
 		<members>kfk_WrapperCtrl</members>
 		<name>ApexClass</name>
 	</types>
@@ -28,9 +29,9 @@
 		<name>ApexTrigger</name>
 	</types>
 	<types>
-		<members>kfk_abstract</members>
-		<members>kfk_ArticleDetails</members>
-		<members>kfk_wrapper</members>
+		<members>afl_abstract</members>
+		<members>afl_RelatedArticle</members>
+		<members>afl_toast</members>
 		<name>AuraDefinitionBundle</name>
 	</types>
 	<types>

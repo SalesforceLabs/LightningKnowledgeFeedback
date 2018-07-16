@@ -82,5 +82,11 @@
         <label>Published Articles</label>
     </listViews>
     <pluralLabel>Knowledge</pluralLabel>
+    <recordTypes>
+        <fullName>test</fullName>
+        <active>true</active>
+        <description>A est Record type</description>
+        <label>test</label>
+    </recordTypes>
     <searchLayouts/>
 </CustomObject>
