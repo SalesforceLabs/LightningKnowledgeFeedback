@@ -44,6 +44,10 @@
 		<members>Article_Feedback__c</members>
 		<name>CustomTab</name>
 	</types>
+	<types>
+        <members>Article_Feedback__c-Article Feedback Layout</members>
+        <name>Layout</name>
+    </types>
     <types>
         <members>Article_Feedback_Page</members>
         <name>FlexiPage</name>
