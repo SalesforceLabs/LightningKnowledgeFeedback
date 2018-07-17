@@ -25,6 +25,7 @@ public with sharing class afl_RelatedArticleCtrl_Test {
 	static testMethod void testloadKAVId() {
 		string publishStatus = 'draft';
 		SObject kavObj = TestDataFactory.createKnowledgeArticle();
+
 		// requery the kavObj to get the KnowledgeArticleId on it that is created automatically
 		String q = 'select KnowledgeArticleId, Title, ArticleNumber from KnowledgeArticleVersion where Id = \'' +kavObj.get('Id')+  '\' and PublishStatus = :publishStatus';
 		kavObj = (KnowledgeArticleVersion)Database.query(q);
@@ -44,7 +45,7 @@ public with sharing class afl_RelatedArticleCtrl_Test {
 		insert afd;
 		response = afl_RelatedArticleCtrl.loadKAVId(afd.Id);
 		System.Test.StopTest();
-		System.assertEquals('SUCCESS', response.state);
+		System.assertEquals('SUCCESS', response.state, 'State should be SUCCESS ');
 	}
 
 
