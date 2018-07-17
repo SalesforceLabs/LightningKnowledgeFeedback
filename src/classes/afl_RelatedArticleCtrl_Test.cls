@@ -35,7 +35,7 @@ public with sharing class afl_RelatedArticleCtrl_Test {
         f.Body = 'test';
         f.ParentId = (String)kavObj.get('KnowledgeArticleId');
         insert f;
-        Article_Feedback__c afd = new Article_Feedback__c();
+        afl_Article_Feedback__c afd = new afl_Article_Feedback__c();
         afd.Article_Number__c = (String)kavObj.get('ArticleNumber');
         afd.Article_Link__c = URL.getSalesforceBaseUrl().toExternalForm() + '/' + (String)kavObj.get('KnowledgeArticleId');
         afd.Article_Title__c = (String)kavObj.get('Title');

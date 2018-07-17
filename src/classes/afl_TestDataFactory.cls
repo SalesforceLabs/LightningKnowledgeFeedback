@@ -35,7 +35,7 @@ public class afl_TestDataFactory {
 		kavObj.put('Title','Foo Foo Foo!!!'+String.valueOf(Crypto.getRandomInteger()));
 	    kavObj.put('UrlName', 'foo-foo-foo'+String.valueOf(Crypto.getRandomInteger()));
 	    kavObj.put('Summary', 'This is a summary!!! Foo. Foo. Foo.');
-	    kavObj.put('Language', ArticleFeedbackSecurityHandler.getValidLanguagePicklistValue(objType));
+	    kavObj.put('Language', afl_ArticleFeedbackSecurityHandler.getValidLanguagePicklistValue(objType));
 
 	    insert kavObj;
 		return kavObj;
