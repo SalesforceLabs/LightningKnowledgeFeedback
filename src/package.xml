@@ -13,7 +13,7 @@
 		<members>TestDataFactory</members>
 		<members>afl_LightningResponse</members>
         <members>afl_RelatedArticleCtrl</members>
-		<members>afl_WrapperCtrl</members>
+		<members>afl_RelatedArticleCtrl_Test</members>
 		<name>ApexClass</name>
 	</types>
 	<types>

@@ -29,12 +29,13 @@ public class TestDataFactory {
         //String default_language = [SELECT LanguageLocaleKey FROM Organization limit 1].LanguageLocaleKey;
         String objType = kavNames.get(0);
 	    SObject kavObj;
+		ArticleFeedbackSecurityHandler.canAccess(KnowledgeArticleVersion.sObjectType);
 	    kavObj = Schema.getGlobalDescribe().get(objType).newSObject();
+		ArticleFeedbackSecurityHandler.canAccess(Schema.getGlobalDescribe().get(objType));
 		kavObj.put('Title','Foo Foo Foo!!!'+String.valueOf(Crypto.getRandomInteger()));
 	    kavObj.put('UrlName', 'foo-foo-foo'+String.valueOf(Crypto.getRandomInteger()));
 	    kavObj.put('Summary', 'This is a summary!!! Foo. Foo. Foo.');
 	    kavObj.put('Language', ArticleFeedbackSecurityHandler.getValidLanguagePicklistValue(objType));
-
 	    insert kavObj;
 		return kavObj;
 	}
