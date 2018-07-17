@@ -39,7 +39,7 @@
     <actionOverrides>
         <actionName>View</actionName>
         <comment>Action override created by Lightning App Builder during activation.</comment>
-        <content>Article_Feedback_Page</content>
+        <content>afl_Article_Feedback_Page</content>
         <formFactor>Large</formFactor>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
         <type>Flexipage</type>
@@ -174,7 +174,7 @@
         <externalId>false</externalId>
         <label>Assigned To</label>
         <referenceTo>User</referenceTo>
-        <relationshipName>Article_Feedback</relationshipName>
+        <relationshipName>afl_Article_Feedback</relationshipName>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -307,7 +307,7 @@
         <externalId>false</externalId>
         <label>Last Published By</label>
         <referenceTo>User</referenceTo>
-        <relationshipName>Article_Feedback_Published</relationshipName>
+        <relationshipName>afl_Article_Feedback_Published</relationshipName>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>

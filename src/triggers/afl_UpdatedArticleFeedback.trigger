@@ -4,12 +4,12 @@
  *    started on 07/05/2018
  *    Trigger on the after update event of an article feedback item
  **/
-trigger UpdatedArticleFeedback on Article_Feedback__c (after update) {
+trigger afl_UpdatedArticleFeedback on afl_Article_Feedback__c (after update) {
 
  List<FeedComment> commentList = new List<FeedComment>();
 
-  for (Article_Feedback__c af : Trigger.new) {
-  	Article_Feedback__c oldAf = Trigger.oldMap.get(af.Id);
+  for (afl_Article_Feedback__c af : Trigger.new) {
+  	afl_Article_Feedback__c oldAf = Trigger.oldMap.get(af.Id);
 
 		if(oldAf.Article_Feed_Update__c != af.Article_Feed_Update__c) {
 	      if(String.isNotBlank(af.Parent_FeedItem__c)) {

@@ -1,4 +1,4 @@
-<apex:page Controller="ArticleFeedbackConfigCtrl" > 
+<apex:page Controller="afl_ArticleFeedbackConfigCtrl" > 
  <apex:form id="container">
 
     <apex:pageBlock title="Settings for Knowledge Feedback Tracking" mode="edit" rendered="{!editMode}">

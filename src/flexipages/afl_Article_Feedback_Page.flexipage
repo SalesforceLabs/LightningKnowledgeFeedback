@@ -93,7 +93,7 @@
         <type>Region</type>
     </flexiPageRegions>
     <masterLabel>Article Feedback Page</masterLabel>
-    <sobjectType>Article_Feedback__c</sobjectType>
+    <sobjectType>afl_Article_Feedback__c</sobjectType>
     <template>
         <name>flexipage:recordHomeTemplateDesktop</name>
     </template>

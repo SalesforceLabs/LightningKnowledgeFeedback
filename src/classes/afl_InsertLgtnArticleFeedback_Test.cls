@@ -5,19 +5,19 @@
  *    Test class for the Insert Article Feedback trigger made from Ligthning Knowledge
  **/
 @isTest
-public class InsertLgtnArticleFeedback_Test {
+public class afl_InsertLgtnArticleFeedback_Test {
     static testMethod void testTrigger() {
         string publishStatus = 'draft';
 
         //Create the Knowledge Article
-        SObject kavObj = TestDataFactory.createKnowledgeArticle();
+        SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
 
         // requery the kavObj to get the KnowledgeArticleId on it that is created automatically
     	String q = 'select KnowledgeArticleId, Title from KnowledgeArticleVersion where Id = \'' +kavObj.get('Id')+  '\' and PublishStatus = :publishStatus';
     	kavObj = (KnowledgeArticleVersion)Database.query(q);
 
         //Create hashtag custom setting
-        TestDataFactory.createHashtagCustomSetting('#TestHashtag');
+        afl_TestDataFactory.createHashtagCustomSetting('#TestHashtag');
 
         System.Test.startTest();
         	FeedItem f = new FeedItem();
@@ -30,7 +30,7 @@ public class InsertLgtnArticleFeedback_Test {
             fc.FeedItemId = f.Id;
             insert fc;
             String theTitle = (String)kavObj.get('Title');
-            List<Article_Feedback__c> afs = [select id, Article_Number__c, Article_Link__c, Article_Title__c, Article_Type__c from Article_Feedback__c where Article_Title__c =: theTitle ];
+            List<afl_Article_Feedback__c> afs = [select id, Article_Number__c, Article_Link__c, Article_Title__c, Article_Type__c from afl_Article_Feedback__c where Article_Title__c =: theTitle ];
             System.assertNotEquals (afs,null);
         System.Test.stopTest();
     }

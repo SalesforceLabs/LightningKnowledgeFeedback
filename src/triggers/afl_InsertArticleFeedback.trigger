@@ -1,27 +1,28 @@
 /**
  * @author Altimetrik
  * @description
- *    started on 07/09/2018
- *    Trigger for adding for the feeds left from Ligthning Knowledge articles.
+ *    started on 07/05/2018
+ *    Trigger on the after insert event of a feedback item
  **/
-trigger InsertLgtnArticleFeedback on FeedComment (after insert) {
-    if(ArticleFeedbackSecurityHandler.isCreateable(Article_Feedback__c.sObjectType)) {
+trigger afl_InsertArticleFeedback on FeedItem (after insert) {
+    if(afl_ArticleFeedbackSecurityHandler.isCreateable(afl_Article_Feedback__c.sObjectType)) {
+
 		try {
 	        Boolean communitiesAvailable = false;
-			Boolean hasRecordType = ArticleFeedbackSecurityHandler.checkForSchemaFieldActive('RecordTypeId');
-			Map<Id,String> recordTypeDetails = ArticleFeedbackSecurityHandler.getAllowedRecordTypesMap();
-	        Knowledge_feedback__c kf = Knowledge_feedback__c.getOrgDefaults();
+			Boolean hasRecordType = afl_ArticleFeedbackSecurityHandler.checkForSchemaFieldActive('RecordTypeId');
+			Map<Id,String> recordTypeDetails = afl_ArticleFeedbackSecurityHandler.getAllowedRecordTypesMap();
+	        afl_Knowledge_feedback__c kf = afl_Knowledge_feedback__c.getOrgDefaults();
 
-            // if (String.isEmpty(kf.Hashtag__c)){
+	        // if (String.isEmpty(kf.Hashtag__c)){
 	        //     kf.Hashtag__c = '#ArticleFeedback';
 	        //     upsert kf;
 	        // }
 
-            if (String.isNotEmpty(kf.Hashtag__c) ) {
+	        if (String.isNotEmpty(kf.Hashtag__c) ) {
 				// String netId = '';
-		        String commName = ArticleFeedbackSecurityHandler.getCommunityName();
+		        String commName = afl_ArticleFeedbackSecurityHandler.getCommunityName();
 		        Map<String,String> mapLanguages = new Map<String,String>();
-		        List<Article_Feedback__c> lstAfd = new list<Article_Feedback__c>();
+		        List<afl_Article_Feedback__c> lstAfd = new list<afl_Article_Feedback__c>();
 		        Set<Id> setIds = new Set<Id>();
 		        Map<String,KnowledgeArticleVersion> mKav = new Map<String,KnowledgeArticleVersion>();
 	            Schema.DescribeFieldResult fieldResult = KnowledgeArticleVersion.Language.getDescribe();
@@ -30,16 +31,16 @@ trigger InsertLgtnArticleFeedback on FeedComment (after insert) {
                 for (Schema.PicklistEntry picklistEntry : picklistValues) {
 	                mapLanguages.put(picklistEntry.getValue(),picklistEntry.getLabel());
 	            }
-
 	            String pubStatus = 'Online';
+
 	            if (Test.isRunningTest()){
 	                pubStatus = 'draft';
                     hasRecordType = true;
 	            }
 
-	            for (FeedComment f : trigger.new) {
+	            for (FeedItem f : trigger.new) {
 	                String parentId = f.parentId;
-	                if ( parentId.startsWith('kA') && f.CommentType == 'TextComment' && f.CommentBody.containsIgnoreCase(kf.Hashtag__c) ){
+	                if ( parentId.startsWith('kA') && f.Type == 'TextPost' && f.Body.containsIgnoreCase(kf.Hashtag__c) ){
 	                    setIds.add(f.ParentId);
 	                }
 	            }
@@ -49,23 +50,23 @@ trigger InsertLgtnArticleFeedback on FeedComment (after insert) {
 	                List<KnowledgeArticleVersion> kavs = Database.query(q);
 	                for(KnowledgeArticleVersion kav : kavs) {
 	                    mKav.put(kav.KnowledgeArticleId, kav);
-
 	                }
 	            }
 
-	            for (FeedComment f : trigger.new) {
+	            for (FeedItem f : trigger.new) {
 	                String parentId = f.parentId;
+
                     if (mkav.containsKey(parentId)) {
 	                    KnowledgeArticleVersion kav = mkav.get(parentId);
-	                    Article_Feedback__c afd = new Article_Feedback__c();
+	                    afl_Article_Feedback__c afd = new afl_Article_Feedback__c();
 	                    afd.Article_Number__c = kav.ArticleNumber;
 	                    afd.Article_Link__c = URL.getSalesforceBaseUrl().toExternalForm() + '/' + kav.KnowledgeArticleId;
-                        afd.Article_Title__c = kav.Title;
+	                    afd.Article_Title__c = kav.Title;
                         afd.Knowledge_Article_Version_Id__c = kav.Id;
 						afd.Article_Type__c = '';
 
                         if (hasRecordType) {
-							sObject obj = (sObject)kav;
+                            sObject obj = (sObject)kav;
                             if(!test.isRunningTest()) {
                              String rTypeId = String.valueOf(obj.get('RecordTypeId'));
 							 if (recordTypeDetails.containsKey(rTypeId))
@@ -76,14 +77,15 @@ trigger InsertLgtnArticleFeedback on FeedComment (after insert) {
 						}
 
                         afd.Article_Version__c = kav.VersionNumber;
-                        afd.Feedback__c = f.CommentBody;
+	                    afd.Feedback__c = f.Body;
 	                    afd.Feedback_Status__c = 'New';
 	                    afd.Language__c = mapLanguages.get(kav.Language);
 	                    afd.Last_Published_Date__c = kav.LastPublishedDate;
 	                    afd.Last_Published_By__c = kav.LastModifiedById;
 	                    afd.Article_Created_Date__c = kav.CreatedDate;
-	                    afd.Parent_FeedItem__c = f.FeedItemId;
-                        if(communitiesAvailable) {
+	                    afd.Parent_FeedItem__c = f.Id;
+
+	                    if(communitiesAvailable) {
 	                        if(String.isEmpty(Network.getNetworkId())) {
 	                            afd.Feedback_Source__c = 'Internal';
 	                        }
@@ -102,7 +104,12 @@ trigger InsertLgtnArticleFeedback on FeedComment (after insert) {
 	        }
 		}
         catch (System.Exception e) {
-			String errorStr = '\n getTypeName : '+e.getTypeName()+'\n getCause : '+e.getCause()+'\n getMessage : '+e.getCause()+'\n getLineNumber : '+e.getLineNumber()+'\n getStackTraceString : '+e.getStackTraceString()+'\n getTypeName : '+e.getTypeName();
+			String errorStr = '\n getTypeName : '+e.getTypeName()+
+			'\n getCause : '+e.getCause()+
+			'\n getMessage : '+e.getCause()+
+			'\n getLineNumber : '+e.getLineNumber()+
+			'\n getStackTraceString : '+e.getStackTraceString()+
+			'\n getTypeName : '+e.getTypeName();
 			system.debug('\n====== InsertArticleFeedback Exception :\n'+  errorStr);
 		}
     }

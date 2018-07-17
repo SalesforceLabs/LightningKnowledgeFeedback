@@ -6,7 +6,7 @@
  **/
 
 @isTest
-private class UpdatedArticleFeedback_Test{
+private class afl_UpdatedArticleFeedback_Test{
 
 	static testMethod void testTrigger() {
 
@@ -14,7 +14,7 @@ private class UpdatedArticleFeedback_Test{
         string publishStatus = 'draft';
 
 		//Create the Knowledge Article
-        SObject kavObj = TestDataFactory.createKnowledgeArticle();
+        SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
 
         // requery the kavObj to get the KnowledgeArticleId on it that is created automatically
         String q = 'select KnowledgeArticleId, Title from KnowledgeArticleVersion where Id = \'' +kavObj.get('Id')+  '\' and PublishStatus = :publishStatus';
@@ -28,7 +28,7 @@ private class UpdatedArticleFeedback_Test{
         insert post;
 
 		// creates dummy Article Feedback object
-		Article_Feedback__c afeedback = new Article_Feedback__c();
+		afl_Article_Feedback__c afeedback = new afl_Article_Feedback__c();
         afeedback.Feedback_Status__c = 'New';
         afeedback.Article_Title__c = 'Test Article Title';
         afeedback.Article_Number__c = '00001';
