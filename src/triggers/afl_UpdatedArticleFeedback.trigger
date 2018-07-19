@@ -10,14 +10,19 @@ trigger afl_UpdatedArticleFeedback on afl_Article_Feedback__c (after update) {
 
   for (afl_Article_Feedback__c af : Trigger.new) {
   	afl_Article_Feedback__c oldAf = Trigger.oldMap.get(af.Id);
-
 		if(oldAf.Article_Feed_Update__c != af.Article_Feed_Update__c) {
-	      if(String.isNotBlank(af.Parent_FeedItem__c)) {
-	        FeedComment comment = new FeedComment();
-    	    comment.FeedItemId = af.Parent_FeedItem__c; //Id of the FeedItem to comment on
-    	    comment.CommentBody = af.Article_Feed_Update__c + '\n Article Feedback ' + af.Name + '. \n';
-    	    commentList.add(comment);
-        }
+          Integer feedCount = [SELECT COUNT() FROM FeedItem WHERE Id =:af.Parent_FeedItem__c AND IsDeleted = true ALL ROWS];
+          if(feedCount != 0) {
+              af.Article_Feed_Update__c.addError('An error ocurred trying to update this field.' +
+              ' Please check that the feed that generated this article feedback exists');
+          } else {
+    	      if(String.isNotBlank(af.Parent_FeedItem__c)) {
+    	        FeedComment comment = new FeedComment();
+        	    comment.FeedItemId = af.Parent_FeedItem__c; //Id of the FeedItem to comment on
+        	    comment.CommentBody = af.Article_Feed_Update__c + '\n Article Feedback ' + af.Name + '. \n';
+        	    commentList.add(comment);
+            }
+         }
   	 }
   }
 
