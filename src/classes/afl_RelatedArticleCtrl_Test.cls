@@ -11,7 +11,7 @@ public with sharing class afl_RelatedArticleCtrl_Test {
     Description: Check for the fields returned by method that return some compact layout data
     */
     static testMethod void testGetCompactLayout() {
-        SObject kavObj = TestDataFactory.createKnowledgeArticle();
+        SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
         System.Test.StartTest();
         Map<String,Object> result = afl_RelatedArticleCtrl.getCompactLayoutData(kavObj.Id,new Map<String,Object>());
         System.Test.StopTest();
@@ -24,7 +24,7 @@ public with sharing class afl_RelatedArticleCtrl_Test {
     */
     static testMethod void testloadKAVId() {
         string publishStatus = 'draft';
-        SObject kavObj = TestDataFactory.createKnowledgeArticle();
+        SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
         // requery the kavObj to get the KnowledgeArticleId on it that is created automatically
         String q = 'select KnowledgeArticleId, Title, ArticleNumber from KnowledgeArticleVersion where Id = \'' +kavObj.get('Id')+  '\' and PublishStatus = :publishStatus';
         kavObj = (KnowledgeArticleVersion)Database.query(q);

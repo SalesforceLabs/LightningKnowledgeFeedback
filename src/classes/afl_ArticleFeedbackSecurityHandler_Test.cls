@@ -132,7 +132,7 @@ public class afl_ArticleFeedbackSecurityHandler_Test {
 
    public static testMethod void testGetKAVPermissions() {
 	   //Create the Knowledge Article
-	   SObject kavObj = TestDataFactory.createKnowledgeArticle();
+	   SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
 
 	   System.Test.startTest();
 		 Boolean result = afl_ArticleFeedbackSecurityHandler.getKAVPermissions();
