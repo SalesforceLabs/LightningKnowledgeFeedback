@@ -1,6 +1,6 @@
-<apex:page standardController="Article_Feedback__c" extensions="ArticleFeedbackRelatedCtrl" showHeader="true" tabStyle="Article_Feedback__c">
+<apex:page standardController="afl_Article_Feedback__c" extensions="afl_ArticleFeedbackRelatedCtrl" showHeader="true" tabStyle="afl_Article_Feedback__c">
 <apex:form >
-  <apex:detail subject="{!Article_Feedback__c.Id}" relatedList="true" showChatter="True" title="true" inlineEdit="true" oncomplete="location.reload()"/>
+  <apex:detail subject="{!afl_Article_Feedback__c.Id}" relatedList="true" showChatter="True" title="true" inlineEdit="true" oncomplete="location.reload()"/>
 </apex:form>
     <apex:pageBlock title="Related Article Feedback" rendered="{!records.size!=0}">
     <apex:pageBlockTable value="{!records}" var="r">
@@ -11,6 +11,6 @@
       <apex:column headerValue="Source" value="{!r.Feedback_Source__c}"/>
       <apex:column headerValue="Community Name" value="{!r.Community_Name__c}"/>
       <apex:column headerValue="Created Date" value="{!r.CreatedDate}"/>
-    </apex:pageBlockTable> 
+    </apex:pageBlockTable>
   </apex:pageBlock>
 </apex:page>

@@ -5,7 +5,7 @@
  *    Data Factory Class that creates or updates information to be used in test classes
  **/
 @isTest
-public class TestDataFactory {
+public class afl_TestDataFactory {
 
 	/*
 	* @description
@@ -29,13 +29,14 @@ public class TestDataFactory {
         //String default_language = [SELECT LanguageLocaleKey FROM Organization limit 1].LanguageLocaleKey;
         String objType = kavNames.get(0);
 	    SObject kavObj;
-		ArticleFeedbackSecurityHandler.canAccess(KnowledgeArticleVersion.sObjectType);
+		afl_ArticleFeedbackSecurityHandler.canAccess(KnowledgeArticleVersion.sObjectType);
 	    kavObj = Schema.getGlobalDescribe().get(objType).newSObject();
-		ArticleFeedbackSecurityHandler.canAccess(Schema.getGlobalDescribe().get(objType));
+		afl_ArticleFeedbackSecurityHandler.canAccess(Schema.getGlobalDescribe().get(objType));
 		kavObj.put('Title','Foo Foo Foo!!!'+String.valueOf(Crypto.getRandomInteger()));
 	    kavObj.put('UrlName', 'foo-foo-foo'+String.valueOf(Crypto.getRandomInteger()));
 	    kavObj.put('Summary', 'This is a summary!!! Foo. Foo. Foo.');
-	    kavObj.put('Language', ArticleFeedbackSecurityHandler.getValidLanguagePicklistValue(objType));
+	    kavObj.put('Language', afl_ArticleFeedbackSecurityHandler.getValidLanguagePicklistValue(objType));
+
 	    insert kavObj;
 		return kavObj;
 	}
@@ -50,7 +51,7 @@ public class TestDataFactory {
 	*/
 	public static void createHashtagCustomSetting(String hashtag) {
 		//creates a Custom Setting at the organization level
-		Knowledge_Feedback__c setting= new Knowledge_Feedback__c();
+		afl_Knowledge_Feedback__c setting= new afl_Knowledge_Feedback__c();
 		setting.Hashtag__c = hashtag;
 		insert setting;
 	}

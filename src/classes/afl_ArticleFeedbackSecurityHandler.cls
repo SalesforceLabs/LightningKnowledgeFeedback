@@ -4,7 +4,7 @@
  *    started on 07/05/2018
  *    Security Handler class for Article Feedback object
  **/
-public class ArticleFeedbackSecurityHandler {
+public class afl_ArticleFeedbackSecurityHandler {
     /**
      * @description
      *  Constants

@@ -1,6 +1,6 @@
 public with sharing class afl_RelatedArticleCtrl {
 
-    public static String knowledgeObject = ArticleFeedbackSecurityHandler.knowledgeObject;
+    public static String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
 
     /*
     * @description
@@ -18,7 +18,7 @@ public with sharing class afl_RelatedArticleCtrl {
         String kavId = '';
         try {
             response.state = 'SUCCESS';
-            Article_Feedback__c af = [Select Id, Knowledge_Article_Version_Id__c  from Article_Feedback__c  where id=:recordId LIMIT 1];
+            afl_Article_Feedback__c af = [Select Id, Knowledge_Article_Version_Id__c  from afl_Article_Feedback__c  where id=:recordId LIMIT 1];
 
 
             if (af != null) {
@@ -29,7 +29,7 @@ public with sharing class afl_RelatedArticleCtrl {
                 string query =  '	SELECT Id,ArchivedDate, KnowledgeArticleId, Language ,PublishStatus, VersionNumber'+
                 '	FROM KnowledgeArticleVersion ' +
                 '	WHERE Id = \'' + kavId + '\' LIMIT 1';
-                ArticleFeedbackSecurityHandler.canAccess(KnowledgeArticleVersion.sObjectType);
+                afl_ArticleFeedbackSecurityHandler.canAccess(KnowledgeArticleVersion.sObjectType);
                 KnowledgeArticleVersion actualKav =  Database.query(query);
                 if(actualKav != null) {
                     Boolean isArchived = (actualKAV.PublishStatus == 'Archived') ? true : false;
@@ -70,7 +70,7 @@ public with sharing class afl_RelatedArticleCtrl {
         String queryString = '';
         List<SObject> sObjList = new List<SObject>();
         String recType = 'This article has no record type';
-        if(ArticleFeedbackSecurityHandler.isRecordTypeIdActive){
+        if(afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive){
             queryString = 'SELECT  Id, RecordTypeId, RecordType.Name FROM ' + knowledgeObject + ' WHERE Id =  \'' + kavId + '\'';
             sObjList = Database.query(queryString);
             if(sObjList != null && !sObjList.isEmpty()){
