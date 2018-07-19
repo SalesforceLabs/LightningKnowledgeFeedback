@@ -48,5 +48,9 @@
         <members>afl_Article_Feedback_Page</members>
         <name>FlexiPage</name>
     </types>
+    <types>
+        <members>afl_Article_Feedback__c-Article Feedback Layout</members>
+        <name>Layout</name>
+    </types>
     <version>43.0</version>
 </Package>
