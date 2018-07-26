@@ -14,7 +14,7 @@ private class afl_ArticleFeedbackRelatedCtrl_Test {
         afeedback.Feedback_Status__c = 'New';
         afeedback.Article_Title__c = 'Test Article Title';
         afeedback.Article_Number__c = '00001';
-        afeedback.Article_Type__c = 'Test Article Type';
+        afeedback.Record_Type__c = 'Test Article Type';
         afeedback.Article_Version__c = 1;
         afeedback.Internal_Notes__c = 'Test notes 1';
 
@@ -22,7 +22,7 @@ private class afl_ArticleFeedbackRelatedCtrl_Test {
         afeedback2.Feedback_Status__c = 'New';
         afeedback2.Article_Title__c = 'Test Article Title';
         afeedback2.Article_Number__c = '00001';
-        afeedback2.Article_Type__c = 'Test Article Type';
+        afeedback2.Record_Type__c = 'Test Article Type';
         afeedback2.Article_Version__c = 1;
         afeedback2.Internal_Notes__c = 'Test notes 2';
 

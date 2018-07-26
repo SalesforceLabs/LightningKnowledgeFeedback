@@ -30,7 +30,7 @@ public class afl_InsertLgtnArticleFeedback_Test {
             fc.FeedItemId = f.Id;
             insert fc;
             String theTitle = (String)kavObj.get('Title');
-            List<afl_Article_Feedback__c> afs = [select id, Article_Number__c, Article_Link__c, Article_Title__c, Article_Type__c from afl_Article_Feedback__c where Article_Title__c =: theTitle ];
+            List<afl_Article_Feedback__c> afs = [select id, Article_Number__c, Article_Link__c, Article_Title__c, Record_Type__c from afl_Article_Feedback__c where Article_Title__c =: theTitle ];
             System.assertNotEquals (afs,null);
         System.Test.stopTest();
     }

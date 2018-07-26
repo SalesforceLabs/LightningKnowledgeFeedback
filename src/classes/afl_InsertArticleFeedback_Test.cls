@@ -28,7 +28,7 @@ private class afl_InsertArticleFeedback_Test {
             post.ParentId = (String)kavObj.get('KnowledgeArticleId');
             insert post;
             String theTitle = (String)kavObj.get('Title');
-            List<afl_Article_Feedback__c> afs = [select id, Article_Number__c, Article_Link__c, Article_Title__c, Article_Type__c from afl_Article_Feedback__c where Article_Title__c =: theTitle ];
+            List<afl_Article_Feedback__c> afs = [select id, Article_Number__c, Article_Link__c, Article_Title__c, Record_Type__c from afl_Article_Feedback__c where Article_Title__c =: theTitle ];
             System.assertNotEquals (afs,null);
         System.Test.stopTest();
 	}

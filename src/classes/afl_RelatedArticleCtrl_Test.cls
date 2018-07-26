@@ -40,7 +40,7 @@ public with sharing class afl_RelatedArticleCtrl_Test {
         afd.Article_Link__c = URL.getSalesforceBaseUrl().toExternalForm() + '/' + (String)kavObj.get('KnowledgeArticleId');
         afd.Article_Title__c = (String)kavObj.get('Title');
         afd.Knowledge_Article_Version_Id__c = (String)kavObj.get('Id');
-        afd.Article_Type__c = '';
+        afd.Record_Type__c = '';
         insert afd;
         response = afl_RelatedArticleCtrl.loadKAVId(afd.Id);
         System.Test.StopTest();

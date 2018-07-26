@@ -19,6 +19,55 @@
         <componentInstances>
             <componentName>force:detailPanel</componentName>
         </componentInstances>
+        <name>Facet-2b29a875-0409-42dc-9a85-fd9f706e83bd</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <name>Facet-af373486-da84-43ed-8318-b8a01aa92635</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <componentInstances>
+            <componentInstanceProperties>
+                <name>active</name>
+                <value>true</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>body</name>
+                <value>Facet-2b29a875-0409-42dc-9a85-fd9f706e83bd</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>title</name>
+                <value>Standard.Tab.detail</value>
+            </componentInstanceProperties>
+            <componentName>flexipage:tab</componentName>
+        </componentInstances>
+        <componentInstances>
+            <componentInstanceProperties>
+                <name>active</name>
+                <value>false</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>body</name>
+                <value>Facet-af373486-da84-43ed-8318-b8a01aa92635</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>title</name>
+                <value>Standard.Tab.relatedLists</value>
+            </componentInstanceProperties>
+            <componentName>flexipage:tab</componentName>
+        </componentInstances>
+        <name>Facet-82c704b8-c7be-43e8-86b1-4ccbbf723407</name>
+        <type>Facet</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <componentInstances>
+            <componentInstanceProperties>
+                <name>tabs</name>
+                <value>Facet-82c704b8-c7be-43e8-86b1-4ccbbf723407</value>
+            </componentInstanceProperties>
+            <componentName>flexipage:tabset</componentName>
+        </componentInstances>
         <name>main</name>
         <type>Region</type>
     </flexiPageRegions>
@@ -30,11 +79,10 @@
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
-        <name>Facet-9bf32bdb-3084-474e-9d28-7060ed7b52a3</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <name>Facet-0543e92f-1c75-4cf8-b081-0fae7c1576b7</name>
+        <componentInstances>
+            <componentName>forceChatter:recordFeedContainer</componentName>
+        </componentInstances>
+        <name>Facet-50c21987-fe4a-4675-adda-0203c519b045</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -51,27 +99,12 @@
         </componentInstances>
         <componentInstances>
             <componentInstanceProperties>
-                <name>active</name>
-                <value>true</value>
-            </componentInstanceProperties>
-            <componentInstanceProperties>
                 <name>body</name>
-                <value>Facet-9bf32bdb-3084-474e-9d28-7060ed7b52a3</value>
+                <value>Facet-50c21987-fe4a-4675-adda-0203c519b045</value>
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>title</name>
-                <value>Standard.Tab.relatedLists</value>
-            </componentInstanceProperties>
-            <componentName>flexipage:tab</componentName>
-        </componentInstances>
-        <componentInstances>
-            <componentInstanceProperties>
-                <name>body</name>
-                <value>Facet-0543e92f-1c75-4cf8-b081-0fae7c1576b7</value>
-            </componentInstanceProperties>
-            <componentInstanceProperties>
-                <name>title</name>
-                <value>Standard.Tab.detail</value>
+                <value>Chatter</value>
             </componentInstanceProperties>
             <componentName>flexipage:tab</componentName>
         </componentInstances>
@@ -85,9 +118,6 @@
                 <value>Facet-db45ca3c-85d7-4e2a-a579-080d1785b203</value>
             </componentInstanceProperties>
             <componentName>flexipage:tabset</componentName>
-        </componentInstances>
-        <componentInstances>
-            <componentName>forceChatter:recordFeedContainer</componentName>
         </componentInstances>
         <name>sidebar</name>
         <type>Region</type>

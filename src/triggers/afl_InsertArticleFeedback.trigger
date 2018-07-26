@@ -63,16 +63,16 @@ trigger afl_InsertArticleFeedback on FeedItem (after insert) {
 	                    afd.Article_Link__c = URL.getSalesforceBaseUrl().toExternalForm() + '/' + kav.KnowledgeArticleId;
 	                    afd.Article_Title__c = kav.Title;
                         afd.Knowledge_Article_Version_Id__c = kav.Id;
-						afd.Article_Type__c = '';
+						afd.Record_Type__c = '';
 
                         if (hasRecordType) {
                             sObject obj = (sObject)kav;
                             if(!test.isRunningTest()) {
                              String rTypeId = String.valueOf(obj.get('RecordTypeId'));
 							 if (recordTypeDetails.containsKey(rTypeId))
-								afd.Article_Type__c = recordTypeDetails.get(rTypeId);
+								afd.Record_Type__c = recordTypeDetails.get(rTypeId);
                             } else {
-                                afd.Article_Type__c = 'test article type';
+                                afd.Record_Type__c = 'test article type';
                             }
 						}
 
