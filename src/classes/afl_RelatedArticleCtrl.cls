@@ -17,11 +17,10 @@ public with sharing class afl_RelatedArticleCtrl {
         Map<String,  Object> result = new Map<String,  Object>();
         String kavId = '';
         try {
-            response.state = 'SUCCESS';
-            afl_Article_Feedback__c af = [Select Id, Knowledge_Article_Version_Id__c  from afl_Article_Feedback__c  where id=:recordId LIMIT 1];
+            afl_Article_Feedback__c[] lstAF = [Select Id, Knowledge_Article_Version_Id__c  from afl_Article_Feedback__c  where id=:recordId LIMIT 1];
 
-
-            if (af != null) {
+            if (lstAF.size() > 0) {
+                afl_Article_Feedback__c af = lstAF.get(0);
                 kavId =  af.Knowledge_Article_Version_Id__c;
                 result.put('kavId', kavId);
                 //we get the language - vers
@@ -42,12 +41,16 @@ public with sharing class afl_RelatedArticleCtrl {
             }
             else {
                 response.state = 'ERROR';
-                response.error = 'An error occurred getting the id of the related article, please check that the component is in the correct record page.';
+                response.error = 'An error occurred getting the id of the article feedback, please check that the component is in the correct record page.';
             }
             response.jsonResponse = JSON.serialize(result);
         }
-        catch(Exception e){
+        catch (QueryException ex) {
             response.state = 'ERROR';
+            response.error = 'An error ocurred while retrieving the information, please check that the component is in the correct record page.';
+        }
+        catch(Exception e){
+            response = new afl_LightningResponse(e);
         }
         return response;
     }
