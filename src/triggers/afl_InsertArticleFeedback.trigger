@@ -45,13 +45,14 @@ trigger afl_InsertArticleFeedback on FeedItem (after insert) {
 
 	            for (FeedItem f : trigger.new) {
 	                String parentId = f.parentId;
-	                if (parentId.startsWith('kA') && f.Type == 'TextPost' && f.Body.containsIgnoreCase(kf.Hashtag__c) ){
+                    if (parentId.startsWith('kA') && (f.Type == 'TextPost' || f.Type == 'LinkPost') && f.Body.containsIgnoreCase(kf.Hashtag__c)) {
 	                    setIds.add(f.ParentId);
 	                }
 	            }
 
 	            if (!setIds.isEmpty()) {
-	                String q = 'select KnowledgeArticleId, CreatedDate, ArticleNumber, Title, VersionNumber, Language, LastPublishedDate, LastModifiedById from KnowledgeArticleVersion where PublishStatus = \'' + pubStatus + '\'' + ' and KnowledgeArticleId IN :setIds';
+	                String q = 'SELECT KnowledgeArticleId, CreatedDate, ArticleNumber, Title, VersionNumber, Language, LastPublishedDate, LastModifiedById ' +
+                               'FROM KnowledgeArticleVersion WHERE PublishStatus = \'' + pubStatus + '\'' + ' AND KnowledgeArticleId IN :setIds';
 	                List<KnowledgeArticleVersion> kavs = Database.query(q);
 	                for (KnowledgeArticleVersion kav : kavs) {
 	                    mKav.put(kav.KnowledgeArticleId, kav);
@@ -62,7 +63,7 @@ trigger afl_InsertArticleFeedback on FeedItem (after insert) {
 	                String parentId = f.parentId;
 
                     if (mkav.containsKey(parentId)) {
-	                    KnowledgeArticleVersion kav = mkav.get(parentId);
+                        KnowledgeArticleVersion kav = mkav.get(parentId);
 	                    afl_Article_Feedback__c afd = new afl_Article_Feedback__c();
 	                    afd.Article_Number__c = kav.ArticleNumber;
 	                    afd.Article_Link__c = URL.getSalesforceBaseUrl().toExternalForm() + '/' + kav.KnowledgeArticleId;

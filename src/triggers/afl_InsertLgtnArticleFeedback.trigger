@@ -51,7 +51,8 @@ trigger afl_InsertLgtnArticleFeedback on FeedComment (after insert) {
 	            }
 
 	            if (!setIds.isEmpty()) {
-	                String q = 'select KnowledgeArticleId, CreatedDate, ArticleNumber, Title, VersionNumber, Language, LastPublishedDate, LastModifiedById from KnowledgeArticleVersion where PublishStatus = \'' + pubStatus + '\'' + ' and KnowledgeArticleId IN :setIds';
+	                String q = 'SELECT KnowledgeArticleId, CreatedDate, ArticleNumber, Title, VersionNumber, Language, LastPublishedDate, LastModifiedById ' +
+                               'FROM KnowledgeArticleVersion WHERE PublishStatus = \'' + pubStatus + '\'' + ' AND KnowledgeArticleId IN :setIds';
 	                List<KnowledgeArticleVersion> kavs = Database.query(q);
 	                for (KnowledgeArticleVersion kav : kavs) {
 	                    mKav.put(kav.KnowledgeArticleId, kav);
