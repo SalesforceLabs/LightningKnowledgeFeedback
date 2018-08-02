@@ -6,3 +6,11 @@
 .THIS div.slds-form-element__control.slds-grid.itemBody > span > div > iframe {
     width: 100% !important;
 }
+
+.THIS div.slds-form-element__control.slds-grid.itemBody > span > div table {
+    width: 100% !important;
+}
+
+.THIS div.slds-form-element__control.slds-grid.itemBody > span div {
+    margin:auto !important;
+}
