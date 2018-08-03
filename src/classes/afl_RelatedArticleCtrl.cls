@@ -47,7 +47,7 @@ public with sharing class afl_RelatedArticleCtrl {
         }
         catch (QueryException ex) {
             response.state = 'ERROR';
-            response.error = 'An error ocurred while retrieving the information, we were not able to find the related article.';
+            response.error = 'An error ocurred while retrieving the information, the related article was not found.';
         }
         catch(Exception e){
             response = new afl_LightningResponse(e);

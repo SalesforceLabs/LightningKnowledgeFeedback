@@ -53,7 +53,7 @@
 		<br/>
 		<force:recordView aura:id="recordView"  recordId="{!v.kavId}" type="FULL"/>
 		<aura:set attribute="else">
-			Loading...
+			<span>The article was not found.</span>
 		</aura:set>
 	</aura:renderIf>
 	<!-- Display Lightning Data Service errors, if any -->
