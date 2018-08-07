@@ -14,7 +14,7 @@ trigger afl_UpdatedArticleFeedback on afl_Article_Feedback__c (after update) {
             if(af.Parent_FeedItem__c != oldAF.Parent_FeedItem__c) {
                 af.Parent_FeedItem__c.addError('An error ocurred. This field cannot be modified');
             }
-        }
+        } else af.Parent_FeedItem__c.addError('An error ocurred. This field cannot be modified or empty');
         if(oldAf.Article_Feed_Update__c != af.Article_Feed_Update__c) {
             Integer feedCount = [SELECT COUNT() FROM FeedItem WHERE Id =:af.Parent_FeedItem__c AND IsDeleted = true ALL ROWS];
             if(feedCount != 0) {
