@@ -2,7 +2,8 @@
 	handleAction : function(component, actionParams, actionName, successCallback, errorCallback){
 
 		var action = component.get(actionName);
-		action.setParams(actionParams);
+		if (!$A.util.isUndefinedOrNull(actionParams))
+			action.setParams(actionParams);
 		var self = this;
 		action.setCallback(self,function(a){
 			try{
@@ -73,6 +74,8 @@
 				"duration" : 30000
 			});
 			toastEvent.fire();
-		}
+		} else {
+				alert('Message : ' + message);
+			}
 	}
 })

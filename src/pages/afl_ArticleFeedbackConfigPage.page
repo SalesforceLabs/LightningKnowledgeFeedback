@@ -1,40 +1,23 @@
-<apex:page Controller="afl_ArticleFeedbackConfigCtrl" > 
- <apex:form id="container">
+<apex:page controller="afl_ArticleFeedbackLgnConfigCtrl" showHeader="true" sidebar="true">
+	<head>
+        <title>Settings for Knowledge Feedback Tracking</title>
+        <apex:slds />
+		<apex:includeLightning />
+    </head>
 
-    <apex:pageBlock title="Settings for Knowledge Feedback Tracking" mode="edit" rendered="{!editMode}">
+    <div id="articleFeedbackConfiguration" />
 
-      <apex:pageBlockButtons >
+	<script type="text/javascript">
+		window.onload = initializeComponent();
 
-        <apex:commandButton action="{!save}" value="Save" reRender="container"/>
-        <apex:commandButton action="{!cancel}" value="Cancel" reRender="container"/>
-
-      </apex:pageBlockButtons>
-
-      <apex:pageBlockSection columns="2">
-
-        <apex:inputField value="{!csObj.Hashtag__c}"/>
-
-      </apex:pageBlockSection>
-
-    </apex:pageBlock>
-
-
-    <apex:pageBlock title="Settings for Knowledge Feedback Tracking"  mode="detail" rendered="{!!editMode}">
-
-      <apex:pageBlockButtons >
-
-        <apex:commandButton action="{!edit}" value="Edit" reRender="container"/>
-
-      </apex:pageBlockButtons>
-
-      <apex:pageBlockSection columns="2">
-
-        <apex:outputField value="{!csObj.Hashtag__c}"/>
-
-      </apex:pageBlockSection>
-
-    </apex:pageBlock>
-
-  </apex:form>
-
+		function initializeComponent() {
+            $Lightning.use("c:afl_ArticleFeedbackConfigContainer", function() {
+                $Lightning.createComponent("c:afl_ArticleFeedbackConfiguration", {},
+                   "articleFeedbackConfiguration",
+                   function(component) {
+				   }
+			   	);
+            });
+        }
+	</script>
 </apex:page>
