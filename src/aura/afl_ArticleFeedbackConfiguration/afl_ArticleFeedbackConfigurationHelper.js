@@ -13,7 +13,7 @@
 		if (hashtag !== '') {
 			var actionParams = {'value': hashtag};
 			this.handleAction(component, actionParams, 'c.updateHashtagValue', this.updateHashtagValueCallback);
-		} this.showToast('fail', 'Error', 'This field cannot be empty.');
+		} else this.showToast('fail', 'Error', 'This field cannot be empty.');
 	},
 	updateHashtagValueCallback: function(component, response, ctx){
 		if (!$A.util.isUndefinedOrNull(response) && response.status === 'SUCCESS') {
