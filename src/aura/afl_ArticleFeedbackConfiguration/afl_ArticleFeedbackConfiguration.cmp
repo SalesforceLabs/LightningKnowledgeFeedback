@@ -34,7 +34,7 @@
                                    <label class="slds-form-element__label slds-text-color--default" for="hashtagValue">
                                    <abbr class="slds-required" title="required">*</abbr>Hashtag</label>
                                    <div class="slds-form-element__control">
-                                      <ui:inputText aura:id="inputHashtag" class="slds-input slds-m-left--medium" value="{!v.hashtagValue}" placeholder="#ArticleFeedback" disabled="true" maxlength="255"/>
+                                      <ui:inputText aura:id="inputHashtag" class="slds-input slds-m-left--medium" value="{!v.hashtagValue}" placeholder="#ArticleFeedback" disabled="true" maxlength="99"/>
                                        <!-- <div class="slds-form-element__help" id="form-error-01">This field is required</div> -->
                                    </div>
                                </div>

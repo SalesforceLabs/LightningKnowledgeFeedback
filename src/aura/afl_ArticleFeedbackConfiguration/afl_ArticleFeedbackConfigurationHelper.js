@@ -10,10 +10,10 @@
 	},
 	updateHashtagHelper: function(component, event) {
 		var hashtag = component.find('inputHashtag').get('v.value');
-		if (hashtag !== '') {
+		if (hashtag !== '' && hashtag.indexOf("]") === -1) {
 			var actionParams = {'value': hashtag};
 			this.handleAction(component, actionParams, 'c.updateHashtagValue', this.updateHashtagValueCallback);
-		} else this.showToast('fail', 'Error', 'This field cannot be empty.');
+		} else this.showToast('fail', 'Error', 'This field cannot be empty or include a closing square bracket (])');
 	},
 	updateHashtagValueCallback: function(component, response, ctx){
 		if (!$A.util.isUndefinedOrNull(response) && response.status === 'SUCCESS') {
