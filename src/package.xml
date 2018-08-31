@@ -21,6 +21,7 @@
 	<types>
 		<members>afl_ArticleFeedbackConfigPage</members>
 		<members>afl_ArticleFeedbackPage</members>
+		<members>afl_WarningPage</members>
 		<name>ApexPage</name>
 	</types>
 	<types>

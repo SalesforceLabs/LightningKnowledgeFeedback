@@ -1,0 +1,6 @@
+<apex:page standardController="afl_Article_Feedback__c">
+      <script>
+        alert('Users can only create Article Feedback records from knowledge articles');
+        history.go(-1);
+    </script>
+</apex:page>
