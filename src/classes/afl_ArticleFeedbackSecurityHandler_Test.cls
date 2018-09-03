@@ -139,4 +139,30 @@ public class afl_ArticleFeedbackSecurityHandler_Test {
 		 System.assertEquals (true,result);
 	   System.Test.stopTest();
    }
+
+   public static testMethod void testIsGuestUser() {
+	   SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
+	   Profile p = [SELECT Id FROM Profile WHERE Name='Standard User'];
+	   User testUser = new User(Alias = 'testStd', Email='teststandarduser@testorg.com',
+	   EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='en_US',
+	   LocaleSidKey='en_US', ProfileId = p.Id,
+	   TimeZoneSidKey='America/Los_Angeles', UserName='afl_test_user@testorg.com');
+	   INSERT testUser;
+
+	   System.runAs(testUser) {
+		   System.Test.startTest();
+		   Boolean result = afl_ArticleFeedbackSecurityHandler.isGuestUser();
+		   System.assertEquals(false, result);
+		   System.Test.stopTest();
+	   }
+   }
+
+   public static testMethod void testFormatReplace() {
+	   String value = '{0}';
+	   List<String> lstStr = new List<String> {'value1'};
+	   System.Test.startTest();
+	   String result = afl_ArticleFeedbackSecurityHandler.formatReplace(value, lstStr);
+	   System.assertEquals('value1', result);
+	   System.Test.stopTest();
+   }
 }
