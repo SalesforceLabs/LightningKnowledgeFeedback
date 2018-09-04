@@ -49,6 +49,11 @@
 		<name>CustomTab</name>
 	</types>
 	<types>
+		<members>Article_Feedback_Configuration</members>
+		<name>CustomPageWebLink</name>
+	</types>
+
+	<types>
 		<members>afl_Article_Feedback_Page</members>
 		<name>FlexiPage</name>
 	</types>
