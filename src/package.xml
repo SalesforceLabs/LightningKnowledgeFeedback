@@ -52,7 +52,10 @@
 		<members>Article_Feedback_Configuration</members>
 		<name>CustomPageWebLink</name>
 	</types>
-
+	<types>
+        <members>Article_Feeback</members>
+        <name>CustomApplication</name>
+    </types>
 	<types>
 		<members>afl_Article_Feedback_Page</members>
 		<name>FlexiPage</name>
