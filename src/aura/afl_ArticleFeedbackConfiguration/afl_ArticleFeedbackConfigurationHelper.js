@@ -10,7 +10,7 @@
 	},
 	updateHashtagHelper: function(component, event) {
 		var hashtag = component.find('inputHashtag').get('v.value');
-		if (hashtag !== '' && hashtag.indexOf("]") === -1) {
+		if ((!$A.util.isEmpty(hashtag) && !$A.util.isUndefinedOrNull(hashtag)) && hashtag.indexOf("]") === -1) {
 			var actionParams = {'value': hashtag};
 			this.handleAction(component, actionParams, 'c.updateHashtagValue', this.updateHashtagValueCallback);
 		} else this.showToast('fail', 'Error', 'This field cannot be empty or include a closing square bracket (])');
