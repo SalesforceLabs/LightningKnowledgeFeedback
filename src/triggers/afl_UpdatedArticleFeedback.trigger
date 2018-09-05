@@ -51,7 +51,7 @@ trigger afl_UpdatedArticleFeedback on afl_Article_Feedback__c (after update) {
                     if (af.Parent_FeedItem__c == oldAF.Parent_FeedItem__c) {
                         FeedComment comment = new FeedComment();
                         // Id of the FeedItem to comment on
-                        comment.FeedItemId = af.Parent_FeedItem__c; 
+                        comment.FeedItemId = af.Parent_FeedItem__c;
                         comment.CommentBody = af.Article_Feed_Update__c + '\n Article Feedback ' + af.Name + '. \n';
                         commentList.add(comment);
                     } else {
