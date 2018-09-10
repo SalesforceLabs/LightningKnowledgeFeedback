@@ -8,9 +8,8 @@
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
-    <label>Article Feeback</label>
+    <label>Article Feedback</label>
     <navType>Standard</navType>
-    <tabs>Knowledge__kav</tabs>
     <tabs>afl_Article_Feedback__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Article_Feeback_UtilityBar</utilityBar>

@@ -53,13 +53,12 @@
 		<name>CustomPageWebLink</name>
 	</types>
 	<types>
-        <members>Article_Feeback</members>
+        <members>Article_Feedback</members>
         <name>CustomApplication</name>
     </types>
     <types>
         <members>afl_Article_Feedback_Page</members>
         <members>Article_Feeback_UtilityBar</members>
-        <members>Knowledge_Record_Page</members>
         <name>FlexiPage</name>
     </types>
 	<types>
