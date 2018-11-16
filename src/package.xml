@@ -16,6 +16,7 @@
 		<members>afl_TestDataFactory</members>
 		<members>afl_UpdatedArticleFeedback_Test</members>
 		<members>afl_ArticleFeedbackLgnConfigCtrl</members>
+		<members>afl_ArticleThumbVoteCtrl</members>
 		<name>ApexClass</name>
 	</types>
 	<types>
@@ -37,6 +38,7 @@
 		<members>afl_toast</members>
 		<members>afl_ArticleFeedbackConfiguration</members>
 		<members>afl_ArticleFeedbackConfigContainer</members>
+		<members>afl_Article_Thumb_Vote</members>
 		<name>AuraDefinitionBundle</name>
 	</types>
 	<types>

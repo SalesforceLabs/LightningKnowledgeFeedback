@@ -62,7 +62,7 @@
 	handleError : function(component, errorTitle, errorMessage){
 		this.showToast('error', errorTitle, errorMessage);
 	},
-	showToast : function(type, title, message){
+	showToast : function(type, title, message, mode){
 
 		var toastEvent = $A.get("e.force:showToast");
 		if (!$A.util.isUndefinedOrNull(toastEvent)){
@@ -70,8 +70,8 @@
 				"title" : title,
 				"type" : type,
 				"message" : message,
-				"mode" : "sticky",
-				"duration" : 30000
+				"mode" : !$A.util.isUndefinedOrNull(mode) ? mode : 'sticky',
+				"duration" : 5000
 			});
 			toastEvent.fire();
 		} else {
