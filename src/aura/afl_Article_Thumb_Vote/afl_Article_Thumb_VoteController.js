@@ -21,7 +21,8 @@
 
 		component.set("v.unlikeReason", "");
         component.set("v.undislikeescription","");
-        //helper.saveThumbVote(component, event);
+		if(component.get("v.displayNegativeFeedbackDescription"))
+        	helper.saveThumbVote(component, event);
     },
 
 	handleToggleDislike : function (component, event, helper) {

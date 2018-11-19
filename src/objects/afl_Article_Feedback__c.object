@@ -51,7 +51,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>true</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
@@ -183,6 +182,15 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Feedback_Reason__c</fullName>
+        <externalId>false</externalId>
+        <label>Feedback Reason</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
         <fullName>Feedback_Source__c</fullName>
         <externalId>false</externalId>
         <label>Feedback Source</label>
@@ -239,6 +247,16 @@
                 </value>
             </valueSetDefinition>
         </valueSet>
+    </fields>
+    <fields>
+        <fullName>Feedback_Vote_Description__c</fullName>
+        <externalId>false</externalId>
+        <label>Feedback Vote Description</label>
+        <length>30000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
     </fields>
     <fields>
         <fullName>Feedback__c</fullName>
@@ -314,6 +332,15 @@
         <type>DateTime</type>
     </fields>
     <fields>
+        <fullName>Like__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Like</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Parent_FeedItem__c</fullName>
         <externalId>false</externalId>
         <label>Parent FeedItem</label>
@@ -334,6 +361,41 @@
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Unlike_Reason__c</fullName>
+        <externalId>false</externalId>
+        <label>Unlike Reason</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Outdated</fullName>
+                    <default>false</default>
+                    <label>Outdated</label>
+                </value>
+                <value>
+                    <fullName>Does not Work</fullName>
+                    <default>false</default>
+                    <label>Does not Work</label>
+                </value>
+                <value>
+                    <fullName>Poorly Written</fullName>
+                    <default>false</default>
+                    <label>Poorly Written</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <label>Article Feedback</label>
     <listViews>
