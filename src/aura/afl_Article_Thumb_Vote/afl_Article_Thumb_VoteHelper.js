@@ -1,12 +1,12 @@
 ({
-	showSpinner : function (component, event) {
+	showSpinner : function (component) {
 
         var spinner = component.find("spinner");
         $A.util.removeClass(spinner, "slds-hide");
         $A.util.addClass(spinner, "slds-show");
     },
 
-    hideSpinner : function (component, event) {
+    hideSpinner : function (component) {
 
        var spinner = component.find("spinner");
        $A.util.removeClass(spinner, "slds-show");
@@ -31,7 +31,7 @@
    },
 
    saveThumbVote: function (component, event) {
-	   this.showSpinner(component, event);
+	   this.showSpinner(component);
 	   var reason = component.get("v.unlikeReason");
 	   var description = component.get("v.voteReasonDescription");
 	   var isLiked = !component.get("v.disliked");
@@ -48,7 +48,7 @@
    saveThumbVoteCallback: function (component, response, ctx) {
 	   component.set("v.unlikeReason","");
 	   component.set("v.voteReasonDescription","");
-	   ctx.hideSpinner(component, event);
+	   ctx.hideSpinner(component);
 	   ctx.showToast('SUCCESS', 'success', 'Feedback saved successfully', 'pester');
    }
 })
