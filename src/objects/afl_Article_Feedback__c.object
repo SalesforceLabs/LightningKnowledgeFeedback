@@ -182,15 +182,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Feedback_Reason__c</fullName>
-        <externalId>false</externalId>
-        <label>Feedback Reason</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>TextArea</type>
-    </fields>
-    <fields>
         <fullName>Feedback_Source__c</fullName>
         <externalId>false</externalId>
         <label>Feedback Source</label>
