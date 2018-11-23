@@ -4,7 +4,10 @@
 <!-- Attributes -->
 <aura:attribute name="liked" type="Boolean" default="false" />
 <aura:attribute name="disliked" type="Boolean" default="false" />
+<aura:attribute name="savedVote" type="String" default="" />
 <aura:attribute name="voteReasonDescription" type="String" />
+<aura:attribute name="validFeedbackDescription" type="Boolean" default="true"/>
+<aura:attribute name="errorMessage" type="String" default=""/>
 <aura:attribute name="recordId" type="String"/>
 <aura:attribute name="unlikeReason" type="String" />
 <aura:attribute name="unlikeReasonOptions" type="String[]" />
@@ -25,9 +28,10 @@
             <!-- Tell us how it could be more helpful. -->
             <lightning:combobox name="comboGroup" label="Choose a general reason:" value="{! v.unlikeReason }" placeholder="Select reason" options="{! v.unlikeReasonOptions }" />
             <aura:if isTrue="{!v.displayNegativeFeedbackDescription}">
-                <div aura:id="voteDescriptionDiv" class="slds-p-top--medium">
+                <div class="slds-p-top--medium">
                     <!-- <lightning:textarea name="feedbackReason" value="{!v.voteReasonDescription}" label="Description" placeholder="Please, leave us some feedback..."/>-->
-                     <lightning:inputRichText value="{!v.voteReasonDescription}" placeholder="Please, leave us some feedback..." label="Description"/>
+                     <lightning:inputRichText value="{!v.voteReasonDescription}" placeholder="Please, leave us some feedback..." label="Description" messageWhenBadInput="{!v.errorMessage}" valid="{!v.validFeedbackDescription}"/>
+
                     <br></br>
                     <center>
                         <lightning:button variant="brand" label="Submit" onclick="{! c.handleClick }" />
@@ -36,9 +40,10 @@
             </aura:if>
         </div>
         <aura:if isTrue="{!v.displayFeedbackDescriptionField}">
-            <div aura:id="voteDescriptionDiv" class="slds-p-top--medium">
+            <div class="slds-p-top--medium">
                 <!-- <lightning:textarea name="feedbackReason" value="{!v.voteReasonDescription}" label="Description" placeholder="Please, leave us some feedback..."/>-->
-                 <lightning:inputRichText value="{!v.voteReasonDescription}" placeholder="Please, leave us some feedback..." label="Description"/>
+                 <lightning:inputRichText value="{!v.voteReasonDescription}" placeholder="Please, leave us some feedback..." label="Description" messageWhenBadInput="{!v.errorMessage}" valid="{!v.validFeedbackDescription}"/>
+
                 <br></br>
                 <center>
                     <lightning:button variant="brand" label="Submit" onclick="{! c.handleClick }" />

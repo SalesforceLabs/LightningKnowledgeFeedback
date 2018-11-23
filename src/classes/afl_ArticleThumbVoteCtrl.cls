@@ -8,7 +8,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 
 	/*
 	* @description
-	*   Method that upserts an article feedback.
+	*   Method that inserts an article feedback and upserts the vote on an Knowledge Article.
 	* @params
 	*  Id recordId, String title, String reasonAttr, String unlineDescAttr, Boolean isLikedAttr
 	* @return
@@ -44,16 +44,25 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 		String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
         artFeed.Record_Type__c = knowledgeObject;
 
-        String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate FROM '+knowledgeObject+' WHERE Id = \''+recordId+'\' LIMIT 1';
+        String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate, KnowledgeArticleId FROM '+knowledgeObject+' WHERE Id = \''+recordId+'\' LIMIT 1';
         List<sObject> sObjList = Database.query(query);
         if(!sObjList.isEmpty()){
             sObject sObj = sObjList[0];
+			artFeed.Knowledge_kav_article_Id__c = (String)sObj.get('KnowledgeArticleId');
             artFeed.Article_Title__c = (String)sObj.get('Title');
             artFeed.Article_Version__c = (Decimal)sObj.get('VersionNumber');
             artFeed.Article_Number__c = (String)sObj.get('ArticleNumber');
 			artFeed.Article_Created_Date__c = (Datetime)sObj.get('ArticleCreatedDate');
         }
-
+		Vote vote = new Vote (
+			ParentId = artFeed.Knowledge_kav_article_Id__c,
+			Type = isLiked ? '5' : '1'
+		);
+		Vote[] sVote = [SELECT Id, ParentId FROM Vote WHERE ParentId=:artFeed.Knowledge_kav_article_Id__c AND LastModifiedById=: UserInfo.getUserId() LIMIT 1];
+		if(!sVote.isEmpty()) {
+			vote.Id = sVote.get(0).Id;
+		}
+		UPSERT vote;
 		INSERT artFeed;
 		return new afl_LightningResponse();
     }
@@ -85,4 +94,29 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 		return response;
 	}
 
+	/*
+	* @description
+	*   Method that gets the vote made by the user most recently associated .
+	* @params
+	*  Id recordId
+	* @return
+	*  Object - afl_LightningResponse
+	*/
+	@AuraEnabled
+	public static afl_LightningResponse getVote(Id recordId) {
+		try {
+			afl_LightningResponse response = new afl_LightningResponse();
+			Map<String, Object> result = new Map<String, Object>();
+			afl_Article_Feedback__c[] afl = [SELECT Like__c FROM afl_Article_Feedback__c WHERE Knowledge_Article_Version_Id__c =: recordId AND LastModifiedById=: UserInfo.getUserId()
+			    								ORDER BY CreatedDate DESC LIMIT 1];
+			System.debug('afl:' + afl);
+			if(!afl.isEmpty()) {
+				result.put('vote', JSON.serialize(afl.get(0).Like__c));
+				response.jsonResponse = JSON.serialize(result);
+			}
+			return response;
+		} catch(Exception e) {
+			return new afl_LightningResponse(e);
+		}
+	}
 }
