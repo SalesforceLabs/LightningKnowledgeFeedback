@@ -18,7 +18,7 @@
 	updateHashtagValueCallback: function(component, response, ctx){
 		if (!$A.util.isUndefinedOrNull(response) && response.status === 'SUCCESS') {
 			if (!component.isValid()) return;
-			ctx.showToast(' success ', ' SUCCESS ', 'Hashtag value successfully updated');
+			ctx.showToast(' SUCCESS ', ' SUCCESS ', 'Hashtag value successfully updated');
 			component.set('v.editMode', false);
 			component.find('inputHashtag').set('v.disabled', true);
 		} else

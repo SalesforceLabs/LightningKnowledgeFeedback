@@ -1,5 +1,10 @@
 ({
 	doInit : function(component, event, helper) {
+		//Validate recordId
+		if(!helper.validateRecordId(component, event, helper)) {
+			component.set("v.invalidRecordId", true);
+			return;
+		}
 		//Initialize data
 		helper.getUserVote(component, event, helper);
 

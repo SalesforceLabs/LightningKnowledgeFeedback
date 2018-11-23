@@ -97,11 +97,20 @@
 
    validateFeedbackDescription: function(component) {
 	   var value = component.get("v.voteReasonDescription");
-	   if(value.length > 29000){
+	   if(!$A.util.isUndefinedOrNull(value) && value.length > 29000){
             component.set("v.validFeedbackDescription", false);
 			component.set("v.errorMessage", "Characters size length exceeded");
 			return false;
         }
 		return true;
+   },
+   validateRecordId: function (component, event, helper) {
+	   var recordId = component.get("v.recordId");
+	   if(!$A.util.isUndefinedOrNull(recordId)) {
+		   var prefix = recordId.substring(0, 3);
+		   if(prefix == "ka0")
+		   	return true;
+	   }
+	   return false;
    }
 })
