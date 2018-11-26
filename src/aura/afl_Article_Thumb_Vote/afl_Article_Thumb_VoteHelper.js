@@ -92,7 +92,7 @@
 	   component.set("v.validFeedbackDescription", true);
 	   component.set("v.errorMessage", "");
 	   ctx.hideSpinner(component);
-	   ctx.showToast('SUCCESS', 'success', 'Feedback saved successfully', 'pester');
+	   ctx.showToast('SUCCESS', 'Success', 'Feedback saved successfully', 'pester');
    },
 
    validateFeedbackDescription: function(component) {
