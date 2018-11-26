@@ -51,17 +51,12 @@
 		<name>CustomTab</name>
 	</types>
 	<types>
-<<<<<<< HEAD
-        <members>Article_Feedback__c-Article Feedback Layout</members>
-        <name>Layout</name>
-=======
 		<members>Article_Feedback_Configuration</members>
 		<name>CustomPageWebLink</name>
 	</types>
 	<types>
         <members>Article_Feedback</members>
         <name>CustomApplication</name>
->>>>>>> dev_renamed
     </types>
     <types>
         <members>afl_Article_Feedback_Page</members>
