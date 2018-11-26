@@ -2,7 +2,8 @@
 	handleAction : function(component, actionParams, actionName, successCallback, errorCallback){
 
 		var action = component.get(actionName);
-		action.setParams(actionParams);
+		if (!$A.util.isUndefinedOrNull(actionParams))
+			action.setParams(actionParams);
 		var self = this;
 		action.setCallback(self,function(a){
 			try{
@@ -61,7 +62,7 @@
 	handleError : function(component, errorTitle, errorMessage){
 		this.showToast('error', errorTitle, errorMessage);
 	},
-	showToast : function(type, title, message){
+	showToast : function(type, title, message, mode){
 
 		var toastEvent = $A.get("e.force:showToast");
 		if (!$A.util.isUndefinedOrNull(toastEvent)){
@@ -69,10 +70,12 @@
 				"title" : title,
 				"type" : type,
 				"message" : message,
-				"mode" : "sticky",
-				"duration" : 30000
+				"mode" : !$A.util.isUndefinedOrNull(mode) ? mode : 'sticky',
+				"duration" : 5000
 			});
 			toastEvent.fire();
-		}
+		} else {
+				alert('Message : ' + message);
+			}
 	}
 })

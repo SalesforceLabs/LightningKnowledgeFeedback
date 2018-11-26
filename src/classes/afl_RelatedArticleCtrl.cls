@@ -1,6 +1,6 @@
 public with sharing class afl_RelatedArticleCtrl {
 
-    public static String knowledgeObject = ArticleFeedbackSecurityHandler.knowledgeObject;
+    public static String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
 
     /*
     * @description
@@ -17,11 +17,10 @@ public with sharing class afl_RelatedArticleCtrl {
         Map<String,  Object> result = new Map<String,  Object>();
         String kavId = '';
         try {
-            response.state = 'SUCCESS';
-            Article_Feedback__c af = [Select Id, Knowledge_Article_Version_Id__c  from Article_Feedback__c  where id=:recordId LIMIT 1];
+            afl_Article_Feedback__c[] lstAF = [Select Id, Knowledge_Article_Version_Id__c  from afl_Article_Feedback__c  where id=:recordId LIMIT 1];
 
-
-            if (af != null) {
+            if (lstAF.size() > 0) {
+                afl_Article_Feedback__c af = lstAF.get(0);
                 kavId =  af.Knowledge_Article_Version_Id__c;
                 result.put('kavId', kavId);
                 //we get the language - vers
@@ -29,7 +28,7 @@ public with sharing class afl_RelatedArticleCtrl {
                 string query =  '	SELECT Id,ArchivedDate, KnowledgeArticleId, Language ,PublishStatus, VersionNumber'+
                 '	FROM KnowledgeArticleVersion ' +
                 '	WHERE Id = \'' + kavId + '\' LIMIT 1';
-                ArticleFeedbackSecurityHandler.canAccess(KnowledgeArticleVersion.sObjectType);
+                afl_ArticleFeedbackSecurityHandler.canAccess(KnowledgeArticleVersion.sObjectType);
                 KnowledgeArticleVersion actualKav =  Database.query(query);
                 if(actualKav != null) {
                     Boolean isArchived = (actualKAV.PublishStatus == 'Archived') ? true : false;
@@ -42,12 +41,16 @@ public with sharing class afl_RelatedArticleCtrl {
             }
             else {
                 response.state = 'ERROR';
-                response.error = 'An error occurred getting the id of the related article, please check that the component is in the correct record page.';
+                response.error = 'An error occurred getting the id of the article feedback, please check that the component is in the correct record page.';
             }
             response.jsonResponse = JSON.serialize(result);
         }
-        catch(Exception e){
+        catch (QueryException ex) {
             response.state = 'ERROR';
+            response.error = 'An error ocurred while retrieving the information, the related article was not found.';
+        }
+        catch(Exception e){
+            response = new afl_LightningResponse(e);
         }
         return response;
     }
@@ -70,7 +73,7 @@ public with sharing class afl_RelatedArticleCtrl {
         String queryString = '';
         List<SObject> sObjList = new List<SObject>();
         String recType = 'This article has no record type';
-        if(ArticleFeedbackSecurityHandler.isRecordTypeIdActive){
+        if(afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive){
             queryString = 'SELECT  Id, RecordTypeId, RecordType.Name FROM ' + knowledgeObject + ' WHERE Id =  \'' + kavId + '\'';
             sObjList = Database.query(queryString);
             if(sObjList != null && !sObjList.isEmpty()){

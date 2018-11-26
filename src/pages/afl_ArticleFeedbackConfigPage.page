@@ -1,0 +1,23 @@
+<apex:page controller="afl_ArticleFeedbackLgnConfigCtrl" showHeader="true" sidebar="true">
+	<head>
+        <title>Settings for Knowledge Feedback Tracking</title>
+        <apex:slds />
+		<apex:includeLightning />
+    </head>
+
+    <div id="articleFeedbackConfiguration" />
+
+	<script type="text/javascript">
+		window.onload = initializeComponent();
+
+		function initializeComponent() {
+            $Lightning.use("c:afl_ArticleFeedbackConfigContainer", function() {
+                $Lightning.createComponent("c:afl_ArticleFeedbackConfiguration", {},
+                   "articleFeedbackConfiguration",
+                   function(component) {
+				   }
+			   	);
+            });
+        }
+	</script>
+</apex:page>

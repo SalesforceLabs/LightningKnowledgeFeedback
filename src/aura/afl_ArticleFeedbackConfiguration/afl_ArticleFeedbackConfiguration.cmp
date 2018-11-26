@@ -1,0 +1,61 @@
+<aura:component controller="afl_ArticleFeedbackLgnConfigCtrl" extends="c:afl_abstract">
+    <!-- Attributes -->
+   <aura:attribute name="hashtagValue" type="String" description="Knowledge Configuration object hashtag value"/>
+   <aura:attribute name="editMode" type="Boolean" description="false"/>
+   <aura:attribute name="readonlyMode" type="Boolean" description="true"/>
+
+   <!-- Handlers -->
+   <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+   <lightning:layout horizontalAlign="spread">
+       <lightning:layoutItem flexibility="grow" size="12">
+           <article class="slds-card">
+               <div class="slds-card__header slds-grid">
+                   <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                       <div class="slds-media__body">
+                           <div class="slds-page-header">
+                               <div class="slds-media">
+                                   <div class="slds-media__figure">
+                                       <lightning:icon iconName="custom:custom108" class="slds-icon" alternativeText="icon"/>
+                                   </div>
+                                   <div class="slds-media__body">
+                                       <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Rohde Corp - 80,000 Widgets">Settings for Knowledge Feedback Tracking</h1>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </header>
+               </div>
+               <div class="slds-card__body slds-card__body_inner slds-m-around--medium">
+                   <lightning:layout horizontalAlign="center">
+                       <lightning:layoutItem flexibility="grow" size="3">
+                           <div class="slds-form slds-form_horizontal">
+                               <div class="slds-form-element">
+                                   <label class="slds-form-element__label slds-text-color--default" for="hashtagValue">
+                                   <abbr class="slds-required" title="required">*</abbr>Hashtag</label>
+                                   <div class="slds-form-element__control">
+                                      <ui:inputText aura:id="inputHashtag" class="slds-input slds-m-left--medium" value="{!v.hashtagValue}" placeholder="#ArticleFeedback" disabled="true" maxlength="99"/>
+                                       <!-- <div class="slds-form-element__help" id="form-error-01">This field is required</div> -->
+                                   </div>
+                               </div>
+                           </div>
+                       </lightning:layoutItem>
+                   </lightning:layout>
+               </div>
+               <footer class="slds-card__footer">
+                   <lightning:layout horizontalAlign="center">
+                        <lightning:layoutItem flexibility="grow" class="slds-align--absolute-center">
+                            <aura:renderIf isTrue="{!v.editMode}">
+                                <button class="slds-button slds-button_brand" onclick="{!c.updateHashtag}">Save</button>
+                                <button class="slds-button slds-button_neutral" onclick="{!c.cancelEditMode}">Cancel</button>
+                                <aura:set attribute="else">
+                                    <button class="slds-button slds-button_brand" onclick="{!c.setEditMode}">Edit</button>
+                                </aura:set>
+                            </aura:renderIf>
+                        </lightning:layoutItem>
+                   </lightning:layout>
+               </footer>
+           </article>
+       </lightning:layoutItem>
+   </lightning:layout>
+</aura:component>
