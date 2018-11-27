@@ -18,8 +18,9 @@ public with sharing class afl_ArticleThumbVoteCtrl {
     public static afl_LightningResponse upsertThumbArticleVote(Id recordId, String unlikeReason, String voteDescription, Boolean isLiked, Boolean isSameVote){
 
         afl_Article_Feedback__c artFeed = new afl_Article_Feedback__c();
-        artFeed.Feedback_Status__c = 'New';
+		Map<Id,String> recordTypeDetails = afl_ArticleFeedbackSecurityHandler.getAllowedRecordTypesMap();
 
+        artFeed.Feedback_Status__c = 'New';
         artFeed.Feedback_Vote_Description__c = voteDescription;
         artFeed.Like__c = isLiked;
         artFeed.Unlike_Reason__c = unlikeReason;
@@ -42,9 +43,8 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 
         artFeed.Knowledge_Article_Version_Id__c = recordId;
 		String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
-        artFeed.Record_Type__c = knowledgeObject;
 
-        String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate, KnowledgeArticleId FROM '+knowledgeObject+' WHERE Id = \''+recordId+'\' LIMIT 1';
+        String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate, KnowledgeArticleId, RecordTypeId FROM '+knowledgeObject+' WHERE Id = \''+recordId+'\' LIMIT 1';
         List<sObject> sObjList = Database.query(query);
         if(!sObjList.isEmpty()){
             sObject sObj = sObjList[0];
@@ -53,6 +53,17 @@ public with sharing class afl_ArticleThumbVoteCtrl {
             artFeed.Article_Version__c = (Decimal)sObj.get('VersionNumber');
             artFeed.Article_Number__c = (String)sObj.get('ArticleNumber');
 			artFeed.Article_Created_Date__c = (Datetime)sObj.get('ArticleCreatedDate');
+
+			//Get record type name
+			if (String.isNotEmpty((String)sObj.get('RecordTypeId'))) {
+				if (!test.isRunningTest()) {
+					String rTypeId = (String)sObj.get('RecordTypeId');
+					if (recordTypeDetails.containsKey(rTypeId))
+					artFeed.Record_Type__c = recordTypeDetails.get(rTypeId);
+				} else {
+					artFeed.Record_Type__c = 'test article type';
+				}
+			}
         }
 
 		if(!isSameVote) {
