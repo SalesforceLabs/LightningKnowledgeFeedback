@@ -68,7 +68,7 @@
    saveThumbVote: function (component, event) {
 	   //Prevent user from voting the same again
 	   if((component.get("v.savedVote") == '5' && component.get('v.liked')) || (component.get("v.savedVote") == '1' && component.get("v.disliked")))
-		   return;
+		   var isSameVote = true;
 	   if(!this.validateFeedbackDescription(component))
 	   	   return;
 	   this.showSpinner(component);
@@ -80,7 +80,8 @@
 		   "recordId": articleId,
 		   "unlikeReason" : reason,
 		   "voteDescription" : description,
-		   "isLiked" : isLiked
+		   "isLiked" : isLiked,
+		   "isSameVote": isSameVote
 	   };
 	   this.handleAction(component, actionParams, 'c.upsertThumbArticleVote', this.saveThumbVoteCallback);
    },

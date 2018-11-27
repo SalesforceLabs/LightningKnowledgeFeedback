@@ -15,7 +15,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 	*  Object - afl_LightningResponse
 	*/
 	@AuraEnabled
-    public static afl_LightningResponse upsertThumbArticleVote(Id recordId, String unlikeReason, String voteDescription, Boolean isLiked){
+    public static afl_LightningResponse upsertThumbArticleVote(Id recordId, String unlikeReason, String voteDescription, Boolean isLiked, Boolean isSameVote){
 
         afl_Article_Feedback__c artFeed = new afl_Article_Feedback__c();
         artFeed.Feedback_Status__c = 'New';
@@ -54,15 +54,18 @@ public with sharing class afl_ArticleThumbVoteCtrl {
             artFeed.Article_Number__c = (String)sObj.get('ArticleNumber');
 			artFeed.Article_Created_Date__c = (Datetime)sObj.get('ArticleCreatedDate');
         }
-		Vote vote = new Vote (
-			ParentId = artFeed.Knowledge_kav_article_Id__c,
-			Type = isLiked ? '5' : '1'
-		);
-		Vote[] sVote = [SELECT Id, ParentId FROM Vote WHERE ParentId=:artFeed.Knowledge_kav_article_Id__c AND LastModifiedById=: UserInfo.getUserId() LIMIT 1];
-		if(!sVote.isEmpty()) {
-			vote.Id = sVote.get(0).Id;
+
+		if(!isSameVote) {
+			Vote vote = new Vote (
+				ParentId = artFeed.Knowledge_kav_article_Id__c,
+				Type = isLiked ? '5' : '1'
+			);
+			Vote[] sVote = [SELECT Id, ParentId FROM Vote WHERE ParentId=:artFeed.Knowledge_kav_article_Id__c AND LastModifiedById=: UserInfo.getUserId() LIMIT 1];
+			if(!sVote.isEmpty()) {
+				vote.Id = sVote.get(0).Id;
+			}
+			UPSERT vote;
 		}
-		UPSERT vote;
 		INSERT artFeed;
 		return new afl_LightningResponse();
     }
@@ -105,14 +108,20 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 	@AuraEnabled
 	public static afl_LightningResponse getVote(Id recordId) {
 		try {
+			String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
 			afl_LightningResponse response = new afl_LightningResponse();
 			Map<String, Object> result = new Map<String, Object>();
-			afl_Article_Feedback__c[] afl = [SELECT Like__c FROM afl_Article_Feedback__c WHERE Knowledge_Article_Version_Id__c =: recordId AND LastModifiedById=: UserInfo.getUserId()
-			    								ORDER BY CreatedDate DESC LIMIT 1];
-			System.debug('afl:' + afl);
-			if(!afl.isEmpty()) {
-				result.put('vote', JSON.serialize(afl.get(0).Like__c));
-				response.jsonResponse = JSON.serialize(result);
+			String query = 'SELECT KnowledgeArticleId FROM '+knowledgeObject+' WHERE Id = \''+recordId+'\' LIMIT 1';
+	        List<sObject> knowledgeObjList = Database.query(query);
+
+			if(!knowledgeObjList.isEmpty()) {
+				sObject knowledgeObj = knowledgeObjList[0];
+				String parentId = (String)knowledgeObj.get('KnowledgeArticleId');
+				Vote[] sVote = [SELECT ParentId, Type FROM Vote WHERE ParentId=:parentId AND LastModifiedById=: UserInfo.getUserId() LIMIT 1];
+				if(!sVote.isEmpty()) {
+					result.put('vote', JSON.serialize(sVote.get(0).Type == '5' ? true : false));
+					response.jsonResponse = JSON.serialize(result);
+				}
 			}
 			return response;
 		} catch(Exception e) {
