@@ -67,8 +67,9 @@
 
    saveThumbVote: function (component, event) {
 	   //Prevent user from voting the same again
+	   var isSameVote = false;
 	   if((component.get("v.savedVote") == '5' && component.get('v.liked')) || (component.get("v.savedVote") == '1' && component.get("v.disliked")))
-		   var isSameVote = true;
+		   isSameVote = true;
 	   if(!this.validateFeedbackDescription(component))
 	   	   return;
 	   this.showSpinner(component);
