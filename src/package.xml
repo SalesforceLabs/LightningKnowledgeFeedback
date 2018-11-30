@@ -27,7 +27,6 @@
 		<name>ApexPage</name>
 	</types>
 	<types>
-		<members>afl_ArticleFeedback</members>
 		<members>afl_InsertArticleFeedback</members>
 		<members>afl_InsertLgtnArticleFeedback</members>
 		<members>afl_UpdatedArticleFeedback</members>

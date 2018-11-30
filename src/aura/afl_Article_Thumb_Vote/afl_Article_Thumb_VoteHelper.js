@@ -51,7 +51,7 @@
 			  component.set("v.savedVote",'1');
 
 			  //If article has a negative vote show reason's pickList
-			  if(component.get("v.savedVote") == "1") {
+			  if(component.get("v.savedVote") === "1") {
 				  var unlikeCardDivCmp = component.find("unlikeCardDiv");
 				  $A.util.removeClass(unlikeCardDivCmp, "slds-hide");
 				  $A.util.addClass(unlikeCardDivCmp, "slds-show");
@@ -68,7 +68,7 @@
    saveThumbVote: function (component, event) {
 	   //Prevent user from voting the same again
 	   var isSameVote = false;
-	   if((component.get("v.savedVote") == '5' && component.get('v.liked')) || (component.get("v.savedVote") == '1' && component.get("v.disliked")))
+	   if((component.get("v.savedVote") === '5' && component.get('v.liked')) || (component.get("v.savedVote") === '1' && component.get("v.disliked")))
 		   isSameVote = true;
 	   if(!this.validateFeedbackDescription(component))
 	   	   return;
@@ -110,7 +110,7 @@
 	   var recordId = component.get("v.recordId");
 	   if(!$A.util.isUndefinedOrNull(recordId)) {
 		   var prefix = recordId.substring(0, 3);
-		   if(prefix == "ka0")
+		   if(prefix === "ka0")
 		   	return true;
 	   }
 	   return false;
