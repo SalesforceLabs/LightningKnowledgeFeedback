@@ -70,8 +70,6 @@
 	   var isSameVote = false;
 	   if((component.get("v.savedVote") === '5' && component.get('v.liked')) || (component.get("v.savedVote") === '1' && component.get("v.disliked")))
 		   isSameVote = true;
-	   if(!this.validateFeedbackDescription(component))
-	   	   return;
 	   this.showSpinner(component);
 	   var reason = component.get("v.unlikeReason");
 	   var description = component.get("v.voteReasonDescription");
@@ -97,15 +95,6 @@
 	   ctx.showToast('SUCCESS', 'Success', 'Feedback saved successfully', 'pester');
    },
 
-   validateFeedbackDescription: function(component) {
-	   var value = component.get("v.voteReasonDescription");
-	   if(!$A.util.isUndefinedOrNull(value) && value.length > 29000){
-            component.set("v.validFeedbackDescription", false);
-			component.set("v.errorMessage", "Characters size length exceeded");
-			return false;
-        }
-		return true;
-   },
    validateRecordId: function (component, event, helper) {
 	   var recordId = component.get("v.recordId");
 	   if(!$A.util.isUndefinedOrNull(recordId)) {

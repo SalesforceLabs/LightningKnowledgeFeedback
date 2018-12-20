@@ -6,8 +6,6 @@
 <aura:attribute name="disliked" type="Boolean" default="false" />
 <aura:attribute name="savedVote" type="String" default="" />
 <aura:attribute name="voteReasonDescription" type="String" />
-<aura:attribute name="validFeedbackDescription" type="Boolean" default="true"/>
-<aura:attribute name="errorMessage" type="String" default=""/>
 <aura:attribute name="recordId" type="String"/>
 <aura:attribute name="unlikeReason" type="String" />
 <aura:attribute name="unlikeReasonOptions" type="String[]" />
@@ -31,9 +29,7 @@
                 <lightning:combobox name="comboGroup" label="Choose a general reason:" value="{! v.unlikeReason }" placeholder="Select reason" options="{! v.unlikeReasonOptions }" />
                 <aura:if isTrue="{!v.displayNegativeFeedbackDescription}">
                     <div class="slds-p-top--medium">
-                        <!-- <lightning:textarea name="feedbackReason" value="{!v.voteReasonDescription}" label="Description" placeholder="Please, leave us some feedback..."/>-->
-                         <lightning:inputRichText value="{!v.voteReasonDescription}" placeholder="Please, leave us some feedback..." label="Description" messageWhenBadInput="{!v.errorMessage}" valid="{!v.validFeedbackDescription}"/>
-
+                        <lightning:textarea aura:id ="feedbackReason" value="{!v.voteReasonDescription}" label="Description" placeholder="Please, leave us some feedback..." maxlength="29000"/>
                         <br></br>
                         <center>
                             <lightning:button variant="brand" label="Submit" onclick="{! c.handleClick }" />
@@ -43,9 +39,7 @@
             </div>
             <aura:if isTrue="{!v.displayFeedbackDescriptionField}">
                 <div class="slds-p-top--medium">
-                    <!-- <lightning:textarea name="feedbackReason" value="{!v.voteReasonDescription}" label="Description" placeholder="Please, leave us some feedback..."/>-->
-                     <lightning:inputRichText value="{!v.voteReasonDescription}" placeholder="Please, leave us some feedback..." label="Description" messageWhenBadInput="{!v.errorMessage}" valid="{!v.validFeedbackDescription}"/>
-
+                    <lightning:textarea aura:id ="feedbackReason" value="{!v.voteReasonDescription}" label="Description" placeholder="Please, leave us some feedback..." maxlength="29000"/>
                     <br></br>
                     <center>
                         <lightning:button variant="brand" label="Submit" onclick="{! c.handleClick }" />
