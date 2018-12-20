@@ -60,7 +60,16 @@
     <fields>
         <fullName>Action_Date__c</fullName>
         <externalId>false</externalId>
-        <label>Action Date</label>
+        <label>Follow Up Completed Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Action_Due_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Action Due Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -242,7 +251,7 @@
     <fields>
         <fullName>Feedback_Vote_Description__c</fullName>
         <externalId>false</externalId>
-        <label>Feedback Vote Description</label>
+        <label>Feedback from Rating</label>
         <length>30000</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -368,7 +377,7 @@
     <fields>
         <fullName>Unlike_Reason__c</fullName>
         <externalId>false</externalId>
-        <label>Unlike Reason</label>
+        <label>Feedback Reason</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -492,7 +501,7 @@
         <trackFeedHistory>true</trackFeedHistory>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Articles Feedback</pluralLabel>
+    <pluralLabel>Article Feedback</pluralLabel>
     <searchLayouts>
         <searchFilterFields>OBJECT_ID</searchFilterFields>
         <searchFilterFields>NAME</searchFilterFields>
