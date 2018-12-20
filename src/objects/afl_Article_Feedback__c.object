@@ -492,7 +492,7 @@
         <trackFeedHistory>true</trackFeedHistory>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Articles Feedback</pluralLabel>
+    <pluralLabel>Article Feedback</pluralLabel>
     <searchLayouts>
         <searchFilterFields>OBJECT_ID</searchFilterFields>
         <searchFilterFields>NAME</searchFilterFields>
