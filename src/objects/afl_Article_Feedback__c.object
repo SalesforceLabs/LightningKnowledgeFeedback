@@ -242,7 +242,7 @@
     <fields>
         <fullName>Feedback_Vote_Description__c</fullName>
         <externalId>false</externalId>
-        <label>Feedback Vote Description</label>
+        <label>Feedback from Rating</label>
         <length>30000</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
