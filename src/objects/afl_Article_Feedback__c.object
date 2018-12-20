@@ -246,8 +246,8 @@
         <length>30000</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Html</type>
-        <visibleLines>25</visibleLines>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
     </fields>
     <fields>
         <fullName>Feedback__c</fullName>
@@ -412,6 +412,15 @@
         <columns>Last_Published_By__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>Article_Feedback_Queue_afl_Article_Feedback</fullName>
+        <filterScope>Queue</filterScope>
+        <label>Article Feedback Queue</label>
+        <queue>Article_Feedback_Queue</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
     </listViews>
     <listViews>
         <fullName>Backlogged_Feedback</fullName>
