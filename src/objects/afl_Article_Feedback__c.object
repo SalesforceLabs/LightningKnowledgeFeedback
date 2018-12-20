@@ -252,7 +252,7 @@
     <fields>
         <fullName>Feedback__c</fullName>
         <externalId>false</externalId>
-        <label>Feedback</label>
+        <label>Feedback from Article Feed</label>
         <length>32768</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
