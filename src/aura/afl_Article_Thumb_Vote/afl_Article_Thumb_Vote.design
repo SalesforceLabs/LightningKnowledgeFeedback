@@ -1,3 +1,3 @@
-<design:component label="Article Feedback with Rating">
+<design:component label="Article Rating and Feedback">
     <design:attribute name="alwaysDisplayFeedDescription" label="Always display feedback section?"/>
 </design:component>
