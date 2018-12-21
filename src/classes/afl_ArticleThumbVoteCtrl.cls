@@ -48,8 +48,12 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 
 			artFeed.Knowledge_Article_Version_Id__c = recordId;
 			String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
-
-			String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate, KnowledgeArticleId, RecordTypeId FROM '+knowledgeObject+' WHERE Id = \''+recordId+'\' LIMIT 1';
+			Boolean hasRecordType = afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive;
+			String recordTypeField = '';
+			if(hasRecordType) {
+				recordTypeField = ',RecordTypeId';
+			}
+			String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate, KnowledgeArticleId' + recordTypeField + ' FROM '+knowledgeObject+' WHERE Id = \''+recordId+'\' LIMIT 1';
 			List<sObject> sObjList = Database.query(query);
 			if(!sObjList.isEmpty()){
 				sObject sObj = sObjList[0];
@@ -60,13 +64,15 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				artFeed.Article_Created_Date__c = (Datetime)sObj.get('ArticleCreatedDate');
 
 				//Get record type name
-				if (String.isNotEmpty((String)sObj.get('RecordTypeId'))) {
-					if (!test.isRunningTest()) {
-						String rTypeId = (String)sObj.get('RecordTypeId');
-						if (recordTypeDetails.containsKey(rTypeId))
-						artFeed.Record_Type__c = recordTypeDetails.get(rTypeId);
-					} else {
-						artFeed.Record_Type__c = 'test article type';
+				if(hasRecordType) {
+					if (String.isNotEmpty((String)sObj.get('RecordTypeId'))) {
+						if (!test.isRunningTest()) {
+							String rTypeId = (String)sObj.get('RecordTypeId');
+							if (recordTypeDetails.containsKey(rTypeId))
+							artFeed.Record_Type__c = recordTypeDetails.get(rTypeId);
+						} else {
+							artFeed.Record_Type__c = 'test article type';
+						}
 					}
 				}
 			}
