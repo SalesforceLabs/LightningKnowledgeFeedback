@@ -406,6 +406,36 @@
                     <default>false</default>
                     <label>Other</label>
                 </value>
+                <value>
+                    <fullName>Duplicate</fullName>
+                    <default>false</default>
+                    <label>Duplicate</label>
+                </value>
+                <value>
+                    <fullName>Enhancement suggestion</fullName>
+                    <default>false</default>
+                    <label>Enhancement suggestion</label>
+                </value>
+                <value>
+                    <fullName>Information inaccurate</fullName>
+                    <default>false</default>
+                    <label>Information inaccurate</label>
+                </value>
+                <value>
+                    <fullName>Link broken</fullName>
+                    <default>false</default>
+                    <label>Link broken</label>
+                </value>
+                <value>
+                    <fullName>Need to archive</fullName>
+                    <default>false</default>
+                    <label>Need to archive</label>
+                </value>
+                <value>
+                    <fullName>Positive feedback</fullName>
+                    <default>false</default>
+                    <label>Positive feedback</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
