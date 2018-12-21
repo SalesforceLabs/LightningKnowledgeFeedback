@@ -8,38 +8,38 @@
 		//Initialize data
 		helper.getUserVote(component, event, helper);
 
-		var unlikeCardDivCmp = component.find("unlikeCardDiv");
-		$A.util.removeClass(unlikeCardDivCmp, "slds-show");
-		$A.util.addClass(unlikeCardDivCmp, "slds-hide");
-		component.set("v.validFeedbackDescription", true);
-		component.set("v.errorMessage", "");
+		if(!component.get("v.alwaysDisplayFeedDescription")) {
+			var feedbackDivContainerCmp = component.find("feedbackDivContainer");
+			$A.util.removeClass(feedbackDivContainerCmp, "slds-show");
+			$A.util.addClass(feedbackDivContainerCmp, "slds-hide");
+		}
 	},
 
 	handleToggleLike : function (component, event, helper) {
-
-		var unlikeCardDivCmp = component.find("unlikeCardDiv");
-        $A.util.removeClass(unlikeCardDivCmp, "slds-show");
-        $A.util.addClass(unlikeCardDivCmp, "slds-hide");
-
-        component.set("v.disliked", false);
-        component.set("v.liked", true);
-
+		component.set("v.disliked", false);
+		component.set("v.liked", true);
 		component.set("v.unlikeReason", "");
-        component.set("v.undislikeescription","");
-		component.set("v.validFeedbackDescription", true);
-		component.set("v.errorMessage", "");
-		if(component.get("v.displayNegativeFeedbackDescription"))
-        	helper.saveThumbVote(component, event);
-    },
+		component.set("v.voteReasonDescription", "");
+
+		var feedbackDivContainerCmp = component.find("feedbackDivContainer");
+		$A.util.removeClass(feedbackDivContainerCmp, "slds-hide");
+		$A.util.addClass(feedbackDivContainerCmp, "slds-show");
+
+		if(!component.get("v.alwaysDisplayFeedDescription")) {
+			$A.util.removeClass(feedbackDivContainerCmp, "slds-show");
+			$A.util.addClass(feedbackDivContainerCmp, "slds-hide");
+			helper.saveThumbVote(component, event);
+		}
+	},
 
 	handleToggleDislike : function (component, event, helper) {
-		var unlikeCardDivCmp = component.find("unlikeCardDiv");
-        $A.util.addClass(unlikeCardDivCmp, "slds-show");
-        $A.util.removeClass(unlikeCardDivCmp, "slds-hide");
+		component.set("v.unlikeReason", "");
+		component.set("v.voteReasonDescription", "");
+		var feedbackDivContainerCmp = component.find("feedbackDivContainer");
+        $A.util.addClass(feedbackDivContainerCmp, "slds-show");
+        $A.util.removeClass(feedbackDivContainerCmp, "slds-hide");
 		component.set("v.disliked", true);
 		component.set("v.liked", false);
-		component.set("v.validFeedbackDescription", true);
-		component.set("v.errorMessage", "");
     },
 
 	handleClick : function (component, event, helper) {

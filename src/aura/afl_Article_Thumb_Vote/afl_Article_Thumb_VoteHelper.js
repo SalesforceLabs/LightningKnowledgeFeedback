@@ -52,9 +52,9 @@
 
 			  //If article has a negative vote show reason's pickList
 			  if(component.get("v.savedVote") === "1") {
-				  var unlikeCardDivCmp = component.find("unlikeCardDiv");
-				  $A.util.removeClass(unlikeCardDivCmp, "slds-hide");
-				  $A.util.addClass(unlikeCardDivCmp, "slds-show");
+				  var feedbackDivContainerCmp = component.find("feedbackDivContainer");
+				  $A.util.removeClass(feedbackDivContainerCmp, "slds-hide");
+				  $A.util.addClass(feedbackDivContainerCmp, "slds-show");
 			  }
 		  }
 	  } else {
@@ -89,8 +89,6 @@
 	   component.set("v.unlikeReason","");
 	   component.set("v.voteReasonDescription","");
 	   component.set("v.savedVote", component.get("v.liked") ? '5' : '1');
-	   component.set("v.validFeedbackDescription", true);
-	   component.set("v.errorMessage", "");
 	   ctx.hideSpinner(component);
 	   ctx.showToast('SUCCESS', 'Success', 'Feedback saved successfully', 'pester');
    },
