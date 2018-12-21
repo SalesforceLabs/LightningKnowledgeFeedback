@@ -412,9 +412,9 @@
                     <label>Need to archive</label>
                 </value>
                 <value>
-                    <fullName>Outdated</fullName>
+                    <fullName>Outdated  (needs update)</fullName>
                     <default>false</default>
-                    <label>Outdated</label>
+                    <label>Outdated  (needs update)</label>
                 </value>
                 <value>
                     <fullName>Positive feedback</fullName>
@@ -422,9 +422,9 @@
                     <label>Positive feedback</label>
                 </value>
                 <value>
-                    <fullName>Poorly Written</fullName>
+                    <fullName>Poorly Written (not clear)</fullName>
                     <default>false</default>
-                    <label>Poorly Written</label>
+                    <label>Poorly Written (not clear)</label>
                 </value>
                 <value>
                     <fullName>Other</fullName>
