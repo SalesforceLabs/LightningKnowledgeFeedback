@@ -387,26 +387,6 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>Outdated</fullName>
-                    <default>false</default>
-                    <label>Outdated</label>
-                </value>
-                <value>
-                    <fullName>Does not Work</fullName>
-                    <default>false</default>
-                    <label>Does not Work</label>
-                </value>
-                <value>
-                    <fullName>Poorly Written</fullName>
-                    <default>false</default>
-                    <label>Poorly Written</label>
-                </value>
-                <value>
-                    <fullName>Other</fullName>
-                    <default>false</default>
-                    <label>Other</label>
-                </value>
-                <value>
                     <fullName>Duplicate</fullName>
                     <default>false</default>
                     <label>Duplicate</label>
@@ -432,9 +412,24 @@
                     <label>Need to archive</label>
                 </value>
                 <value>
+                    <fullName>Outdated</fullName>
+                    <default>false</default>
+                    <label>Outdated</label>
+                </value>
+                <value>
                     <fullName>Positive feedback</fullName>
                     <default>false</default>
                     <label>Positive feedback</label>
+                </value>
+                <value>
+                    <fullName>Poorly Written</fullName>
+                    <default>false</default>
+                    <label>Poorly Written</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
