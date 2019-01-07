@@ -49,19 +49,18 @@
 			  component.set("v.liked", false);
 			  component.set("v.disliked", true);
 			  component.set("v.savedVote",'1');
-
-			  //If article has a negative vote show reason's pickList
-			  if(component.get("v.savedVote") === "1") {
-				  var feedbackDivContainerCmp = component.find("feedbackDivContainer");
-				  $A.util.removeClass(feedbackDivContainerCmp, "slds-hide");
-				  $A.util.addClass(feedbackDivContainerCmp, "slds-show");
-			  }
 		  }
 	  } else {
 		  //There's no vote so both buttons must be shown unchecked
 		  component.set("v.liked", false);
 		  component.set("v.disliked", false);
 	  }
+
+	  //we should always display the feedback comp
+	  var feedbackDivContainerCmp = component.find("feedbackDivContainer");
+	  $A.util.removeClass(feedbackDivContainerCmp, "slds-hide");
+	  $A.util.addClass(feedbackDivContainerCmp, "slds-show");
+
 	  ctx.loadPicklistValues(component, ctx);
    },
 

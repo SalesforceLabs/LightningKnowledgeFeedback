@@ -76,17 +76,21 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 					}
 				}
 			}
-
 			if(!isSameVote) {
 				Vote vote = new Vote (
 				ParentId = artFeed.Knowledge_kav_article_Id__c,
 				Type = isLiked ? '5' : '1'
 				);
 				Vote[] sVote = [SELECT Id, ParentId FROM Vote WHERE ParentId=:artFeed.Knowledge_kav_article_Id__c AND LastModifiedById=: UserInfo.getUserId() LIMIT 1];
-				if(!sVote.isEmpty()) {
+                if(!sVote.isEmpty()) {
 					vote.Id = sVote.get(0).Id;
 				}
-				UPSERT vote;
+                try {
+                    UPSERT vote;
+                } catch(DmlException e) {
+                    vote.Type = isLiked ? 'UP' : 'DOWN';
+                    UPSERT vote;
+                }
 			}
 			INSERT artFeed;
 			return new afl_LightningResponse();
@@ -148,7 +152,8 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				Vote[] sVote = [SELECT ParentId, Type FROM Vote WHERE ParentId=:parentId AND LastModifiedById=: UserInfo.getUserId() LIMIT 1];
 				if(!Test.isRunningTest()){
 					if(!sVote.isEmpty()) {
-						result.put('vote', JSON.serialize(sVote.get(0).Type == '5' ? true : false));
+						Boolean voteUp = sVote.get(0).Type == '5' || sVote.get(0).Type == 'UP';
+						result.put('vote', JSON.serialize(voteUp));
 						response.jsonResponse = JSON.serialize(result);
 					}
 				} else {
