@@ -8,7 +8,8 @@
      if (afl_ArticleFeedbackSecurityHandler.isCreateable(afl_Article_Feedback__c.sObjectType)) {
          try {
              Boolean communitiesAvailable = false;
-             Boolean hasRecordType = afl_ArticleFeedbackSecurityHandler.checkForSchemaFieldActive('RecordTypeId');
+             String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
+             Boolean hasRecordType = afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive;
              Map<Id,String> recordTypeDetails = afl_ArticleFeedbackSecurityHandler.getAllowedRecordTypesMap();
              afl_Knowledge_feedback__c kf = afl_Knowledge_feedback__c.getOrgDefaults();
 
@@ -21,7 +22,7 @@
              Map<String,String> mapLanguages = new Map<String,String>();
              List<afl_Article_Feedback__c> lstAfd = new list<afl_Article_Feedback__c>();
              Set<Id> setIds = new Set<Id>();
-             Map<String,KnowledgeArticleVersion> mKav = new Map<String,KnowledgeArticleVersion>();
+             Map<String,sObject> mKav = new Map<String,sObject>();
              Schema.DescribeFieldResult fieldResult = KnowledgeArticleVersion.Language.getDescribe();
              List<Schema.PicklistEntry> picklistValues = fieldResult.getPicklistValues();
 
@@ -54,11 +55,15 @@
              }
 
              if (!setIds.isEmpty()) {
+                 String recordTypeField = '';
+                 if(hasRecordType) {
+                     recordTypeField = ',RecordTypeId';
+                 }
                  String q = 'SELECT KnowledgeArticleId, CreatedDate, ArticleNumber, Title, VersionNumber, Language, LastPublishedDate, LastModifiedById ' +
-                 'FROM KnowledgeArticleVersion WHERE PublishStatus = \'' + pubStatus + '\'' + ' AND KnowledgeArticleId IN :setIds';
-                 List<KnowledgeArticleVersion> kavs = Database.query(q);
-                 for (KnowledgeArticleVersion kav : kavs) {
-                     mKav.put(kav.KnowledgeArticleId, kav);
+                 'FROM ' + knowledgeObject + ' WHERE PublishStatus = \'' + pubStatus + '\'' + ' AND KnowledgeArticleId IN :setIds';
+                 List<sObject> kavs = Database.query(q);
+                 for (sObject kav : kavs) {
+                     mKav.put((String)kav.get('KnowledgeArticleId'), kav);
                  }
              }
 
@@ -66,18 +71,18 @@
                  String parentId = f.parentId;
 
                  if (mkav.containsKey(parentId)) {
-                     KnowledgeArticleVersion kav = mkav.get(parentId);
+                     SObject kav = mkav.get(parentId);
                      afl_Article_Feedback__c afd = new afl_Article_Feedback__c();
-                     afd.Article_Number__c = kav.ArticleNumber;
-                     afd.Article_Link__c = URL.getSalesforceBaseUrl().toExternalForm() + '/' + kav.KnowledgeArticleId;
-                     afd.Article_Title__c = kav.Title;
-                     afd.Knowledge_Article_Version_Id__c = kav.Id;
-                     afd.Record_Type__c = '';
+                     afd.Article_Number__c = (String)kav.get('ArticleNumber');
+                     afd.Article_Link__c = URL.getSalesforceBaseUrl().toExternalForm() + '/' + (String)kav.get('KnowledgeArticleId');
+                     afd.Article_Title__c = (String)kav.get('Title');
+                     afd.Knowledge_Article_Version_Id__c = (String)kav.get('Id');
+                     //afd.Record_Type__c = '';
 
                      if (hasRecordType) {
-                         sObject obj = (sObject)kav;
+                         //sObject obj = (sObject)kav;
                          if (!test.isRunningTest()) {
-                             String rTypeId = String.valueOf(obj.get('RecordTypeId'));
+                             String rTypeId = String.valueOf(kav.get('RecordTypeId'));
                              if (recordTypeDetails.containsKey(rTypeId))
                              afd.Record_Type__c = recordTypeDetails.get(rTypeId);
                          } else {
@@ -85,13 +90,13 @@
                          }
                      }
 
-                     afd.Article_Version__c = kav.VersionNumber;
+                     afd.Article_Version__c = (Decimal)kav.get('VersionNumber');
                      afd.Feedback__c = f.Body;
                      afd.Feedback_Status__c = 'New';
-                     afd.Language__c = mapLanguages.get(kav.Language);
-                     afd.Last_Published_Date__c = kav.LastPublishedDate;
-                     afd.Last_Published_By__c = kav.LastModifiedById;
-                     afd.Article_Created_Date__c = kav.CreatedDate;
+                     afd.Language__c = mapLanguages.get((String)kav.get('Language'));
+                     afd.Last_Published_Date__c = (Datetime)kav.get('LastPublishedDate');
+                     afd.Last_Published_By__c = (String)kav.get('LastModifiedById');
+                     afd.Article_Created_Date__c = (Datetime)kav.get('CreatedDate');
                      afd.Parent_FeedItem__c = f.Id;
 
                      if (communitiesAvailable) {
