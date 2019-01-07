@@ -65,6 +65,12 @@
    },
 
    saveThumbVote: function (component, event) {
+	   //Prevent user from inserting a feedback if article hasn't been rated
+	   	if(!component.get('v.liked') && !component.get('v.disliked')) {
+			this.showToast('ERROR', 'ERROR', 'Please, rate the article before leaving any comments', 'pester');
+			return;
+		}
+		
 	   //Prevent user from voting the same again
 	   var isSameVote = false;
 	   if((component.get("v.savedVote") === '5' && component.get('v.liked')) || (component.get("v.savedVote") === '1' && component.get("v.disliked")))
