@@ -57,10 +57,10 @@
              if (!setIds.isEmpty()) {
                  String recordTypeField = '';
                  if(hasRecordType) {
-                     recordTypeField = ',RecordTypeId';
+                     recordTypeField = ', RecordTypeId';
                  }
-                 String q = 'SELECT KnowledgeArticleId, CreatedDate, ArticleNumber, Title, VersionNumber, Language, LastPublishedDate, LastModifiedById ' +
-                 'FROM ' + knowledgeObject + ' WHERE PublishStatus = \'' + pubStatus + '\'' + ' AND KnowledgeArticleId IN :setIds';
+                 String q = 'SELECT KnowledgeArticleId, CreatedDate, ArticleNumber, Title, VersionNumber, Language, LastPublishedDate, LastModifiedById' + recordTypeField +
+                 ' FROM ' + knowledgeObject + ' WHERE PublishStatus = \'' + pubStatus + '\'' + ' AND KnowledgeArticleId IN :setIds';
                  List<sObject> kavs = Database.query(q);
                  for (sObject kav : kavs) {
                      mKav.put((String)kav.get('KnowledgeArticleId'), kav);
