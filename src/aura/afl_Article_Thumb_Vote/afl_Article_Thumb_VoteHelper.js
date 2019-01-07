@@ -49,6 +49,12 @@
 			  component.set("v.liked", false);
 			  component.set("v.disliked", true);
 			  component.set("v.savedVote",'1');
+
+			  //we should always display the feedback comp
+			  var feedbackDivContainerCmp = component.find("feedbackDivContainer");
+			  $A.util.removeClass(feedbackDivContainerCmp, "slds-hide");
+			  $A.util.addClass(feedbackDivContainerCmp, "slds-show");
+
 		  }
 	  } else {
 		  //There's no vote so both buttons must be shown unchecked
@@ -56,10 +62,7 @@
 		  component.set("v.disliked", false);
 	  }
 
-	  //we should always display the feedback comp
-	  var feedbackDivContainerCmp = component.find("feedbackDivContainer");
-	  $A.util.removeClass(feedbackDivContainerCmp, "slds-hide");
-	  $A.util.addClass(feedbackDivContainerCmp, "slds-show");
+
 
 	  ctx.loadPicklistValues(component, ctx);
    },
@@ -70,7 +73,7 @@
 			this.showToast('ERROR', 'ERROR', 'Please, rate the article before leaving any comments', 'pester');
 			return;
 		}
-		
+
 	   //Prevent user from voting the same again
 	   var isSameVote = false;
 	   if((component.get("v.savedVote") === '5' && component.get('v.liked')) || (component.get("v.savedVote") === '1' && component.get("v.disliked")))
