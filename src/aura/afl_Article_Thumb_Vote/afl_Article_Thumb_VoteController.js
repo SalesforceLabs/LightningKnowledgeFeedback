@@ -18,8 +18,6 @@
 	handleToggleLike : function (component, event, helper) {
 		component.set("v.disliked", false);
 		component.set("v.liked", true);
-		component.set("v.unlikeReason", "");
-		component.set("v.voteReasonDescription", "");
 
 		var feedbackDivContainerCmp = component.find("feedbackDivContainer");
 		$A.util.removeClass(feedbackDivContainerCmp, "slds-hide");
@@ -33,8 +31,6 @@
 	},
 
 	handleToggleDislike : function (component, event, helper) {
-		component.set("v.unlikeReason", "");
-		component.set("v.voteReasonDescription", "");
 		var feedbackDivContainerCmp = component.find("feedbackDivContainer");
         $A.util.addClass(feedbackDivContainerCmp, "slds-show");
         $A.util.removeClass(feedbackDivContainerCmp, "slds-hide");
