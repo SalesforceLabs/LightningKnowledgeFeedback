@@ -60,7 +60,7 @@
     <fields>
         <fullName>Action_Date__c</fullName>
         <externalId>false</externalId>
-        <label>Follow Up Completed Date</label>
+        <label>Action Taken Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
