@@ -12,12 +12,12 @@ trigger afl_InsertLgtnArticleFeedback on FeedComment (after insert) {
             Boolean hasRecordType = afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive;
             Map<Id,String> recordTypeDetails = afl_ArticleFeedbackSecurityHandler.getAllowedRecordTypesMap();
             afl_Knowledge_feedback__c kf = afl_Knowledge_feedback__c.getOrgDefaults();
-
+            
             if (String.isEmpty(kf.Hashtag__c)) {
                 kf.Hashtag__c = '#ArticleFeedback';
                 UPSERT kf;
             }
-
+            
             String netId = '';
             String commName = afl_ArticleFeedbackSecurityHandler.getCommunityName();
             Map<String,String> mapLanguages = new Map<String,String>();
@@ -26,17 +26,16 @@ trigger afl_InsertLgtnArticleFeedback on FeedComment (after insert) {
             Map<String,sObject> mKav = new Map<String,sObject>();
             Schema.DescribeFieldResult fieldResult = KnowledgeArticleVersion.Language.getDescribe();
             List<Schema.PicklistEntry> picklistValues = fieldResult.getPicklistValues();
-
+            
             for (Schema.PicklistEntry picklistEntry : picklistValues) {
                 mapLanguages.put(picklistEntry.getValue(),picklistEntry.getLabel());
             }
-
+            
             String pubStatus = 'Online';
             if (Test.isRunningTest()) {
                 pubStatus = 'draft';
-                hasRecordType = true;
             }
-
+            
             Set<String> objectFields = Schema.SObjectType.FeedItem.fields.getMap().keySet();
             if (objectFields.contains('networkscope')) {
                 communitiesAvailable = true;
@@ -47,14 +46,14 @@ trigger afl_InsertLgtnArticleFeedback on FeedComment (after insert) {
                     commName = (String)comm.get('Name');
                 }
             }
-
+            
             for (FeedComment f : trigger.new) {
                 String parentId = f.parentId;
                 if (parentId.startsWith('kA') && f.CommentType == 'TextComment' && f.CommentBody.containsIgnoreCase(kf.Hashtag__c)) {
                     setIds.add(f.ParentId);
                 }
             }
-
+            
             if (!setIds.isEmpty()) {
                 String recordTypeField = '';
                 if(hasRecordType) {
@@ -65,10 +64,10 @@ trigger afl_InsertLgtnArticleFeedback on FeedComment (after insert) {
                 List<sObject> kavs = Database.query(q);
                 for (sObject kav : kavs) {
                     mKav.put((String)kav.get('KnowledgeArticleId'), kav);
-
+                    
                 }
             }
-
+            
             for (FeedComment f : trigger.new) {
                 String parentId = f.parentId;
                 if (mkav.containsKey(parentId)) {
@@ -78,19 +77,17 @@ trigger afl_InsertLgtnArticleFeedback on FeedComment (after insert) {
                     afd.Article_Link__c = URL.getSalesforceBaseUrl().toExternalForm() + '/' +  (String)kav.get('KnowledgeArticleId');
                     afd.Article_Title__c = (String)kav.get('Title');
                     afd.Knowledge_Article_Version_Id__c = (String)kav.get('Id');
-                    //afd.Record_Type__c = '';
-
-                    if (hasRecordType) {
-                        //sObject obj = (sObject)kav;
-                        if (!test.isRunningTest()) {
+                    
+                    if (!test.isRunningTest()) {
+                        if (hasRecordType) {
                             String rTypeId = String.valueOf(kav.get('RecordTypeId'));
                             if (recordTypeDetails.containsKey(rTypeId))
                             afd.Record_Type__c = recordTypeDetails.get(rTypeId);
-                        } else {
-                            afd.Record_Type__c = 'test article type';
                         }
+                    }  else {
+                        afd.Record_Type__c = 'test article type';
                     }
-
+                    
                     afd.Article_Version__c = (Decimal)kav.get('VersionNumber');
                     afd.Feedback__c = f.CommentBody;
                     afd.Feedback_Status__c = 'New';
@@ -99,7 +96,7 @@ trigger afl_InsertLgtnArticleFeedback on FeedComment (after insert) {
                     afd.Last_Published_By__c = (String)kav.get('LastModifiedById');
                     afd.Article_Created_Date__c = (Datetime)kav.get('CreatedDate');
                     afd.Parent_FeedItem__c = f.FeedItemId;
-
+                    
                     if (communitiesAvailable) {
                         if (String.isEmpty(Network.getNetworkId())) {
                             afd.Feedback_Source__c = 'Internal';
@@ -110,11 +107,11 @@ trigger afl_InsertLgtnArticleFeedback on FeedComment (after insert) {
                     } else {
                         afd.Feedback_Source__c = 'Internal';
                     }
-
+                    
                     lstAfd.add(afd);
                 }
             }
-
+            
             INSERT lstAfd;
         }
         catch (System.Exception e) {

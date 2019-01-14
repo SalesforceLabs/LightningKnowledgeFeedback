@@ -18,6 +18,7 @@
 		<members>afl_ArticleFeedbackLgnConfigCtrl</members>
 		<members>afl_ArticleThumbVoteCtrl</members>
 		<members>afl_ArticleThumbVoteCtrlTest</members>
+		<members>afl_ArticleFeedbackLgnConfigCtrlTest</members>
 		<name>ApexClass</name>
 	</types>
 	<types>
