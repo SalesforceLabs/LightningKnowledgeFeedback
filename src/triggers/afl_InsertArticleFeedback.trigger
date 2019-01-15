@@ -33,7 +33,6 @@ trigger afl_InsertArticleFeedback on FeedItem (after insert) {
             String pubStatus = 'Online';
             if (Test.isRunningTest()) {
                 pubStatus = 'draft';
-                hasRecordType = true;
             }
             
             Set<String> objectFields = Schema.SObjectType.FeedItem.fields.getMap().keySet();
@@ -77,17 +76,15 @@ trigger afl_InsertArticleFeedback on FeedItem (after insert) {
                     afd.Article_Link__c = URL.getSalesforceBaseUrl().toExternalForm() + '/' + (String)kav.get('KnowledgeArticleId');
                     afd.Article_Title__c = (String)kav.get('Title');
                     afd.Knowledge_Article_Version_Id__c = (String)kav.get('Id');
-                    //afd.Record_Type__c = '';
                     
-                    if (hasRecordType) {
-                        //sObject obj = (sObject)kav;
-                        if (!test.isRunningTest()) {
+                    if (!test.isRunningTest()) {
+                        if (hasRecordType) {
                             String rTypeId = String.valueOf(kav.get('RecordTypeId'));
                             if (recordTypeDetails.containsKey(rTypeId))
                             afd.Record_Type__c = recordTypeDetails.get(rTypeId);
-                        } else {
-                            afd.Record_Type__c = 'test article type';
-                        }
+                        } 
+                    } else {
+                        afd.Record_Type__c = 'test article type';
                     }
                     
                     afd.Article_Version__c = (Decimal)kav.get('VersionNumber');
