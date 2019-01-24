@@ -98,6 +98,7 @@
 			"unlikeReason" : reason,
 			"voteDescription" : description,
 			"isLiked" : isLiked,
+			"isSameVote": isSameVote,
 			"hasNoRate": hasNoRate
 		};
 		this.handleAction(component, actionParams, 'c.upsertThumbArticleVote', this.saveThumbVoteCallback);
