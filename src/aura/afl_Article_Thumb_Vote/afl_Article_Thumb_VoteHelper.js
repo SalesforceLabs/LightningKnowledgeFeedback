@@ -68,17 +68,27 @@
 	},
 	
 	saveThumbVote: function (component, event) {
-		//Prevent user from inserting a feedback if article hasn't been rated
-		if(!component.get('v.liked') && !component.get('v.disliked')) {
-			this.showToast('ERROR', 'ERROR', 'Please, rate the article before leaving any comments', 'pester');
-			return;
+		var ratingRequired = false;
+		var hasNoRate = false;
+		//Check if component rating is required
+		if(component.get('v.requireRating')) {
+			ratingRequired = true;
+			if(!component.get('v.liked') && !component.get('v.disliked')) {
+				this.showToast('ERROR', 'ERROR', 'Please, rate the article before leaving any comments', 'pester');
+				return;
+			}
 		}
 		
 		//Prevent user from voting the same again
 		var isSameVote = false;
 		if((component.get("v.savedVote") === '5' && component.get('v.liked')) || (component.get("v.savedVote") === '1' && component.get("v.disliked")))
 		isSameVote = true;
+		
 		this.showSpinner(component);
+		
+		if(!ratingRequired && !component.get('v.liked') && !component.get("v.disliked"))
+		hasNoRate = true;
+		
 		var reason = component.get("v.unlikeReason");
 		var description = component.get("v.voteReasonDescription");
 		var isLiked = !component.get("v.disliked");
@@ -88,7 +98,8 @@
 			"unlikeReason" : reason,
 			"voteDescription" : description,
 			"isLiked" : isLiked,
-			"isSameVote": isSameVote
+			"isSameVote": isSameVote,
+			"hasNoRate": hasNoRate
 		};
 		this.handleAction(component, actionParams, 'c.upsertThumbArticleVote', this.saveThumbVoteCallback);
 	},
