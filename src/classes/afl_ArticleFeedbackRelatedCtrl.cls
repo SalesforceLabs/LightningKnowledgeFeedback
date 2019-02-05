@@ -5,7 +5,6 @@
 *    Retrieves article feedbacks related to current article feedback
 **/
 public with sharing class afl_ArticleFeedbackRelatedCtrl {
-    
     public List<afl_Article_Feedback__c> records {get; set;}
     
     public afl_ArticleFeedbackRelatedCtrl(ApexPages.StandardController std) {

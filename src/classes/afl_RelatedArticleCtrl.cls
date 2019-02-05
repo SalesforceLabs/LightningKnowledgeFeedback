@@ -1,5 +1,4 @@
 public with sharing class afl_RelatedArticleCtrl {
-    
     public static String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
     
     /*
@@ -12,9 +11,9 @@ public with sharing class afl_RelatedArticleCtrl {
     *   Map<String,Object> with the kav id , some fields of the article compact layout, and information about if the article its archived.
     */
     @AuraEnabled
-    public static afl_LightningResponse loadKAVId(String recordId){
+    public static afl_LightningResponse loadKAVId(String recordId) {
         afl_LightningResponse response = new afl_LightningResponse();
-        Map<String,  Object> result = new Map<String,  Object>();
+        Map<String,Object> result = new Map<String,  Object>();
         String kavId = '';
         try {
             afl_Article_Feedback__c[] lstAF = [Select Id, Knowledge_Article_Version_Id__c  from afl_Article_Feedback__c  where id=:recordId LIMIT 1];
@@ -27,15 +26,16 @@ public with sharing class afl_RelatedArticleCtrl {
                 result = getCompactLayoutData(kavId,result);
                 
                 //Check FLS
-                if(!afl_ArticleFeedbackSecurityHandler.getKAVPermissions()) {
+                if (!afl_ArticleFeedbackSecurityHandler.getKAVPermissions()) {
                     throw new SecurityException(afl_ArticleFeedbackSecurityHandler.formatReplace(afl_ArticleFeedbackSecurityHandler.ERROR_OBJECT_NOT_ACCESSIBLE,  new String[] {knowledgeObject}));
                 }
-                string query =  '	SELECT Id, ArchivedDate, KnowledgeArticleId, Language, PublishStatus, VersionNumber' +
+                
+                String query =  '	SELECT Id, ArchivedDate, KnowledgeArticleId, Language, PublishStatus, VersionNumber' +
                 '	FROM ' + knowledgeObject +
                 '	WHERE Id = \'' + kavId + '\' LIMIT 1';
                 
                 SObject actualKav =  Database.query(query);
-                if(actualKav != null) {
+                if (actualKav != null) {
                     Boolean isArchived = ((String)actualKAV.get('PublishStatus') == 'Archived') ? true : false;
                     result.put('isArchived', isArchived);
                 } else {
@@ -43,20 +43,19 @@ public with sharing class afl_RelatedArticleCtrl {
                     response.error = 'An error occurred getting the id of the related article, please check that the component is in the correct record page.';
                 }
                 
-            }
-            else {
+            } else {
                 response.state = 'ERROR';
                 response.error = 'An error occurred getting the id of the article feedback, please check that the component is in the correct record page.';
             }
+            
             response.jsonResponse = JSON.serialize(result);
-        }
-        catch (QueryException ex) {
+        } catch (QueryException ex) {
             response.state = 'ERROR';
             response.error = 'An error ocurred while retrieving the information, the related article was not found.';
-        }
-        catch(Exception e){
+        } catch(Exception e) {
             response = new afl_LightningResponse(e);
         }
+        
         return response;
     }
     
@@ -80,18 +79,18 @@ public with sharing class afl_RelatedArticleCtrl {
         //String recType = 'This article has no record type';
         Map<Id,String> recordTypeDetails = afl_ArticleFeedbackSecurityHandler.getAllowedRecordTypesMap();
         String recordTypeField = '';
-        if(afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive){
+        if (afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive) {
             recordTypeField = ',RecordTypeId';
         }
         
         queryString = 'SELECT  Id, ArticleNumber, CreatedDate, Language, VersionNumber,PublishStatus' + recordTypeField +  ' FROM ' + knowledgeObject + ' WHERE Id =  \'' + kavId + '\'';
         sObjList = Database.query(queryString);
-        if(sObjList != null && !sObjList.isEmpty()){
+        if (sObjList != null && !sObjList.isEmpty()) {
             SObject sObjKnowledge = sObjList.get(0);
             //recType = sObjKnowledge.getSObject('RecordType') != null ? (String)sObjKnowledge.getSObject('RecordType').get('Name') : 'This article has no record type';
             
             //Get record type name
-            if(afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive) {
+            if (afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive) {
                 if (String.isNotEmpty((String)sObjKnowledge.get('RecordTypeId'))) {
                     if (!test.isRunningTest()) {
                         String rTypeId = (String)sObjKnowledge.get('RecordTypeId');
@@ -108,8 +107,9 @@ public with sharing class afl_RelatedArticleCtrl {
             result.put('articlePublishingStatus', (String)sObjKnowledge.get('PublishStatus'));
             Schema.DescribeFieldResult fieldResult = User.LanguageLocaleKey.getDescribe();
             List<Schema.PicklistEntry> picklistValues = fieldResult.getPicklistValues();
+            
             for (Schema.PicklistEntry picklistEntry : picklistValues) {
-                if(picklistEntry.getValue() == (String)sObjKnowledge.get('Language')){
+                if (picklistEntry.getValue() == (String)sObjKnowledge.get('Language')) {
                     result.put('articleLanguage', picklistEntry.getLabel());
                 }
             }

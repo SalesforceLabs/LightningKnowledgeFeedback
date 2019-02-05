@@ -19,6 +19,8 @@
 		<members>afl_ArticleThumbVoteCtrl</members>
 		<members>afl_ArticleThumbVoteCtrlTest</members>
 		<members>afl_ArticleFeedbackLgnConfigCtrlTest</members>
+		<members>afl_TriggerHandler</members>
+		<members>afl_TriggerHandler_Test</members>
 		<name>ApexClass</name>
 	</types>
 	<types>
