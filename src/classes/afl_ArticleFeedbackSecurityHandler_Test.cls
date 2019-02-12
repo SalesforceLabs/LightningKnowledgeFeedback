@@ -6,163 +6,190 @@
  **/
 @isTest
 public class afl_ArticleFeedbackSecurityHandler_Test {
-
 	public static testMethod void testSecurityEnabled() {
-	   Profile[] profileList = [select Id, Name from Profile where Name = 'System Administrator' OR Name = 'Standar User' limit 2];
-	   Map<Id,String> profileMap = new Map<Id,String>();
+		Profile[] profileList = [
+		   	SELECT Id, Name
+			FROM Profile
+			WHERE Name = 'System Administrator' OR
+			Name = 'Standar User'
+			LIMIT 2
+		];
 
-	   for ( Profile p : profileList ) {
-		   profileMap.put( p.id, p.Name );
-	   }
+		Map<Id,String> profileMap = new Map<Id,String>();
 
-	   List<User> u = [select id, profileId from User where Id =: UserInfo.getUserId() limit 1];
+		for (Profile p : profileList) {
+			profileMap.put(p.id, p.Name);
+		}
 
-	   if ( profileMap.containsKey( UserInfo.getProfileId()) && profileMap.get( UserInfo.getProfileId()) == 'System Administrator' ) {
-		   for (Profile p : profileList) {
-			   u[0].profileId = p.id;
-			   update u;
-			   System.assertEquals(afl_ArticleFeedbackSecurityHandler.isAccessible(Case.sObjectType), Case.sObjectType.getDescribe().isAccessible());
-			   System.assertEquals(afl_ArticleFeedbackSecurityHandler.isCreateable(Case.sObjectType), Case.sObjectType.getDescribe().isCreateable());
-			   System.assertEquals(afl_ArticleFeedbackSecurityHandler.isUpdateable(Case.sObjectType), Case.sObjectType.getDescribe().isUpdateable());
-			   System.assertEquals(afl_ArticleFeedbackSecurityHandler.isDeletable(Case.sObjectType), Case.sObjectType.getDescribe().isDeletable());
-			   System.assertEquals(afl_ArticleFeedbackSecurityHandler.isAccessible(Case.subject), Case.subject.getDescribe().isAccessible());
-			   System.assertEquals(afl_ArticleFeedbackSecurityHandler.isCreateable(Case.subject), Case.subject.getDescribe().isCreateable());
-			   System.assertEquals(afl_ArticleFeedbackSecurityHandler.isUpdateable(Case.subject), Case.subject.getDescribe().isUpdateable());
+		List<User> u = [select id, profileId from User where Id =: UserInfo.getUserId() limit 1];
 
-			   if (Case.sObjectType.getDescribe().isAccessible())
-				   afl_ArticleFeedbackSecurityHandler.canAccess(Case.sObjectType);
-			   else
-				   try {
-					   afl_ArticleFeedbackSecurityHandler.canAccess(Case.sObjectType);
-					   System.assert(false);
-				   } catch (SecurityException e) {}
+		if (profileMap.containsKey(UserInfo.getProfileId()) && profileMap.get(UserInfo.getProfileId()) == 'System Administrator') {
+			for (Profile p : profileList) {
+				u[0].profileId = p.id;
+				UPDATE u;
 
-			   if (Case.sObjectType.getDescribe().isCreateable())
-				   afl_ArticleFeedbackSecurityHandler.canCreate(Case.sObjectType);
-			   else
-				   try {
-					   afl_ArticleFeedbackSecurityHandler.canCreate(Case.sObjectType);
-					   System.assert(false);
-				   } catch (SecurityException e) {}
+				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isAccessible(Case.SObjectType), Case.SObjectType.getDescribe().isAccessible());
+				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isCreateable(Case.SObjectType), Case.SObjectType.getDescribe().isCreateable());
+				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isUpdateable(Case.SObjectType), Case.SObjectType.getDescribe().isUpdateable());
+				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isDeletable(Case.SObjectType), Case.SObjectType.getDescribe().isDeletable());
+				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isAccessible(Case.subject), Case.subject.getDescribe().isAccessible());
+				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isCreateable(Case.subject), Case.subject.getDescribe().isCreateable());
+				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isUpdateable(Case.subject), Case.subject.getDescribe().isUpdateable());
 
-			   if (Case.sObjectType.getDescribe().isUpdateable())
-				   afl_ArticleFeedbackSecurityHandler.canUpdate(Case.sObjectType);
-			   else
-				   try {
-					   afl_ArticleFeedbackSecurityHandler.canUpdate(Case.sObjectType);
-					   System.assert(false);
-				   } catch (SecurityException e) {}
+				if (Case.SObjectType.getDescribe().isAccessible()) {
+					afl_ArticleFeedbackSecurityHandler.canAccess(Case.SObjectType);
+				} else {
+					try {
+						afl_ArticleFeedbackSecurityHandler.canAccess(Case.SObjectType);
+						System.assert(false);
+					} catch (SecurityException e) {}
+				}
 
-			   if (Case.sObjectType.getDescribe().isDeletable())
-				   afl_ArticleFeedbackSecurityHandler.canDelete(Case.sObjectType);
-			   else
-				   try {
-					   afl_ArticleFeedbackSecurityHandler.canDelete(Case.sObjectType);
-					   System.assert(false);
-				   } catch (SecurityException e) {}
+				if (Case.SObjectType.getDescribe().isCreateable()) {
+					afl_ArticleFeedbackSecurityHandler.canCreate(Case.SObjectType);
+				} else {
+					try {
+						afl_ArticleFeedbackSecurityHandler.canCreate(Case.SObjectType);
+						System.assert(false);
+					} catch (SecurityException e) {}
+				}
 
-			   if (Case.subject.getDescribe().isAccessible())
-				   afl_ArticleFeedbackSecurityHandler.canAccess(Case.subject);
-			   else
-				   try {
-					   afl_ArticleFeedbackSecurityHandler.canAccess(Case.subject);
-					   System.assert(false);
-				   } catch (SecurityException e) {}
+				if (Case.SObjectType.getDescribe().isUpdateable()) {
+					afl_ArticleFeedbackSecurityHandler.canUpdate(Case.SObjectType);
+				} else {
+					try {
+						afl_ArticleFeedbackSecurityHandler.canUpdate(Case.SObjectType);
+						System.assert(false);
+					} catch (SecurityException e) {}
+				}
 
-			   if (Case.subject.getDescribe().isCreateable())
-				   afl_ArticleFeedbackSecurityHandler.canCreate(Case.subject);
-			   else
-				   try {
-					   afl_ArticleFeedbackSecurityHandler.canCreate(Case.subject);
-					   System.assert(false);
-				   } catch (SecurityException e) {}
+				if (Case.SObjectType.getDescribe().isDeletable()) {
+					afl_ArticleFeedbackSecurityHandler.canDelete(Case.SObjectType);
+				} else {
+					try {
+						afl_ArticleFeedbackSecurityHandler.canDelete(Case.SObjectType);
+						System.assert(false);
+					} catch (SecurityException e) {}
+				}
 
-			   if (Case.subject.getDescribe().isUpdateable())
-				   afl_ArticleFeedbackSecurityHandler.canUpdate(Case.subject);
-			   else
-				   try {
-					   afl_ArticleFeedbackSecurityHandler.canUpdate(Case.subject);
-					   System.assert(false);
-				   } catch (SecurityException e) {}
-		   }
-	   }
-   }
+				if (Case.subject.getDescribe().isAccessible()) {
+					afl_ArticleFeedbackSecurityHandler.canAccess(Case.subject);
+				} else {
+					try {
+						afl_ArticleFeedbackSecurityHandler.canAccess(Case.subject);
+						System.assert(false);
+					} catch (SecurityException e) {}
+				}
 
-   public static testMethod void testSecurityDisabled() {
-	   afl_ArticleFeedbackSecurityHandler.securityEnabled = false;
-	   Profile[] profileList = [select Id, Name from Profile where Name = 'System Administrator' OR Name = 'Standar User' limit 2];
+				if (Case.subject.getDescribe().isCreateable()) {
+					afl_ArticleFeedbackSecurityHandler.canCreate(Case.subject);
+				} else {
+					try {
+						afl_ArticleFeedbackSecurityHandler.canCreate(Case.subject);
+						System.assert(false);
+					} catch (SecurityException e) {}
+				}
 
-	   Map<Id,String> profileMap = new Map<Id,String>();
+				if (Case.subject.getDescribe().isUpdateable()) {
+					afl_ArticleFeedbackSecurityHandler.canUpdate(Case.subject);
+				} else {
+					try {
+						afl_ArticleFeedbackSecurityHandler.canUpdate(Case.subject);
+						System.assert(false);
+					} catch (SecurityException e) {}
+				}
+			}
+		}
+	}
 
-	   for ( Profile p : profileList ) {
-		   profileMap.put( p.id, p.Name );
-	   }
-	   List<User> u = [select id, profileId from User where Id =: UserInfo.getUserId() limit 1];
+	public static testMethod void testSecurityDisabled() {
+		afl_ArticleFeedbackSecurityHandler.securityEnabled = false;
+		Profile[] profileList = [
+			SELECT Id, Name
+			FROM Profile
+			WHERE Name = 'System Administrator' OR
+			Name = 'Standar User'
+			LIMIT 2
+		];
 
-	   if ( profileMap.containsKey( UserInfo.getProfileId()) && profileMap.get( UserInfo.getProfileId()) == 'System Administrator' ) {
-		   for (Profile p : profileList) {
-			   u[0].profileId = p.id;
-			   update u;
-			   System.assertEquals(afl_ArticleFeedbackSecurityHandler.isAccessible(Case.sObjectType), true);
-			   System.assertEquals(afl_ArticleFeedbackSecurityHandler.isCreateable(Case.sObjectType), true);
-			   System.assertEquals(afl_ArticleFeedbackSecurityHandler.isUpdateable(Case.sObjectType), true);
-			   System.assertEquals(afl_ArticleFeedbackSecurityHandler.isDeletable(Case.sObjectType), true);
-			   System.assertEquals(afl_ArticleFeedbackSecurityHandler.isAccessible(Case.subject), true);
-			   System.assertEquals(afl_ArticleFeedbackSecurityHandler.isCreateable(Case.subject), true);
-			   System.assertEquals(afl_ArticleFeedbackSecurityHandler.isUpdateable(Case.subject), true);
+		Map<Id,String> profileMap = new Map<Id,String>();
 
-			   afl_ArticleFeedbackSecurityHandler.canAccess(Case.sObjectType);
-			   afl_ArticleFeedbackSecurityHandler.canCreate(Case.sObjectType);
-			   afl_ArticleFeedbackSecurityHandler.canUpdate(Case.sObjectType);
-			   afl_ArticleFeedbackSecurityHandler.canDelete(Case.sObjectType);
-			   afl_ArticleFeedbackSecurityHandler.canAccess(Case.subject);
-			   afl_ArticleFeedbackSecurityHandler.canCreate(Case.subject);
-			   afl_ArticleFeedbackSecurityHandler.canUpdate(Case.subject);
+		for (Profile p : profileList) {
+			profileMap.put(p.id, p.Name);
+		}
 
-			   List<Schema.SObjectField> fieldList = new List<Schema.SObjectField>();
-			   fieldList.add( Case.subject );
-			   afl_ArticleFeedbackSecurityHandler.toString(fieldList);
+		List<User> u = [
+			SELECT Id, profileId
+			FROM User
+			WHERE Id =: UserInfo.getUserId()
+			LIMIT 1
+		];
 
-			   List<Schema.SObjectType> objectTypeList = new List<Schema.SObjectType>();
-			   objectTypeList.add( Case.sObjectType );
-			   afl_ArticleFeedbackSecurityHandler.toString(objectTypeList);
-		   }
-	   }
-   }
+		if (profileMap.containsKey(UserInfo.getProfileId()) && profileMap.get(UserInfo.getProfileId()) == 'System Administrator') {
+			for (Profile p : profileList) {
+				u[0].profileId = p.id;
+				UPDATE u;
 
-   public static testMethod void testGetKAVPermissions() {
-	   // Create the Knowledge Article
-	   SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
+				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isAccessible(Case.SObjectType), true);
+				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isCreateable(Case.SObjectType), true);
+				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isUpdateable(Case.SObjectType), true);
+				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isDeletable(Case.SObjectType), true);
+				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isAccessible(Case.subject), true);
+				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isCreateable(Case.subject), true);
+				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isUpdateable(Case.subject), true);
 
-	   System.Test.startTest();
-		 Boolean result = afl_ArticleFeedbackSecurityHandler.getKAVPermissions();
-		 System.assertEquals (true,result);
-	   System.Test.stopTest();
-   }
+				afl_ArticleFeedbackSecurityHandler.canAccess(Case.SObjectType);
+				afl_ArticleFeedbackSecurityHandler.canCreate(Case.SObjectType);
+				afl_ArticleFeedbackSecurityHandler.canUpdate(Case.SObjectType);
+				afl_ArticleFeedbackSecurityHandler.canDelete(Case.SObjectType);
+				afl_ArticleFeedbackSecurityHandler.canAccess(Case.subject);
+				afl_ArticleFeedbackSecurityHandler.canCreate(Case.subject);
+				afl_ArticleFeedbackSecurityHandler.canUpdate(Case.subject);
 
-   public static testMethod void testIsGuestUser() {
-	   SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
-	   Profile p = [SELECT Id FROM Profile WHERE Name='Standard User'];
-	   User testUser = new User(Alias = 'testStd', Email='teststandarduser@testorg.com',
-	   EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='en_US',
-	   LocaleSidKey='en_US', ProfileId = p.Id,
-	   TimeZoneSidKey='America/Los_Angeles', UserName='afl_test_user@testorg.com');
-	   INSERT testUser;
+				List<Schema.SObjectField> fieldList = new List<Schema.SObjectField>();
+				fieldList.add( Case.subject);
+				afl_ArticleFeedbackSecurityHandler.toString(fieldList);
 
-	   System.runAs(testUser) {
-		   System.Test.startTest();
-		   Boolean result = afl_ArticleFeedbackSecurityHandler.isGuestUser();
-		   System.assertEquals(false, result);
-		   System.Test.stopTest();
-	   }
-   }
+				List<Schema.SObjectType> objectTypeList = new List<Schema.SObjectType>();
+				objectTypeList.add( Case.SObjectType);
+				afl_ArticleFeedbackSecurityHandler.toString(objectTypeList);
+			}
+		}
+	}
 
-   public static testMethod void testFormatReplace() {
-	   String value = '{0}';
-	   List<String> lstStr = new List<String> {'value1'};
-	   System.Test.startTest();
-	   String result = afl_ArticleFeedbackSecurityHandler.formatReplace(value, lstStr);
-	   System.assertEquals('value1', result);
-	   System.Test.stopTest();
-   }
+	public static testMethod void testGetKAVPermissions() {
+		// Create the Knowledge Article
+		SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
+
+		System.Test.startTest();
+		Boolean result = afl_ArticleFeedbackSecurityHandler.getKAVPermissions();
+		System.assertEquals (true,result);
+		System.Test.stopTest();
+	}
+
+	public static testMethod void testIsGuestUser() {
+		SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
+		Profile p = [SELECT Id FROM Profile WHERE Name='Standard User'];
+		User testUser = new User(Alias = 'testStd', Email='teststandarduser@testorg.com',
+		EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='en_US',
+		LocaleSidKey='en_US', ProfileId = p.Id,
+		TimeZoneSidKey='America/Los_Angeles', UserName='afl_test_user@testorg.com');
+		INSERT testUser;
+
+		System.runAs(testUser) {
+			System.Test.startTest();
+			Boolean result = afl_ArticleFeedbackSecurityHandler.isGuestUser();
+			System.assertEquals(false, result);
+			System.Test.stopTest();
+		}
+	}
+
+	public static testMethod void testFormatReplace() {
+		String value = '{0}';
+		List<String> lstStr = new List<String> {'value1'};
+		System.Test.startTest();
+		String result = afl_ArticleFeedbackSecurityHandler.formatReplace(value, lstStr);
+		System.assertEquals('value1', result);
+		System.Test.stopTest();
+	}
 }

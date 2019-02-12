@@ -4,7 +4,6 @@
 * started on July 2018
 * This class is responsible of the interaction with lightning components
 **/
-
 public class afl_LightningResponse {
     @AuraEnabled public String jsonResponse {get; set;}
 	@AuraEnabled public String error {get; set;}

@@ -5,8 +5,6 @@
 *    Handler for triggers
 **/
 public with sharing class afl_TriggerHandler {
-	public afl_TriggerHandler() {}
-
 	/*
 	* @description
 	*	Handles the trigger values and inserts an Article Feedback if applicable
@@ -15,7 +13,7 @@ public with sharing class afl_TriggerHandler {
 	* @return
 	*	void
 	*/
-	public static void handleTriggerInsertion(String type, List<sObject> triggerObjects) {
+	public static void handleTriggerInsertion(String type, List<SObject> triggerObjects) {
 		Set<Id> setIds = new Set<Id>();
 
 		// Set customs settings
@@ -27,7 +25,7 @@ public with sharing class afl_TriggerHandler {
 
 		// Check that the post originates from a Knowledge Article
 		if (type.equals('FeedItem')) {
-			for (sObject sObj : triggerObjects) {
+			for (SObject sObj : triggerObjects) {
 				FeedItem f = (FeedItem) sObj;
                 String parentId = f.parentId;
                 if (parentId.startsWith('kA') && (f.Type == 'TextPost' || f.Type == 'LinkPost') && f.Body.containsIgnoreCase(kf.Hashtag__c)) {
@@ -35,7 +33,7 @@ public with sharing class afl_TriggerHandler {
                 }
             }
  		} else if (type.equals('FeedComment')) {
-			for (sObject sObj : trigger.new) {
+			for (SObject sObj : trigger.new) {
 				FeedComment f = (FeedComment) sObj;
                 String parentId = f.parentId;
                 if (parentId.startsWith('kA') && f.CommentType == 'TextComment' && f.CommentBody.containsIgnoreCase(kf.Hashtag__c)) {
@@ -46,7 +44,7 @@ public with sharing class afl_TriggerHandler {
 
 		if (!setIds.isEmpty()) {
 			List<afl_Article_Feedback__c> lstAfd = new List<afl_Article_Feedback__c>();
-			Map<String,sObject> mKav = new Map<String,sObject>();
+			Map<String,SObject> mKav = new Map<String,SObject>();
 
 			// Set recordType flag and recordType query parameter
 			Boolean hasRecordType = afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive;
@@ -69,9 +67,9 @@ public with sharing class afl_TriggerHandler {
 			' FROM ' + knowledgeObject +
 			' WHERE PublishStatus = \'' + pubStatus + '\'' + ' AND KnowledgeArticleId IN :setIds ' +
 			' ORDER BY CreatedDate ASC';
-			List<sObject> kavs = Database.query(query);
+			List<SObject> kavs = Database.query(query);
 
-			for (sObject kav : kavs) {
+			for (SObject kav : kavs) {
 				if (!mKav.containsKey((Id) kav.get('KnowledgeArticleId'))) {
 					mKav.put((Id) kav.get('KnowledgeArticleId'), kav);
 				}
@@ -107,7 +105,7 @@ public with sharing class afl_TriggerHandler {
 			}
 
 			try {
-				for (sObject f : triggerObjects) {
+				for (SObject f : triggerObjects) {
                     String parentId = (String) f.get('ParentId');
 
                     if (mkav.containsKey(parentId)) {

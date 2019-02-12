@@ -5,7 +5,7 @@
 *    Trigger for adding for the feeds left from Ligthning Knowledge articles.
 **/
 trigger afl_InsertLgtnArticleFeedback on FeedComment (after insert) {
-    if (afl_ArticleFeedbackSecurityHandler.isCreateable(afl_Article_Feedback__c.sObjectType)) {
+    if (afl_ArticleFeedbackSecurityHandler.isCreateable(afl_Article_Feedback__c.SObjectType)) {
         // Handle trigger insertion
         afl_TriggerHandler.handleTriggerInsertion('FeedComment', trigger.new);
     }

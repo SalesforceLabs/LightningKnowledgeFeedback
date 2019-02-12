@@ -26,10 +26,10 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 		} catch(Exception e) {
 			response = new afl_LightningResponse(e);
 		}
-		
+
 		return response;
 	}
-	
+
 	/*
 	* @description
 	*	Method that updates the Hashtag value of the afl_Knowledge_feedback__c object
@@ -43,7 +43,7 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 		// Check FLS
 		afl_ArticleFeedbackSecurityHandler.canCreate(afl_Article_Feedback__c.SObjectType);
 		afl_ArticleFeedbackSecurityHandler.canUpdate(afl_Article_Feedback__c.SObjectType);
-		
+
 		afl_LightningResponse response = new afl_LightningResponse();
 		Map<String,String> result = new Map<String, String>();
 		afl_Knowledge_feedback__c af = afl_Knowledge_feedback__c.getOrgDefaults();
@@ -58,7 +58,8 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 			result.put('status', 'FAILED');
 		}
 		response.jsonResponse = JSON.serialize(result);
+		
 		return response;
 	}
-	
+
 }

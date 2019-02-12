@@ -6,38 +6,36 @@
  **/
 @isTest
 public class afl_TestDataFactory {
-
 	/*
 	* @description
 	*	Creates a Knowledge Article object for testing purposes
 	* @params
 	*	None
 	* @return
-	*	sObject - Knowledge Article
+	*	SObject - Knowledge Article
 	*/
 	public static SObject createKnowledgeArticle() {
-		// creates Custom Article type
+		// Creates Custom Article type
 		Map<String,Schema.SOBjectType> gd = Schema.getGlobalDescribe();
 		List<String> kavNames = new List<String>();
 
 		for (String s : gd.keySet()) {
-          if (s.contains('__kav')) {
-            kavNames.add(s);
-          }
+			if (s.contains('__kav')) {
+				kavNames.add(s);
+			}
         }
 
-        // String default_language = [SELECT LanguageLocaleKey FROM Organization limit 1].LanguageLocaleKey;
         String objType = kavNames.get(0);
 	    SObject kavObj;
-		afl_ArticleFeedbackSecurityHandler.canAccess(KnowledgeArticleVersion.sObjectType);
+		afl_ArticleFeedbackSecurityHandler.canAccess(KnowledgeArticleVersion.SObjectType);
 	    kavObj = Schema.getGlobalDescribe().get(objType).newSObject();
 		afl_ArticleFeedbackSecurityHandler.canAccess(Schema.getGlobalDescribe().get(objType));
-		kavObj.put('Title','Foo Foo Foo!!!'+String.valueOf(Crypto.getRandomInteger()));
-	    kavObj.put('UrlName', 'foo-foo-foo'+String.valueOf(Crypto.getRandomInteger()));
-	    kavObj.put('Summary', 'This is a summary!!! Foo. Foo. Foo.');
+		kavObj.put('Title', 'testTitle' + String.valueOf(Crypto.getRandomInteger()));
+	    kavObj.put('UrlName', 'testUrlName' + String.valueOf(Crypto.getRandomInteger()));
+	    kavObj.put('Summary', 'testSummary');
 	    kavObj.put('Language', afl_ArticleFeedbackSecurityHandler.getValidLanguagePicklistValue(objType));
+	    INSERT kavObj;
 
-	    insert kavObj;
 		return kavObj;
 	}
 
@@ -53,6 +51,6 @@ public class afl_TestDataFactory {
 		// Creates a Custom Setting at the organization level
 		afl_Knowledge_Feedback__c setting= new afl_Knowledge_Feedback__c();
 		setting.Hashtag__c = hashtag;
-		insert setting;
+		INSERT setting;
 	}
 }

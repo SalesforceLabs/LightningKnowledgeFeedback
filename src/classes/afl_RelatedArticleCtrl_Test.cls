@@ -6,7 +6,6 @@
  **/
 @isTest
 public with sharing class afl_RelatedArticleCtrl_Test {
-
     /*
         Description: Check for the fields returned by method that return some compact layout data
     */
@@ -24,7 +23,7 @@ public with sharing class afl_RelatedArticleCtrl_Test {
         Description: Check for the related article returned by the loadKAVId method
     */
     static testMethod void testloadKAVId() {
-        string publishStatus = 'draft';
+        String publishStatus = 'draft';
         SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
         // requery the kavObj to get the KnowledgeArticleId on it that is created automatically
         String q = 'select KnowledgeArticleId, Title, ArticleNumber from KnowledgeArticleVersion where Id = \'' +kavObj.get('Id')+  '\' and PublishStatus = :publishStatus';

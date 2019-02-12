@@ -5,10 +5,6 @@
 *    Security Handler class for Article Feedback object
 **/
 public class afl_ArticleFeedbackSecurityHandler {
-    /**
-    * @description
-    *  Constants
-    **/
     public static final String  ERROR_OBJECT_NOT_ACCESSIBLE = 'You do not have access to the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
     public static final String  ERROR_OBJECT_NOT_UPDATEABLE = 'You cannot update the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
     public static final String  ERROR_OBJECT_NOT_CREATEABLE = 'You cannot create the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
@@ -286,8 +282,8 @@ public class afl_ArticleFeedbackSecurityHandler {
     public static String formatReplace(String value, List<String> lstStr) {
         String res = value;
 
-        for ( Integer i=0; i<lstStr.size(); i++ ) {
-            if ( lstStr[i] != null && lstStr[i] != '' )
+        for ( Integer i=0; i<lstStr.size(); i++) {
+            if ( lstStr[i] != null && lstStr[i] != '')
             res = res.replaceAll('\\{'+i+'\\}', lstStr[i]);
         }
         return res;
@@ -353,14 +349,14 @@ public class afl_ArticleFeedbackSecurityHandler {
     * @description
     *   Method that returns the first value of a PicklistEntry for the "Language" field of a given Object, if exists
     * @params
-    *   sObject Name
+    *   SObject Name
     * @return
     *   String - PicklistEntry value
     */
-    public static String getValidLanguagePicklistValue(String sObjectName) {
+    public static String getValidLanguagePicklistValue(String SObjectName) {
         Map<String,Schema.SOBjectType> gd = Schema.getGlobalDescribe();
         if (gd != null) {
-            Schema.DescribeSObjectResult sor = gd.get(sObjectName).getDescribe();
+            Schema.DescribeSObjectResult sor = gd.get(SObjectName).getDescribe();
             Map<String,Schema.SObjectField> sofs = sor.fields.getMap();
             Schema.DescribeFieldResult dfr = sofs.get('Language').getDescribe();
             if (dfr != null) {

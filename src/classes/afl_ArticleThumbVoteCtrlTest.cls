@@ -7,9 +7,8 @@
 
 @isTest
 public class afl_ArticleThumbVoteCtrlTest {
-	
 	static testMethod void upsertThumbArticleVoteTest() {
-		sObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
+		SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
 		Test.startTest();
 		afl_LightningResponse response = afl_ArticleThumbVoteCtrl.upsertThumbArticleVote(knowledgeObject.Id, '', 'Test Description', true, false, false);
 		Test.stopTest();
@@ -17,7 +16,7 @@ public class afl_ArticleThumbVoteCtrlTest {
 		System.assert(!afl.isEmpty());
 		System.assertEquals(1, afl.size());
 	}
-	
+
 	static testMethod void getPickListValuesIntoListTest() {
 		Test.startTest();
 		afl_LightningResponse response = afl_ArticleThumbVoteCtrl.getPickListValuesIntoList();
@@ -28,20 +27,17 @@ public class afl_ArticleThumbVoteCtrlTest {
 		List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
 		System.assert(!pickListValuesList.isEmpty());
 		System.assertEquals(ple.size(), pickListValuesList.size());
-		
 	}
-	
+
 	static testMethod void getVoteTest() {
-		sObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
+		SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
 		String kavId = (String)knowledgeObject.get('Id');
-		
+
 		Test.startTest();
 		afl_LightningResponse response = afl_ArticleThumbVoteCtrl.getVote(kavId);
 		Map<String, Object> mResult = (Map<String, Object>)JSON.deserializeUntyped(response.jsonResponse);
 		// Object value = (Object)JSON.deserialize(mResult.get('vote'), Boolean.class);
 		Test.stopTest();
 		System.assertEquals('true', mResult.get('vote'));
-		
 	}
-	
 }

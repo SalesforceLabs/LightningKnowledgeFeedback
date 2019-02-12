@@ -19,6 +19,7 @@ private class afl_LightningResponse_Test {
         lightningResponse.error = 'testERROR';
         lightningResponse.state = 'testSTATE';
         System.Test.stopTest();
+
         System.assertEquals('testJSON', lightningResponse.jsonResponse, 'jsonResponse should be equal');
         System.assertEquals('testERROR', lightningResponse.error, 'error should be equal');
         System.assertEquals('testSTATE', lightningResponse.state, 'state should be equal');
@@ -31,6 +32,7 @@ private class afl_LightningResponse_Test {
         System.Test.startTest();
         String state = lightningResponse.state;
         System.Test.stopTest();
+
         System.assertEquals('SUCCESS', state, 'state should be "SUCCESS"');
     }
 

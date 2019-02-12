@@ -6,10 +6,8 @@
  **/
 @isTest
 private class afl_ArticleFeedbackRelatedCtrl_Test {
-
 	static testMethod void testTrigger() {
-
-		// creates dummy Article Feedback objects
+		// Creates dummy Article Feedback objects
 		afl_Article_Feedback__c afeedback = new afl_Article_Feedback__c();
         afeedback.Feedback_Status__c = 'New';
         afeedback.Article_Title__c = 'Test Article Title';
@@ -32,11 +30,11 @@ private class afl_ArticleFeedbackRelatedCtrl_Test {
         PageReference pageRef = Page.afl_ArticleFeedbackPage;
 
     	System.Test.startTest();
-        	Test.setCurrentPage(pageRef);
-            ApexPages.CurrentPage().getparameters().put('id', afeedback.id);
-            ApexPages.StandardController sc = new ApexPages.standardController(afeedback);
-            afl_ArticleFeedbackRelatedCtrl afsc = new afl_ArticleFeedbackRelatedCtrl(sc);
-            System.assertNotEquals(afsc.records,null);
+    	Test.setCurrentPage(pageRef);
+        ApexPages.CurrentPage().getparameters().put('id', afeedback.id);
+        ApexPages.StandardController sc = new ApexPages.standardController(afeedback);
+        afl_ArticleFeedbackRelatedCtrl afsc = new afl_ArticleFeedbackRelatedCtrl(sc);
+        System.assertNotEquals(afsc.records,null);
         System.Test.stopTest();
 	}
 }

@@ -10,7 +10,7 @@ public class afl_ArticleFeedbackConfigCtrl_Test {
 		afl_Knowledge_Feedback__c setting = new afl_Knowledge_Feedback__c();
 		setting.Hashtag__c = '#TestHashtag';
 		INSERT setting;
-		
+
 		System.Test.startTest();
 		System.assertNotEquals(null,setting);
 		afl_ArticleFeedbackConfigCtrl ctr = new afl_ArticleFeedbackConfigCtrl();
@@ -18,7 +18,7 @@ public class afl_ArticleFeedbackConfigCtrl_Test {
 		ctr.csObj.HashTag__c ='#MyTestHashtag';
 		ctr.save();
 		setting = afl_Knowledge_Feedback__c.getOrgDefaults();
-		system.assertEquals('#MyTestHashtag',setting.Hashtag__c);
+		system.assertEquals('#MyTestHashtag', setting.Hashtag__c);
 		ctr.cancel();
 		System.Test.stopTest();
 	}
