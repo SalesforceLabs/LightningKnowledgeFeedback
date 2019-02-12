@@ -76,6 +76,7 @@
 			<span>The article was not found.</span>
 		</aura:set>
 	</aura:if>
+	
 	<!-- Display Lightning Data Service errors, if any -->
 	<aura:if isTrue="{!not(empty(v.recordError))}">
 		<div class="recordError">

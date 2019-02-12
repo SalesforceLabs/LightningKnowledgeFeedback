@@ -13,7 +13,7 @@ private class afl_UpdatedArticleFeedback_Test{
         // creates dummy KnowledgeArticleVersion
         string publishStatus = 'draft';
 
-		//Create the Knowledge Article
+		// Create the Knowledge Article
         SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
 
         // requery the kavObj to get the KnowledgeArticleId on it that is created automatically

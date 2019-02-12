@@ -40,7 +40,7 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 	*/
 	@auraEnabled
 	public static afl_LightningResponse updateHashtagValue(String value) {
-		//Check FLS
+		// Check FLS
 		afl_ArticleFeedbackSecurityHandler.canCreate(afl_Article_Feedback__c.SObjectType);
 		afl_ArticleFeedbackSecurityHandler.canUpdate(afl_Article_Feedback__c.SObjectType);
 		
@@ -48,7 +48,7 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 		Map<String,String> result = new Map<String, String>();
 		afl_Knowledge_feedback__c af = afl_Knowledge_feedback__c.getOrgDefaults();
 		try {
-			if(String.isNotEmpty(value) && value != null){
+			if (String.isNotEmpty(value) && value != null) {
 				af.Hashtag__c = value;
 				UPSERT af;
 				result.put('status', 'SUCCESS');

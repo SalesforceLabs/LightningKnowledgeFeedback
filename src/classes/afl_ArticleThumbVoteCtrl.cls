@@ -27,7 +27,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			
 			artFeed.Feedback_Status__c = 'New';
 			artFeed.Feedback_Vote_Description__c = voteDescription;
-			if(!hasNoRate) {
+			if (!hasNoRate) {
 				artFeed.Like__c = isLiked;
 			}
 			artFeed.Unlike_Reason__c = unlikeReason;
@@ -35,7 +35,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			String baseUrl = System.URL.getSalesforceBaseUrl().toExternalForm();
 			String communityName = afl_ArticleFeedbackSecurityHandler.getCommunityName();
 			
-			if(String.isNotEmpty(communityName)) {
+			if (String.isNotEmpty(communityName)) {
 				String networkId = Network.getNetworkId();
 				String query = 'SELECT Id, UrlPathPrefix FROM Network WHERE Id =: networkId LIMIT 1';
 				SObject ntw = Database.query(query);
@@ -52,12 +52,12 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
 			Boolean hasRecordType = afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive;
 			String recordTypeField = '';
-			if(hasRecordType) {
+			if (hasRecordType) {
 				recordTypeField = ',RecordTypeId';
 			}
 			String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate, KnowledgeArticleId' + recordTypeField + ' FROM '+knowledgeObject+' WHERE Id = \''+recordId+'\' LIMIT 1';
 			List<sObject> sObjList = Database.query(query);
-			if(!sObjList.isEmpty()){
+			if (!sObjList.isEmpty()) {
 				sObject sObj = sObjList[0];
 				artFeed.Knowledge_kav_article_Id__c = (String)sObj.get('KnowledgeArticleId');
 				artFeed.Article_Title__c = (String)sObj.get('Title');
@@ -65,8 +65,8 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				artFeed.Article_Number__c = (String)sObj.get('ArticleNumber');
 				artFeed.Article_Created_Date__c = (Datetime)sObj.get('ArticleCreatedDate');
 				
-				//Get record type name
-				if(hasRecordType) {
+				// Get record type name
+				if (hasRecordType) {
 					if (String.isNotEmpty((String)sObj.get('RecordTypeId'))) {
 						if (!test.isRunningTest()) {
 							String rTypeId = (String)sObj.get('RecordTypeId');
@@ -79,14 +79,14 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				}
 			}
 			
-			if(!hasNoRate) {
-				if(!isSameVote) {
+			if (!hasNoRate) {
+				if (!isSameVote) {
 					Vote vote = new Vote (
 					ParentId = artFeed.Knowledge_kav_article_Id__c,
 					Type = isLiked ? '5' : '1'
 					);
 					Vote[] sVote = [SELECT Id, ParentId FROM Vote WHERE ParentId=:artFeed.Knowledge_kav_article_Id__c AND LastModifiedById=: UserInfo.getUserId() LIMIT 1];
-					if(!sVote.isEmpty()) {
+					if (!sVote.isEmpty()) {
 						vote.Id = sVote.get(0).Id;
 					}
 					try {
@@ -115,7 +115,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 	*/
 	@AuraEnabled
 	public static afl_LightningResponse getPickListValuesIntoList() {
-		//Check FLS
+		// Check FLS
 		afl_ArticleFeedbackSecurityHandler.canAccess(afl_Article_Feedback__c.SObjectType);
 		
 		afl_LightningResponse response = new afl_LightningResponse();
@@ -124,7 +124,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 		
 		Schema.DescribeFieldResult fieldResult = afl_Article_Feedback__c.Unlike_Reason__c.getDescribe();
 		List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
-		for( Schema.PicklistEntry pickListVal : ple){
+		for ( Schema.PicklistEntry pickListVal : ple) {
 			pickListValuesList.add(pickListVal.getLabel());
 		}
 		mResult.put('result', JSON.serialize(pickListValuesList));
@@ -143,7 +143,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 	@AuraEnabled
 	public static afl_LightningResponse getVote(Id recordId) {
 		try {
-			//Check FLS
+			// Check FLS
 			afl_ArticleFeedbackSecurityHandler.canAccess(Vote.SObjectType);
 			
 			String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
@@ -152,12 +152,12 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			String query = 'SELECT KnowledgeArticleId FROM '+knowledgeObject+' WHERE Id = \''+recordId+'\' LIMIT 1';
 			List<sObject> knowledgeObjList = Database.query(query);
 			
-			if(!knowledgeObjList.isEmpty()) {
+			if (!knowledgeObjList.isEmpty()) {
 				sObject knowledgeObj = knowledgeObjList[0];
 				String parentId = (String)knowledgeObj.get('KnowledgeArticleId');
 				Vote[] sVote = [SELECT ParentId, Type FROM Vote WHERE ParentId=:parentId AND LastModifiedById=: UserInfo.getUserId() LIMIT 1];
-				if(!Test.isRunningTest()){
-					if(!sVote.isEmpty()) {
+				if (!Test.isRunningTest()) {
+					if (!sVote.isEmpty()) {
 						Boolean voteUp = sVote.get(0).Type == '5' || sVote.get(0).Type == 'UP';
 						result.put('vote', JSON.serialize(voteUp));
 						response.jsonResponse = JSON.serialize(result);

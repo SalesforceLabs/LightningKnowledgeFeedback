@@ -34,7 +34,7 @@ trigger afl_UpdatedArticleFeedback on afl_Article_Feedback__c (after update) {
         afl_Article_Feedback__c oldAf = Trigger.oldMap.get(af.Id);
         
         // The following check was commented by request of Devra.
-        // Ticket: https://altimetrik.assembla.com/spaces/public-knowledge-base/simple_planner#/ticket:893
+        // Ticket: https:// Altimetrik.assembla.com/spaces/public-knowledge-base/simple_planner#/ticket:893
         
         // if (String.isNotBlank(af.Parent_FeedItem__c) && String.isNotBlank(oldAF.Parent_FeedItem__c)) {
         //     if (af.Parent_FeedItem__c != oldAF.Parent_FeedItem__c) {

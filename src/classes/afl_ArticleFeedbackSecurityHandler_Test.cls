@@ -11,13 +11,13 @@ public class afl_ArticleFeedbackSecurityHandler_Test {
 	   Profile[] profileList = [select Id, Name from Profile where Name = 'System Administrator' OR Name = 'Standar User' limit 2];
 	   Map<Id,String> profileMap = new Map<Id,String>();
 
-	   for( Profile p : profileList ){
+	   for ( Profile p : profileList ) {
 		   profileMap.put( p.id, p.Name );
 	   }
 
 	   List<User> u = [select id, profileId from User where Id =: UserInfo.getUserId() limit 1];
 
-	   if( profileMap.containsKey( UserInfo.getProfileId() ) && profileMap.get( UserInfo.getProfileId() ) == 'System Administrator' ){
+	   if ( profileMap.containsKey( UserInfo.getProfileId()) && profileMap.get( UserInfo.getProfileId()) == 'System Administrator' ) {
 		   for (Profile p : profileList) {
 			   u[0].profileId = p.id;
 			   update u;
@@ -94,12 +94,12 @@ public class afl_ArticleFeedbackSecurityHandler_Test {
 
 	   Map<Id,String> profileMap = new Map<Id,String>();
 
-	   for( Profile p : profileList ){
+	   for ( Profile p : profileList ) {
 		   profileMap.put( p.id, p.Name );
 	   }
 	   List<User> u = [select id, profileId from User where Id =: UserInfo.getUserId() limit 1];
 
-	   if( profileMap.containsKey( UserInfo.getProfileId() ) && profileMap.get( UserInfo.getProfileId() ) == 'System Administrator' ) {
+	   if ( profileMap.containsKey( UserInfo.getProfileId()) && profileMap.get( UserInfo.getProfileId()) == 'System Administrator' ) {
 		   for (Profile p : profileList) {
 			   u[0].profileId = p.id;
 			   update u;
@@ -131,7 +131,7 @@ public class afl_ArticleFeedbackSecurityHandler_Test {
    }
 
    public static testMethod void testGetKAVPermissions() {
-	   //Create the Knowledge Article
+	   // Create the Knowledge Article
 	   SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
 
 	   System.Test.startTest();

@@ -27,10 +27,10 @@ public with sharing class afl_RelatedArticleCtrl {
                 afl_Article_Feedback__c af = lstAF.get(0);
                 kavId = af.Knowledge_Article_Version_Id__c;
                 result.put('kavId', kavId);
-                //we get the language - vers
+                // We get the language - vers
                 result = getCompactLayoutData(kavId,result);
 
-                //Check FLS
+                // Check FLS
                 if (!afl_ArticleFeedbackSecurityHandler.getKAVPermissions()) {
                     throw new SecurityException(afl_ArticleFeedbackSecurityHandler.formatReplace(afl_ArticleFeedbackSecurityHandler.ERROR_OBJECT_NOT_ACCESSIBLE,  new String[] {knowledgeObject}));
                 }
@@ -83,11 +83,11 @@ public with sharing class afl_RelatedArticleCtrl {
     *   Map<String,Object> with the defined fields of the kav with the kavId received
     */
     public static Map<String,Object> getCompactLayoutData(String kavId, Map<String,Object> result) {
-        //KnowledgeArticleVersion article = [ SELECT ArticleNumber,CreatedDate,Id,Language,VersionNumber,PublishStatus FROM KnowledgeArticleVersion WHERE Id =:kavId ];
+        // KnowledgeArticleVersion article = [ SELECT ArticleNumber,CreatedDate,Id,Language,VersionNumber,PublishStatus FROM KnowledgeArticleVersion WHERE Id =:kavId ];
         // Find the associated record type
         String queryString = '';
         List<SObject> sObjList = new List<SObject>();
-        //String recType = 'This article has no record type';
+        // String recType = 'This article has no record type';
         Map<Id,String> recordTypeDetails = afl_ArticleFeedbackSecurityHandler.getAllowedRecordTypesMap();
         String recordTypeField = '';
         if (afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive) {
@@ -98,9 +98,9 @@ public with sharing class afl_RelatedArticleCtrl {
         sObjList = Database.query(queryString);
         if (sObjList != null && !sObjList.isEmpty()) {
             SObject sObjKnowledge = sObjList.get(0);
-            //recType = sObjKnowledge.getSObject('RecordType') != null ? (String)sObjKnowledge.getSObject('RecordType').get('Name') : 'This article has no record type';
+            // RecType = sObjKnowledge.getSObject('RecordType') != null ? (String)sObjKnowledge.getSObject('RecordType').get('Name') : 'This article has no record type';
 
-            //Get record type name
+            // Get record type name
             if (afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive) {
                 if (String.isNotEmpty((String)sObjKnowledge.get('RecordTypeId'))) {
                     if (!test.isRunningTest()) {

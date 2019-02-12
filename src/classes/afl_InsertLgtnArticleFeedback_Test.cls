@@ -9,14 +9,14 @@ public class afl_InsertLgtnArticleFeedback_Test {
     static testMethod void testTrigger() {
         string publishStatus = 'draft';
 
-        //Create the Knowledge Article
+        // Create the Knowledge Article
         SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
 
         // requery the kavObj to get the KnowledgeArticleId on it that is created automatically
     	String q = 'select KnowledgeArticleId, Title from KnowledgeArticleVersion where Id = \'' +kavObj.get('Id')+  '\' and PublishStatus = :publishStatus';
     	kavObj = (KnowledgeArticleVersion)Database.query(q);
 
-        //Create hashtag custom setting
+        // Create hashtag custom setting
         afl_TestDataFactory.createHashtagCustomSetting('#TestHashtag');
 
         System.Test.startTest();

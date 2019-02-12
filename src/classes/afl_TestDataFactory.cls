@@ -26,7 +26,7 @@ public class afl_TestDataFactory {
           }
         }
 
-        //String default_language = [SELECT LanguageLocaleKey FROM Organization limit 1].LanguageLocaleKey;
+        // String default_language = [SELECT LanguageLocaleKey FROM Organization limit 1].LanguageLocaleKey;
         String objType = kavNames.get(0);
 	    SObject kavObj;
 		afl_ArticleFeedbackSecurityHandler.canAccess(KnowledgeArticleVersion.sObjectType);
@@ -50,7 +50,7 @@ public class afl_TestDataFactory {
 	*	none
 	*/
 	public static void createHashtagCustomSetting(String hashtag) {
-		//creates a Custom Setting at the organization level
+		// Creates a Custom Setting at the organization level
 		afl_Knowledge_Feedback__c setting= new afl_Knowledge_Feedback__c();
 		setting.Hashtag__c = hashtag;
 		insert setting;

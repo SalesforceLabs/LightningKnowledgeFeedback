@@ -1,11 +1,11 @@
 ({
 	doInit : function (cmp, event, helper) {
-		var actionParams ={	recordId: cmp.get("v.recordId")};
+		var actionParams = {recordId: cmp.get("v.recordId")};
 		this.handleAction(cmp, actionParams, 'c.loadKAVId', this.doInitCallback);
 	},
 
 	doInitCallback : function( cmp, response, ctx) {
-		if(!cmp.isValid()) return;
+		if (!cmp.isValid()) return;
 
 		cmp.set("v.kavId", response.kavId);
 		cmp.set('v.articleVersion', response.articleVersion);

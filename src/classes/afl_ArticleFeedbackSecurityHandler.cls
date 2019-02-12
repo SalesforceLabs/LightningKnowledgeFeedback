@@ -75,7 +75,7 @@ public class afl_ArticleFeedbackSecurityHandler {
     }
 
     public static Boolean isGuestUser() {
-        List<UserLicense> up = [select Name from UserLicense Where Id IN ( select UserLicenseId from Profile where Id = :UserInfo.getProfileId() ) LIMIT 1 ];
+        List<UserLicense> up = [select Name from UserLicense Where Id IN ( select UserLicenseId from Profile where Id = :UserInfo.getProfileId()) LIMIT 1 ];
         return up[0].Name == 'Guest';
     }
 
@@ -283,11 +283,11 @@ public class afl_ArticleFeedbackSecurityHandler {
         return result;
     }
 
-    public static String formatReplace(String value, List<String> lstStr){
+    public static String formatReplace(String value, List<String> lstStr) {
         String res = value;
 
-        for( Integer i=0; i<lstStr.size(); i++ ){
-            if( lstStr[i] != null && lstStr[i] != '' )
+        for ( Integer i=0; i<lstStr.size(); i++ ) {
+            if ( lstStr[i] != null && lstStr[i] != '' )
             res = res.replaceAll('\\{'+i+'\\}', lstStr[i]);
         }
         return res;
@@ -341,7 +341,7 @@ public class afl_ArticleFeedbackSecurityHandler {
     * @return
     *	Boolean
     */
-    public static Boolean checkForSchemaFieldActive(String fieldName){
+    public static Boolean checkForSchemaFieldActive(String fieldName) {
         Schema.DescribeSObjectResult sor = Schema.getGlobalDescribe().get(knowledgeObject).getDescribe();
         Map<String,Schema.SObjectField> sofs = sor.fields.getMap();
 
@@ -359,11 +359,11 @@ public class afl_ArticleFeedbackSecurityHandler {
     */
     public static String getValidLanguagePicklistValue(String sObjectName) {
         Map<String,Schema.SOBjectType> gd = Schema.getGlobalDescribe();
-        if(gd != null) {
+        if (gd != null) {
             Schema.DescribeSObjectResult sor = gd.get(sObjectName).getDescribe();
             Map<String,Schema.SObjectField> sofs = sor.fields.getMap();
             Schema.DescribeFieldResult dfr = sofs.get('Language').getDescribe();
-            if(dfr != null) {
+            if (dfr != null) {
                 List<Schema.PicklistEntry> ples = dfr.getPicklistValues();
                 return ples.get(0).getValue();
             }
@@ -382,9 +382,9 @@ public class afl_ArticleFeedbackSecurityHandler {
     public static String getCommunityName() {
         String commName = '';
         Set<String> objectFields = Schema.SObjectType.FeedItem.fields.getMap().keySet();
-        if(objectFields.contains('networkscope')) {
+        if (objectFields.contains('networkscope')) {
             String netId = Network.getNetworkId();
-            if(String.isNotEmpty(netId)){
+            if (String.isNotEmpty(netId)) {
                 String query = 'select name from Network where id =: netId';
                 SObject comm = Database.query(query);
                 commName = (String)comm.get('name');
