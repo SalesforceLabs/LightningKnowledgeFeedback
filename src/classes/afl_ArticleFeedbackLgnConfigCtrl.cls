@@ -5,7 +5,6 @@
 *    Front Controller for Article Feedback project setup page
 **/
 public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
-	
 	/*
 	* @description
 	*	Method that gets the data from the afl_Knowledge_feedback__c object
@@ -20,7 +19,7 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 		Map<String,String> result = new Map<String, String>();
 		afl_Knowledge_feedback__c af = afl_Knowledge_feedback__c.getOrgDefaults();
 		try {
-			if(String.isNotEmpty(af.Hashtag__c)) {
+			if (String.isNotEmpty(af.Hashtag__c)) {
 				result.put('hashtag', af.Hashtag__c);
 				response.jsonResponse = JSON.serialize(result);
 			}

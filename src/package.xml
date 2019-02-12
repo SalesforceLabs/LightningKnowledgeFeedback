@@ -70,5 +70,5 @@
 		<members>afl_Article_Feedback__c-Article Feedback Layout</members>
 		<name>Layout</name>
 	</types>
-	<version>44.0</version>
+	<version>45.0</version>
 </Package>
