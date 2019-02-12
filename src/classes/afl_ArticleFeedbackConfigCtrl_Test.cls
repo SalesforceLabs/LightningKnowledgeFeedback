@@ -5,7 +5,7 @@
 *    Test class for the afl_ArticleFeedbackConfigCtrl class
 **/
 @isTest
-public class afl_ArticleFeedbackConfigCtrl_Test {
+private class afl_ArticleFeedbackConfigCtrl_Test {
 	static testMethod void test_config() {
 		afl_Knowledge_Feedback__c setting = new afl_Knowledge_Feedback__c();
 		setting.Hashtag__c = '#TestHashtag';

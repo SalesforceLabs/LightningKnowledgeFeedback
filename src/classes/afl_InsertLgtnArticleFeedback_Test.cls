@@ -5,7 +5,7 @@
  *    Test class for the Insert Article Feedback trigger made from Ligthning Knowledge
  **/
 @isTest
-public class afl_InsertLgtnArticleFeedback_Test {
+private class afl_InsertLgtnArticleFeedback_Test {
     static testMethod void testTrigger() {
         String publishStatus = 'draft';
 

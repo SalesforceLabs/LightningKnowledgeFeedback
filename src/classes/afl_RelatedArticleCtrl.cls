@@ -25,6 +25,7 @@ public with sharing class afl_RelatedArticleCtrl {
 
             if (lstAF.size() > 0) {
                 afl_Article_Feedback__c af = lstAF.get(0);
+                System.debug('af: ' + af);
                 kavId = af.Knowledge_Article_Version_Id__c;
                 result.put('kavId', kavId);
                 // We get the language - vers
@@ -39,14 +40,33 @@ public with sharing class afl_RelatedArticleCtrl {
                 ' FROM ' + knowledgeObject +
                 ' WHERE Id = \'' + kavId + '\' ' +
                 ' LIMIT 1';
-
                 SObject actualKav =  Database.query(query);
+                System.debug('actualKav: ' + actualKav);
+
                 if (actualKav != null) {
-                    Boolean isArchived = ((String)actualKAV.get('PublishStatus') == 'Archived') ? true : false;
+                    Boolean isArchived = ((String) actualKAV.get('PublishStatus') == 'Archived') ? true : false;
                     result.put('isArchived', isArchived);
 
                     if (af.Originated_From_Trigger__c) {
                         result.put('originatedFromTrigger', true);
+
+                        String relatedQuery = ' SELECT Id, Language' +
+                        ' FROM ' + knowledgeObject +
+                        ' WHERE KnowledgeArticleId = \'' + (String) actualKAV.get('KnowledgeArticleId') + '\' AND ' +
+                        ' PublishStatus = \'Online\' ';
+                        List<SObject> relatedKavs =  Database.query(relatedQuery);
+                        System.debug('relatedKavs: ' + relatedKavs);
+                        if (relatedKavs.size() > 1 ) {
+                            Map<String,String> idsToLanguage = new Map<String,String>();
+                            for (SObject relatedKav : relatedKavs) {
+                                idsToLanguage.put((String) relatedKav.get('Id'), (String) relatedKav.get('Language'));
+                            }
+
+                            result.put('languagesMap', idsToLanguage);
+                            result.put('hasMultipleLanguages', true);
+                        } else {
+                            result.put('hasMultipleLanguages', false);
+                        }
                     } else {
                         result.put('originatedFromTrigger', false);
                     }
@@ -94,11 +114,10 @@ public with sharing class afl_RelatedArticleCtrl {
             recordTypeField = ',RecordTypeId';
         }
 
-        queryString = 'SELECT  Id, ArticleNumber, CreatedDate, Language, VersionNumber,PublishStatus' + recordTypeField +  ' FROM ' + knowledgeObject + ' WHERE Id =  \'' + kavId + '\'';
+        queryString = 'SELECT Id, ArticleNumber, CreatedDate, Language, VersionNumber,PublishStatus' + recordTypeField +  ' FROM ' + knowledgeObject + ' WHERE Id =  \'' + kavId + '\'';
         sObjList = Database.query(queryString);
         if (sObjList != null && !sObjList.isEmpty()) {
             SObject sObjKnowledge = sObjList.get(0);
-            // RecType = sObjKnowledge.getSObject('RecordType') != null ? (String)sObjKnowledge.getSObject('RecordType').get('Name') : 'This article has no record type';
 
             // Get record type name
             if (afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive) {

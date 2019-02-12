@@ -14,13 +14,18 @@
 		cmp.set('v.articleNumber', response.articleNumber);
 		cmp.set('v.articlePublishingStatus', response.articlePublishingStatus);
 		cmp.set('v.originatedFromTrigger', response.originatedFromTrigger);
+		cmp.set('v.hasMultipleLanguages', response.hasMultipleLanguages);
 
 		if (response.isArchived) {
-			var toastCmp =  cmp.find("toastNotif");
+			var toastCmp = cmp.find("toastNotif");
 			toastCmp.set("v.title", 'WARNING');
 			toastCmp.set("v.description", 'The related Knowledge Article is archived.');
 			toastCmp.set("v.className", '');
 			toastCmp.set("v.severity", 'warning');
+		}
+
+		if (response.hasMultipleLanguages) {
+			
 		}
 	},
 

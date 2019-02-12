@@ -9,7 +9,8 @@
 	<aura:attribute name="kavId" type="String" default="" description="Indicates the id for the actual KAv"/>
 	<aura:attribute name="recordError" type="String" access="private"/>
 	<aura:attribute name="originatedFromTrigger" type="Boolean" default="false" description="True if there is more than 1 language for the article"/>
-	
+	<aura:attribute name="hasMultipleLanguages" type="Boolean" default="false" description="True if there is more than 1 language for the article"/>
+
 	<!-- Handlers -->
 	<aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
 

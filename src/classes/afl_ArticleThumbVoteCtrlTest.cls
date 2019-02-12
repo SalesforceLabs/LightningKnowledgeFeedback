@@ -6,7 +6,7 @@
 **/
 
 @isTest
-public class afl_ArticleThumbVoteCtrlTest {
+private class afl_ArticleThumbVoteCtrlTest {
 	static testMethod void upsertThumbArticleVoteTest() {
 		SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
 		Test.startTest();

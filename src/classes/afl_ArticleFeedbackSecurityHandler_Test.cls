@@ -5,7 +5,7 @@
  *    Test class for the ArticleFeedbackSecurityHandler trigger
  **/
 @isTest
-public class afl_ArticleFeedbackSecurityHandler_Test {
+private class afl_ArticleFeedbackSecurityHandler_Test {
 	public static testMethod void testSecurityEnabled() {
 		Profile[] profileList = [
 		   	SELECT Id, Name

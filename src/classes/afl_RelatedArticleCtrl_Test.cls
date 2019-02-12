@@ -5,7 +5,7 @@
  *    Test Class for the afl_RelatedArticleCtrl class
  **/
 @isTest
-public with sharing class afl_RelatedArticleCtrl_Test {
+private with sharing class afl_RelatedArticleCtrl_Test {
     /*
         Description: Check for the fields returned by method that return some compact layout data
     */
