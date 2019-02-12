@@ -13,7 +13,7 @@
 		cmp.set('v.articleRecordType', response.articleRecordType);
 		cmp.set('v.articleNumber', response.articleNumber);
 		cmp.set('v.articlePublishingStatus', response.articlePublishingStatus);
-		cmp.set('v.hasMultipleLanguages', response.hasMultipleLanguages);
+		cmp.set('v.originatedFromTrigger', response.originatedFromTrigger);
 
 		if (response.isArchived) {
 			var toastCmp =  cmp.find("toastNotif");

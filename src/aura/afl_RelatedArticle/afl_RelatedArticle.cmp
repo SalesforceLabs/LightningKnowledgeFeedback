@@ -8,8 +8,8 @@
 	<aura:attribute name="recordId" type="String" default="" description="Indicates the id for the actual Article Feedback"/>
 	<aura:attribute name="kavId" type="String" default="" description="Indicates the id for the actual KAv"/>
 	<aura:attribute name="recordError" type="String" access="private"/>
-	<aura:attribute name="hasMultipleLanguages" type="Boolean" default="false" description="True if there is more than 1 language for the article"/>
-
+	<aura:attribute name="originatedFromTrigger" type="Boolean" default="false" description="True if there is more than 1 language for the article"/>
+	
 	<!-- Handlers -->
 	<aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
 
@@ -17,7 +17,7 @@
 	<c:afl_toast aura:id="toastNotif"/>
 
 	<aura:if isTrue="{!v.kavId != ''}">
-		<aura:if isTrue="{!v.hasMultipleLanguages}">
+		<aura:if isTrue="{!v.originatedFromTrigger}">
 			<div class="slds-col slds-size_12-of-12 slds-m-bottom_medium">
 				<span class="languageDisclaimer">This Article Feedback originated from a trigger, the master language of the Knowledge Article will be displayed by default. &nbsp;</span>
 				<lightning:helptext iconName="utility:info" content="When you create Feedback using the designated hashtag, the language of the article cannot be retrieved in that context. In those cases, the master language will be displayed by default."/>
@@ -76,7 +76,7 @@
 			<span>The article was not found.</span>
 		</aura:set>
 	</aura:if>
-	
+
 	<!-- Display Lightning Data Service errors, if any -->
 	<aura:if isTrue="{!not(empty(v.recordError))}">
 		<div class="recordError">

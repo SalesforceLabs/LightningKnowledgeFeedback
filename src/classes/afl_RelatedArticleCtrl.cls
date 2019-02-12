@@ -46,9 +46,9 @@ public with sharing class afl_RelatedArticleCtrl {
                     result.put('isArchived', isArchived);
 
                     if (af.Originated_From_Trigger__c) {
-                        result.put('hasMultipleLanguages', true);
+                        result.put('originatedFromTrigger', true);
                     } else {
-                        result.put('hasMultipleLanguages', false);
+                        result.put('originatedFromTrigger', false);
                     }
                 } else {
                     response.state = 'ERROR';
