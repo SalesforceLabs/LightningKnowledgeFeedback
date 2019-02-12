@@ -353,6 +353,16 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Originated_From_Trigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>True if the Article Feedback originated from the trigger</description>
+        <externalId>false</externalId>
+        <label>Originated From Trigger</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Parent_FeedItem__c</fullName>
         <externalId>false</externalId>
         <label>Parent FeedItem</label>
@@ -430,6 +440,24 @@
                     <fullName>Other</fullName>
                     <default>false</default>
                     <label>Other</label>
+                </value>
+                <value>
+                    <fullName>Does not Work</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Does not Work</label>
+                </value>
+                <value>
+                    <fullName>Outdated</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Outdated</label>
+                </value>
+                <value>
+                    <fullName>Poorly Written</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Poorly Written</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -538,6 +566,17 @@
             <operation>equals</operation>
         </filters>
         <label>New Feedback</label>
+    </listViews>
+    <listViews>
+        <fullName>testtest</fullName>
+        <columns>NAME</columns>
+        <columns>Article_Title__c</columns>
+        <columns>Article_Version__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>Feedback__c</columns>
+        <columns>Feedback_Source__c</columns>
+        <filterScope>Mine</filterScope>
+        <label>test</label>
     </listViews>
     <nameField>
         <label>Article Feedback Name</label>

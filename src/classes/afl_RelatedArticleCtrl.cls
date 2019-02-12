@@ -1,6 +1,6 @@
 public with sharing class afl_RelatedArticleCtrl {
     public static String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
-    
+
     /*
     * @description
     *   Retrieves a Map<String,Object> with kavId , some necessary fields of the kav and
@@ -13,41 +13,52 @@ public with sharing class afl_RelatedArticleCtrl {
     @AuraEnabled
     public static afl_LightningResponse loadKAVId(String recordId) {
         afl_LightningResponse response = new afl_LightningResponse();
-        Map<String,Object> result = new Map<String,  Object>();
+        Map<String,Object> result = new Map<String,Object>();
         String kavId = '';
         try {
-            afl_Article_Feedback__c[] lstAF = [Select Id, Knowledge_Article_Version_Id__c  from afl_Article_Feedback__c  where id=:recordId LIMIT 1];
-            
+            afl_Article_Feedback__c[] lstAF = [
+                SELECT Id, Knowledge_Article_Version_Id__c, Originated_From_Trigger__c
+                FROM afl_Article_Feedback__c
+                WHERE Id =:recordId
+                LIMIT 1
+            ];
+
             if (lstAF.size() > 0) {
                 afl_Article_Feedback__c af = lstAF.get(0);
-                kavId =  af.Knowledge_Article_Version_Id__c;
+                kavId = af.Knowledge_Article_Version_Id__c;
                 result.put('kavId', kavId);
                 //we get the language - vers
                 result = getCompactLayoutData(kavId,result);
-                
+
                 //Check FLS
                 if (!afl_ArticleFeedbackSecurityHandler.getKAVPermissions()) {
                     throw new SecurityException(afl_ArticleFeedbackSecurityHandler.formatReplace(afl_ArticleFeedbackSecurityHandler.ERROR_OBJECT_NOT_ACCESSIBLE,  new String[] {knowledgeObject}));
                 }
-                
-                String query =  '	SELECT Id, ArchivedDate, KnowledgeArticleId, Language, PublishStatus, VersionNumber' +
-                '	FROM ' + knowledgeObject +
-                '	WHERE Id = \'' + kavId + '\' LIMIT 1';
-                
+
+                String query = ' SELECT Id, ArchivedDate, KnowledgeArticleId, Language, PublishStatus, VersionNumber' +
+                ' FROM ' + knowledgeObject +
+                ' WHERE Id = \'' + kavId + '\' ' +
+                ' LIMIT 1';
+
                 SObject actualKav =  Database.query(query);
                 if (actualKav != null) {
                     Boolean isArchived = ((String)actualKAV.get('PublishStatus') == 'Archived') ? true : false;
                     result.put('isArchived', isArchived);
+
+                    if (af.Originated_From_Trigger__c) {
+                        result.put('hasMultipleLanguages', true);
+                    } else {
+                        result.put('hasMultipleLanguages', false);
+                    }
                 } else {
                     response.state = 'ERROR';
-                    response.error = 'An error occurred getting the id of the related article, please check that the component is in the correct record page.';
+                    response.error = 'An error occurred getting the Id of the related article, please check that the component is in the correct record page.';
                 }
-                
             } else {
                 response.state = 'ERROR';
-                response.error = 'An error occurred getting the id of the article feedback, please check that the component is in the correct record page.';
+                response.error = 'An error occurred getting the Id of the article feedback, please check that the component is in the correct record page.';
             }
-            
+
             response.jsonResponse = JSON.serialize(result);
         } catch (QueryException ex) {
             response.state = 'ERROR';
@@ -55,10 +66,10 @@ public with sharing class afl_RelatedArticleCtrl {
         } catch(Exception e) {
             response = new afl_LightningResponse(e);
         }
-        
+
         return response;
     }
-    
+
     /*
     * @description
     *   Retrieves a Map<String,Object> with some fields of the article compact layout to display on our
@@ -82,13 +93,13 @@ public with sharing class afl_RelatedArticleCtrl {
         if (afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive) {
             recordTypeField = ',RecordTypeId';
         }
-        
+
         queryString = 'SELECT  Id, ArticleNumber, CreatedDate, Language, VersionNumber,PublishStatus' + recordTypeField +  ' FROM ' + knowledgeObject + ' WHERE Id =  \'' + kavId + '\'';
         sObjList = Database.query(queryString);
         if (sObjList != null && !sObjList.isEmpty()) {
             SObject sObjKnowledge = sObjList.get(0);
             //recType = sObjKnowledge.getSObject('RecordType') != null ? (String)sObjKnowledge.getSObject('RecordType').get('Name') : 'This article has no record type';
-            
+
             //Get record type name
             if (afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive) {
                 if (String.isNotEmpty((String)sObjKnowledge.get('RecordTypeId'))) {
@@ -101,20 +112,20 @@ public with sharing class afl_RelatedArticleCtrl {
                     }
                 }
             }
-            
+
             result.put('articleVersion', (Decimal)sObjKnowledge.get('VersionNumber'));
             result.put('articleNumber',(String)sObjKnowledge.get('ArticleNumber'));
             result.put('articlePublishingStatus', (String)sObjKnowledge.get('PublishStatus'));
             Schema.DescribeFieldResult fieldResult = User.LanguageLocaleKey.getDescribe();
             List<Schema.PicklistEntry> picklistValues = fieldResult.getPicklistValues();
-            
+
             for (Schema.PicklistEntry picklistEntry : picklistValues) {
                 if (picklistEntry.getValue() == (String)sObjKnowledge.get('Language')) {
                     result.put('articleLanguage', picklistEntry.getLabel());
                 }
             }
         }
-        
+
         return result;
     }
 }

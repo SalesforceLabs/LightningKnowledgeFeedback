@@ -1,64 +1,85 @@
 <aura:component controller="afl_RelatedArticleCtrl" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" extends="c:afl_abstract">
 	<!-- Attributes -->
-	<aura:attribute name="articleLanguage" type="String" default="" description="Article language" />
-	<aura:attribute name="articleVersion" type="String" default="" description="Article version" />
-	<aura:attribute name="articleNumber" type="String" default="" description="Article number" />
-	<aura:attribute name="articlePublishingStatus" type="String" default="" description="Article publishing status" />
-	<aura:attribute name="articleRecordType" type="String" default="" description="Article record type" />
-	<aura:attribute name="recordId" type="String" default="" description="Indicates the id for the actual Article Feedback" />
-	<aura:attribute name="kavId" type="String" default="" description="Indicates the id for the actual KAv" />
+	<aura:attribute name="articleLanguage" type="String" default="" description="Article language"/>
+	<aura:attribute name="articleVersion" type="String" default="" description="Article version"/>
+	<aura:attribute name="articleNumber" type="String" default="" description="Article number"/>
+	<aura:attribute name="articlePublishingStatus" type="String" default="" description="Article publishing status"/>
+	<aura:attribute name="articleRecordType" type="String" default="" description="Article record type"/>
+	<aura:attribute name="recordId" type="String" default="" description="Indicates the id for the actual Article Feedback"/>
+	<aura:attribute name="kavId" type="String" default="" description="Indicates the id for the actual KAv"/>
 	<aura:attribute name="recordError" type="String" access="private"/>
+	<aura:attribute name="hasMultipleLanguages" type="Boolean" default="false" description="True if there is more than 1 language for the article"/>
 
-    <!-- Handlers -->
-    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+	<!-- Handlers -->
+	<aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
 
-   <!-- Knowledge Article detail view -->
+	<!-- Knowledge Article detail view -->
 	<c:afl_toast aura:id="toastNotif"/>
 
-    <aura:renderIf isTrue="{! v.kavId != ''}">
+	<aura:if isTrue="{!v.kavId != ''}">
+		<aura:if isTrue="{!v.hasMultipleLanguages}">
+			<div class="slds-col slds-size_12-of-12 slds-m-bottom_medium">
+				<span class="languageDisclaimer">This Article Feedback originated from a trigger, the master language of the Knowledge Article will be displayed by default. &nbsp;</span>
+				<lightning:helptext iconName="utility:info" content="When you create Feedback using the designated hashtag, the language of the article cannot be retrieved in that context. In those cases, the master language will be displayed by default."/>
+			</div>
+		</aura:if>
+
 		<h3 class="slds-section__title slds-theme_shade slds-m-bottom_medium">
 			<span class="slds-truncate slds-p-horizontal_small slds-col" title="Section Title">Related Article</span>
 			<a onclick="{!c.navigateTo}"><button class="view-button slds-m-top_xx-small slds-m-bottom_xx-small slds-button_neutral  slds-text-heading_medium slds-m-left_medium slds-m-right_xx-small slds-button" type="button">View article</button></a>
 		</h3>
-		<div class="slds-m-left_xx-small slds-grid slds-grid_vertical-align-start slds-size_12-of-12 " >
+
+		<div class="slds-m-left_xx-small slds-grid slds-grid_vertical-align-start slds-size_12-of-12 ">
 			<div class="slds-col slds-size_6-of-12">
 				<span>
 					<span class="test-id__field-label slds-form-element__label">Language</span>
 					<br/><span class="uiOutputText">{!v.articleLanguage}</span>
 				</span>
+
 				<hr class="slds-m-bottom_xxx-small slds-m-top_xxx-small slds-size_5-of-6"/>
+
 				<span>
 					<span class="test-id__field-label slds-form-element__label">Article Number</span>
 					<br/><span class="uiOutputText">{!v.articleNumber}</span>
 				</span>
+
 				<hr class="slds-m-bottom_xxx-small slds-m-top_xxx-small slds-size_5-of-6"/>
+
 				<span>
 					<span class="test-id__field-label slds-form-element__label">Article Publishing Status</span>
 					<br/><span class="uiOutputText">{!v.articlePublishingStatus}</span>
 				</span>
 			</div>
+
 			<div class="slds-col slds-size_6-of-12">
 				<span>
 					<span class="test-id__field-label slds-form-element__label">Article Version</span>
 					<br/><span class="uiOutputText">{!v.articleVersion}</span>
 				</span>
+
 				<hr class="slds-m-bottom_xxx-small slds-m-top_xxx-small slds-size_5-of-6"/>
+
 				<span>
 					<span class="test-id__field-label slds-form-element__label">Article Record Type</span>
 					<br/><span class="uiOutputText">{!v.articleRecordType}</span>
 				</span>
+
 				<hr class="slds-m-bottom_xxx-small slds-m-top_xxx-small slds-size_5-of-6"/>
 			</div>
 		</div>
+
 		<br/>
-		<force:recordView aura:id="recordView"  recordId="{!v.kavId}" type="FULL"/>
+
+		<force:recordView aura:id="recordView" recordId="{!v.kavId}" type="FULL"/>
+
 		<aura:set attribute="else">
 			<span>The article was not found.</span>
 		</aura:set>
-	</aura:renderIf>
+	</aura:if>
 	<!-- Display Lightning Data Service errors, if any -->
-    <aura:if isTrue="{!not(empty(v.recordError))}">
-        <div class="recordError">
-            {!v.recordError}</div>
-    </aura:if>
+	<aura:if isTrue="{!not(empty(v.recordError))}">
+		<div class="recordError">
+			{!v.recordError}
+		</div>
+	</aura:if>
 </aura:component>
