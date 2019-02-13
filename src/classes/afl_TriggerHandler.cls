@@ -127,8 +127,14 @@ public with sharing class afl_TriggerHandler {
                             afd.Record_Type__c = 'test article type';
                         }
 
-                        afd.Article_Version__c = (Decimal) kav.get('VersionNumber');
-                        afd.Feedback__c = (String) f.get('Body');
+						// Set feedback from Feed Body
+						if (type.equals('FeedItem')) {
+							afd.Feedback__c = (String) f.get('Body');
+						} else {
+							afd.Feedback__c = (String) f.get('CommentBody');
+						}
+
+						afd.Article_Version__c = (Decimal) kav.get('VersionNumber');
                         afd.Feedback_Status__c = 'New';
                         afd.Language__c = mapLanguages.get((String) kav.get('Language'));
                         afd.Last_Published_Date__c = (Datetime) kav.get('LastPublishedDate');
