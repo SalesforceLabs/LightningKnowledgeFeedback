@@ -1,15 +1,17 @@
 <aura:component controller="afl_RelatedArticleCtrl" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" extends="c:afl_abstract">
 	<!-- Attributes -->
-	<aura:attribute name="articleLanguage" type="String" default="" description="Article language"/>
-	<aura:attribute name="articleVersion" type="String" default="" description="Article version"/>
+	<aura:attribute name="articleLanguage" type="String" default="" description="Current Article language"/>
+	<aura:attribute name="articleVersion" type="String" default="" description="Current Article version"/>
 	<aura:attribute name="articleNumber" type="String" default="" description="Article number"/>
 	<aura:attribute name="articlePublishingStatus" type="String" default="" description="Article publishing status"/>
 	<aura:attribute name="articleRecordType" type="String" default="" description="Article record type"/>
 	<aura:attribute name="recordId" type="String" default="" description="Indicates the id for the actual Article Feedback"/>
 	<aura:attribute name="kavId" type="String" default="" description="Indicates the id for the actual KAv"/>
+	<aura:attribute name="originalKavId" type="String" default="" description="Original kavId"/>
 	<aura:attribute name="recordError" type="String" access="private"/>
 	<aura:attribute name="originatedFromTrigger" type="Boolean" default="false" description="True if there is more than 1 language for the article"/>
 	<aura:attribute name="hasMultipleLanguages" type="Boolean" default="false" description="True if there is more than 1 language for the article"/>
+	<aura:attribute name="languagesMap" type="List" default="[]" description="List that keeps languages for an article"/>
 
 	<!-- Handlers -->
 	<aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
@@ -21,7 +23,7 @@
 		<aura:if isTrue="{!v.originatedFromTrigger}">
 			<div class="slds-col slds-size_12-of-12 slds-m-bottom_medium">
 				<span class="languageDisclaimer">This Article Feedback originated from a trigger, the master language of the Knowledge Article will be displayed by default. &nbsp;</span>
-				<lightning:helptext iconName="utility:info" content="When you create Feedback using the designated hashtag, the language of the article cannot be retrieved in that context. In those cases, the master language will be displayed by default."/>
+				<lightning:helptext iconName="utility:info" content="When you create Feedback using the designated hashtag, the language of the article cannot be retrieved in that context. In those cases, the master language will be displayed by default. A picklist is available to change to the desired language."/>
 			</div>
 		</aura:if>
 
@@ -33,15 +35,25 @@
 		<div class="slds-m-left_xx-small slds-grid slds-grid_vertical-align-start slds-size_12-of-12 ">
 			<div class="slds-col slds-size_6-of-12">
 				<span>
-					<span class="test-id__field-label slds-form-element__label">Language</span>
-					<br/><span class="uiOutputText">{!v.articleLanguage}</span>
+					<aura:if isTrue="{!v.hasMultipleLanguages}">
+						<div class="slds-col slds-size_9-of-12">
+							<lightning:combobox aura:id="languageBox" name="language" class="test-id__field-label slds-form-element__label" label="Language" placeholder="{!v.articleLanguage}" options="{!v.languagesMap}" onchange="{!c.handleLanguageChange}"/>
+						</div>
+
+						<aura:set attribute="else">
+							<span class="test-id__field-label slds-form-element__label">Language</span>
+							<br/>
+							<span class="uiOutputText">{!v.articleLanguage}</span>
+						</aura:set>
+					</aura:if>
 				</span>
 
 				<hr class="slds-m-bottom_xxx-small slds-m-top_xxx-small slds-size_5-of-6"/>
 
 				<span>
 					<span class="test-id__field-label slds-form-element__label">Article Number</span>
-					<br/><span class="uiOutputText">{!v.articleNumber}</span>
+					<br/>
+					<span class="uiOutputText">{!v.articleNumber}</span>
 				</span>
 
 				<hr class="slds-m-bottom_xxx-small slds-m-top_xxx-small slds-size_5-of-6"/>
@@ -55,14 +67,16 @@
 			<div class="slds-col slds-size_6-of-12">
 				<span>
 					<span class="test-id__field-label slds-form-element__label">Article Version</span>
-					<br/><span class="uiOutputText">{!v.articleVersion}</span>
+					<br/>
+					<span class="uiOutputText">{!v.articleVersion}</span>
 				</span>
 
 				<hr class="slds-m-bottom_xxx-small slds-m-top_xxx-small slds-size_5-of-6"/>
 
 				<span>
 					<span class="test-id__field-label slds-form-element__label">Article Record Type</span>
-					<br/><span class="uiOutputText">{!v.articleRecordType}</span>
+					<br/>
+					<span class="uiOutputText">{!v.articleRecordType}</span>
 				</span>
 
 				<hr class="slds-m-bottom_xxx-small slds-m-top_xxx-small slds-size_5-of-6"/>

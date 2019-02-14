@@ -63,15 +63,17 @@ public with sharing class afl_TriggerHandler {
 			}
 
 			// Get the article from the post's ParentId
-			String query = 'SELECT KnowledgeArticleId, CreatedDate, ArticleNumber, Title, VersionNumber, Language, LastPublishedDate, LastModifiedById' + recordTypeField +
+			String query = 'SELECT KnowledgeArticleId, CreatedDate, ArticleNumber, Title, VersionNumber, Language, LastPublishedDate, LastModifiedById, IsMasterLanguage ' + recordTypeField +
 			' FROM ' + knowledgeObject +
 			' WHERE PublishStatus = \'' + pubStatus + '\'' + ' AND KnowledgeArticleId IN :setIds ' +
 			' ORDER BY CreatedDate ASC';
 			List<SObject> kavs = Database.query(query);
-
+			System.debug('kavs: ' + kavs);
 			for (SObject kav : kavs) {
 				if (!mKav.containsKey((Id) kav.get('KnowledgeArticleId'))) {
-					mKav.put((Id) kav.get('KnowledgeArticleId'), kav);
+					if ((Boolean) kav.get('IsMasterLanguage')) {
+						mKav.put((Id) kav.get('KnowledgeArticleId'), kav);
+					}
 				}
 			}
 
@@ -107,9 +109,9 @@ public with sharing class afl_TriggerHandler {
 			try {
 				for (SObject f : triggerObjects) {
                     String parentId = (String) f.get('ParentId');
-
-                    if (mkav.containsKey(parentId)) {
-                        SObject kav = mkav.get(parentId);
+					System.debug('parentId: ' + parentId);
+                    if (mKav.containsKey(parentId)) {
+                        SObject kav = mKav.get(parentId);
                         afl_Article_Feedback__c afd = new afl_Article_Feedback__c();
                         afd.Article_Number__c = (String) kav.get('ArticleNumber');
                         afd.Article_Link__c = URL.getSalesforceBaseUrl().toExternalForm() + '/' + (String) kav.get('KnowledgeArticleId');
