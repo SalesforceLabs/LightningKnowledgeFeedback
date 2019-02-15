@@ -63,17 +63,15 @@ public with sharing class afl_TriggerHandler {
 			}
 
 			// Get the article from the post's ParentId
-			String query = 'SELECT KnowledgeArticleId, CreatedDate, ArticleNumber, Title, VersionNumber, Language, LastPublishedDate, LastModifiedById, IsMasterLanguage ' + recordTypeField +
+			String query = 'SELECT KnowledgeArticleId, CreatedDate, ArticleNumber, Title, VersionNumber, Language, LastPublishedDate, LastModifiedById ' + recordTypeField +
 			' FROM ' + knowledgeObject +
-			' WHERE PublishStatus = \'' + pubStatus + '\'' + ' AND KnowledgeArticleId IN :setIds ' +
+			' WHERE PublishStatus = \'' + pubStatus + '\'' + ' AND KnowledgeArticleId IN :setIds AND IsMasterLanguage = true ' +
 			' ORDER BY CreatedDate ASC';
 			List<SObject> kavs = Database.query(query);
 
 			for (SObject kav : kavs) {
 				if (!mKav.containsKey((Id) kav.get('KnowledgeArticleId'))) {
-					if ((Boolean) kav.get('IsMasterLanguage')) {
-						mKav.put((Id) kav.get('KnowledgeArticleId'), kav);
-					}
+					mKav.put((Id) kav.get('KnowledgeArticleId'), kav);
 				}
 			}
 
@@ -109,7 +107,7 @@ public with sharing class afl_TriggerHandler {
 			try {
 				for (SObject f : triggerObjects) {
                     String parentId = (String) f.get('ParentId');
-					
+
                     if (mKav.containsKey(parentId)) {
                         SObject kav = mKav.get(parentId);
                         afl_Article_Feedback__c afd = new afl_Article_Feedback__c();

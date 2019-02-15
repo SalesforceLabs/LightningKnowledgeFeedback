@@ -32,7 +32,7 @@ public with sharing class afl_RelatedArticleCtrl {
                     throw new SecurityException(afl_ArticleFeedbackSecurityHandler.formatReplace(afl_ArticleFeedbackSecurityHandler.ERROR_OBJECT_NOT_ACCESSIBLE,  new String[] {knowledgeObject}));
                 }
 
-                String query = ' SELECT Id, ArchivedDate, KnowledgeArticleId, Language, PublishStatus, VersionNumber, IsMasterLanguage' +
+                String query = ' SELECT Id, ArchivedDate, KnowledgeArticleId, Language, PublishStatus, VersionNumber ' +
                 ' FROM ' + knowledgeObject +
                 ' WHERE Id = \'' + kavId + '\' ' +
                 ' LIMIT 1';
@@ -40,44 +40,16 @@ public with sharing class afl_RelatedArticleCtrl {
 
                 if (actualKavs.size() > 0) {
                     SObject actualKav = actualKavs.get(0);
+                    result.put('kavId', kavId);
 
+                    // Get the language - vers from related article
+                    result = getCompactLayoutData(kavId, result);
+                    
                     Boolean cameFromTrigger = (af.Originated_From_Trigger__c) ? true : false;
                     result.put('originatedFromTrigger', cameFromTrigger);
 
-                    // Check if the store kav is the master language or if it didn't originate from trigger
-                    if ((Boolean) actualKav.get('IsMasterLanguage') || !cameFromTrigger) {
-                        result.put('kavId', kavId);
-
-                        // Get the language - vers from related article
-                        result = getCompactLayoutData(kavId, result);
-
-                        Boolean isArchived = ((String) actualKAV.get('PublishStatus') == 'Archived') ? true : false;
-                        result.put('isArchived', isArchived);
-                    } else {
-                        // Retrieve all languages and keep the master language
-                        String relatedQuery = ' SELECT Id, IsMasterLanguage, Language' +
-                        ' FROM ' + knowledgeObject +
-                        ' WHERE KnowledgeArticleId = \'' + (String) actualKAV.get('KnowledgeArticleId') + '\' AND ' +
-                        ' PublishStatus = \'Online\' ' +
-                        ' ORDER BY Language DESC';
-                        List<SObject> relatedKavs =  Database.query(relatedQuery);
-
-                        if (relatedKavs.size() > 1) {
-                            for (SObject relatedKav : relatedKavs) {
-                                if ((Boolean) relatedKav.get('IsMasterLanguage')) {
-                                    kavId = (String) relatedKav.get('Id');
-                                    result.put('kavId', kavId);
-
-                                    // Get the language - vers from related article
-                                    result = getCompactLayoutData(kavId, result);
-
-                                    // We cannot query for archived articles in this context so only Online articles are retrieved
-                                    result.put('isArchived', false);
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                    Boolean isArchived = ((String) actualKAV.get('PublishStatus') == 'Archived') ? true : false;
+                    result.put('isArchived', isArchived);
                 } else {
                     response.state = 'ERROR';
                     response.error = 'An error occurred getting the Id of the related article, please check that the component is in the correct record page.';
