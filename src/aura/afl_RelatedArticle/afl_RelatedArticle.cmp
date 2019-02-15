@@ -7,11 +7,8 @@
 	<aura:attribute name="articleRecordType" type="String" default="" description="Article record type"/>
 	<aura:attribute name="recordId" type="String" default="" description="Indicates the id for the actual Article Feedback"/>
 	<aura:attribute name="kavId" type="String" default="" description="Indicates the id for the actual KAv"/>
-	<aura:attribute name="originalKavId" type="String" default="" description="Original kavId"/>
 	<aura:attribute name="recordError" type="String" access="private"/>
 	<aura:attribute name="originatedFromTrigger" type="Boolean" default="false" description="True if there is more than 1 language for the article"/>
-	<aura:attribute name="hasMultipleLanguages" type="Boolean" default="false" description="True if there is more than 1 language for the article"/>
-	<aura:attribute name="languagesMap" type="List" default="[]" description="List that keeps languages for an article"/>
 
 	<!-- Handlers -->
 	<aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
@@ -35,17 +32,9 @@
 		<div class="slds-m-left_xx-small slds-grid slds-grid_vertical-align-start slds-size_12-of-12 ">
 			<div class="slds-col slds-size_6-of-12">
 				<span>
-					<aura:if isTrue="{!v.hasMultipleLanguages}">
-						<div class="slds-col slds-size_9-of-12">
-							<lightning:combobox aura:id="languageBox" name="language" class="test-id__field-label slds-form-element__label" label="Language" placeholder="{!v.articleLanguage}" options="{!v.languagesMap}" onchange="{!c.handleLanguageChange}"/>
-						</div>
-
-						<aura:set attribute="else">
-							<span class="test-id__field-label slds-form-element__label">Language</span>
-							<br/>
-							<span class="uiOutputText">{!v.articleLanguage}</span>
-						</aura:set>
-					</aura:if>
+					<span class="test-id__field-label slds-form-element__label">Language</span>
+					<br/>
+					<span class="uiOutputText">{!v.articleLanguage}</span>
 				</span>
 
 				<hr class="slds-m-bottom_xxx-small slds-m-top_xxx-small slds-size_5-of-6"/>

@@ -53,4 +53,24 @@ public class afl_TestDataFactory {
 		setting.Hashtag__c = hashtag;
 		INSERT setting;
 	}
+
+	/*
+	* @description
+	*	Creates a standard User
+	* @params
+	*	void
+	* @return
+	*	none
+	*/
+	public static User createStandardUser() {
+		Profile p = [SELECT Id FROM Profile WHERE Name = 'Standard User'];
+		User testUser = new User(
+			Alias = 'testStd', Email = 'teststandarduser@testorg.com',
+			EmailEncodingKey='UTF-8', LastName = 'Testing', LanguageLocaleKey='en_US',
+			LocaleSidKey = 'en_US', ProfileId = p.Id,
+			TimeZoneSidKey='America/Los_Angeles', UserName='afl_test_user@testorg.com');
+		INSERT testUser;
+
+		return testUser;
+	}
 }

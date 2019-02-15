@@ -169,12 +169,7 @@ private class afl_ArticleFeedbackSecurityHandler_Test {
 
 	public static testMethod void testIsGuestUser() {
 		SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
-		Profile p = [SELECT Id FROM Profile WHERE Name='Standard User'];
-		User testUser = new User(Alias = 'testStd', Email='teststandarduser@testorg.com',
-		EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='en_US',
-		LocaleSidKey='en_US', ProfileId = p.Id,
-		TimeZoneSidKey='America/Los_Angeles', UserName='afl_test_user@testorg.com');
-		INSERT testUser;
+		User testUser = afl_TestDataFactory.createStandardUser();
 
 		System.runAs(testUser) {
 			System.Test.startTest();

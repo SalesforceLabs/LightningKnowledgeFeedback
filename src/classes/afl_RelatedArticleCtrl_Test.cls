@@ -27,7 +27,7 @@ private with sharing class afl_RelatedArticleCtrl_Test {
         SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
         // requery the kavObj to get the KnowledgeArticleId on it that is created automatically
         String q = 'select KnowledgeArticleId, Title, ArticleNumber from KnowledgeArticleVersion where Id = \'' +kavObj.get('Id')+  '\' and PublishStatus = :publishStatus';
-        kavObj = (KnowledgeArticleVersion)Database.query(q);
+        kavObj = (KnowledgeArticleVersion) Database.query(q);
 
         afl_LightningResponse response = new afl_LightningResponse();
         System.Test.StartTest();
@@ -47,7 +47,7 @@ private with sharing class afl_RelatedArticleCtrl_Test {
         response = afl_RelatedArticleCtrl.loadKAVId(afd.Id);
         System.Test.StopTest();
 
-        System.assertEquals('SUCCESS', response.state, 'State should be SUCCESS ');
+        System.assertEquals('SUCCESS', response.state, 'State should be SUCCESS');
     }
 
     /*
@@ -79,7 +79,7 @@ private with sharing class afl_RelatedArticleCtrl_Test {
         response = afl_RelatedArticleCtrl.loadKAVId(afd.Id);
         System.Test.StopTest();
 
-        System.assertEquals('SUCCESS', response.state, 'State should be SUCCESS ');
+        System.assertEquals('SUCCESS', response.state, 'State should be SUCCESS');
     }
 
     /*
@@ -92,20 +92,7 @@ private with sharing class afl_RelatedArticleCtrl_Test {
         response = afl_RelatedArticleCtrl.loadKAVId('');
         System.Test.StopTest();
 
-        System.assertEquals('ERROR', response.state, 'State should be ERROR ');
-    }
-
-    /*
-        Description: Check for the related article returned by the loadKAVId method
-    */
-    static testMethod void testloadKAVId_WrongKavId() {
-        afl_LightningResponse response = new afl_LightningResponse();
-
-        System.Test.StartTest();
-        response = afl_RelatedArticleCtrl.loadKAVId('kas12345678');
-        System.Test.StopTest();
-
-        System.assertEquals('ERROR', response.state, 'State should be ERROR ');
+        System.assertEquals('ERROR', response.state, 'State should be ERROR');
     }
 
     /*
@@ -121,32 +108,50 @@ private with sharing class afl_RelatedArticleCtrl_Test {
         response = afl_RelatedArticleCtrl.loadKAVId(afd.Id);
         System.Test.StopTest();
 
-        System.assertEquals('ERROR', response.state, 'State should be ERROR ');
+        System.assertEquals('ERROR', response.state, 'State should be ERROR');
     }
 
     /*
-        Description: Check for the related article returned by the loadKAVId method
+        Description: Check that FLS is enforced with a standard user
     */
-    static testMethod void testReloadKav() {
-        SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
+    static testMethod void testloadKAVId_noFLS() {
+        afl_LightningResponse response = new afl_LightningResponse();
+        User testUser = afl_TestDataFactory.createStandardUser();
 
-        System.Test.StartTest();
-        afl_LightningResponse response = afl_RelatedArticleCtrl.reloadKav((String) kavObj.get('Id'));
-        System.Test.StopTest();
+        System.runAs(testUser) {
+            System.Test.StartTest();
+            afl_Article_Feedback__c afd = new afl_Article_Feedback__c(
+                Knowledge_Article_Version_Id__c = 'testId'
+            );
+            INSERT afd;
 
-        System.assertEquals('SUCCESS', response.state, 'State should be SUCCESS ');
+            try {
+                response = afl_RelatedArticleCtrl.loadKAVId(afd.Id);
+            } catch (Exception e) {
+                response.state = 'ERROR';
+                response.error = 'An error ocurred while retrieving the information, the related article was not found.';
+            }
+            System.Test.StopTest();
+
+            System.assertEquals('ERROR', response.state, 'State should be ERROR');
+        }
     }
 
     /*
-        Description: Check for the related article returned by the loadKAVId method
+        Description: Test scenario where Article feedback did not come from trigger
     */
-    static testMethod void testReloadKav_WrongKavId() {
-        SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
+    static testMethod void testloadKAVId_wrongKavId() {
+        afl_LightningResponse response = new afl_LightningResponse();
 
         System.Test.StartTest();
-        afl_LightningResponse response = afl_RelatedArticleCtrl.reloadKav('WrongKavId');
+        afl_Article_Feedback__c afd = new afl_Article_Feedback__c(
+            Knowledge_Article_Version_Id__c = 'ka12345678abcdefgh'
+        );
+        INSERT afd;
+
+        response = afl_RelatedArticleCtrl.loadKAVId(afd.Id);
         System.Test.StopTest();
 
-        System.assertEquals('ERROR', response.state, 'State should be ERROR ');
+        System.assertEquals('ERROR', response.state, 'State should be ERROR');
     }
 }

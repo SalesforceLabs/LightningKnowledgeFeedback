@@ -68,7 +68,7 @@ public with sharing class afl_TriggerHandler {
 			' WHERE PublishStatus = \'' + pubStatus + '\'' + ' AND KnowledgeArticleId IN :setIds ' +
 			' ORDER BY CreatedDate ASC';
 			List<SObject> kavs = Database.query(query);
-			System.debug('kavs: ' + kavs);
+
 			for (SObject kav : kavs) {
 				if (!mKav.containsKey((Id) kav.get('KnowledgeArticleId'))) {
 					if ((Boolean) kav.get('IsMasterLanguage')) {
@@ -109,7 +109,7 @@ public with sharing class afl_TriggerHandler {
 			try {
 				for (SObject f : triggerObjects) {
                     String parentId = (String) f.get('ParentId');
-					System.debug('parentId: ' + parentId);
+					
                     if (mKav.containsKey(parentId)) {
                         SObject kav = mKav.get(parentId);
                         afl_Article_Feedback__c afd = new afl_Article_Feedback__c();
