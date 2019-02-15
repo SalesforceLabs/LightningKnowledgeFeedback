@@ -389,6 +389,5 @@ public class afl_ArticleFeedbackSecurityHandler {
         return commName;
     }
 
-
     public class SecurityException extends Exception {}
 }
