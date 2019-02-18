@@ -19,8 +19,8 @@
 	<aura:if isTrue="{!v.kavId != ''}">
 		<aura:if isTrue="{!v.originatedFromTrigger}">
 			<div class="slds-col slds-size_12-of-12 slds-m-bottom_medium">
-				<span class="languageDisclaimer">This Article Feedback originated from a trigger, the master language of the Knowledge Article will be displayed by default. &nbsp;</span>
-				<lightning:helptext iconName="utility:info" content="When you create Feedback using the designated hashtag, the language of the article cannot be retrieved in that context. In those cases, the master language will be displayed by default. A picklist is available to change to the desired language."/>
+				<span class="languageDisclaimer">This Article Feedback was originated from a trigger, the master language of the Knowledge Article will be displayed by default. &nbsp;</span>
+				<lightning:helptext iconName="utility:info" content="When you create a Feedback record using the designated hashtag, the language of the article cannot be retrieved in that context. In those cases, the master language will be displayed by default."/>
 			</div>
 		</aura:if>
 

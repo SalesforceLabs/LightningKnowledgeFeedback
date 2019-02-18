@@ -43,7 +43,7 @@ public with sharing class afl_TriggerHandler {
 				}
 			}
 		}
-		
+
 		if (!setIds.isEmpty()) {
 			Map<String,SObject> mKav = new Map<String,SObject>();
 
@@ -106,6 +106,7 @@ public with sharing class afl_TriggerHandler {
 			}
 
 			try {
+				// Check object permissions
 				if (afl_ArticleFeedbackSecurityHandler.isCreateable(Schema.SObjectType.afl_Article_Feedback__c.getSobjectType())) {
 					List<afl_Article_Feedback__c> lstAfd = new List<afl_Article_Feedback__c>();
 					for (SObject f : triggerObjects) {
