@@ -13,9 +13,10 @@ public class afl_ArticleFeedbackSecurityHandler {
     public static final String  ERROR_FIELD_NOT_UPDATEABLE = 'You cannot update the following fields: {0} Please contact your Salesforce Administrator for assistance.';
     public static final String  ERROR_FIELD_NOT_CREATEABLE = 'You cannot create the following fields: {0} Please contact your Salesforce Administrator for assistance.';
 
-    public static Boolean securityEnabled { get; set; }
-    public static Boolean isPrivateSharingEnabled { get; set; }
+    public static Boolean securityEnabled {get; set;}
+    public static Boolean isPrivateSharingEnabled {get; set;}
     public static Boolean isRecordTypeIdActive = checkForSchemaFieldActive('recordtypeid');
+    public static Boolean isMasterLanguageActive = checkForSchemaFieldActive('ismasterlanguage');
 
     static {
         securityEnabled = true;

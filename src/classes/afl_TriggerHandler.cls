@@ -54,6 +54,12 @@ public with sharing class afl_TriggerHandler {
 				recordTypeField = ', RecordTypeId';
 			}
 
+			// Set IsMasterLanguage flag and IsMasterLanguage query parameter
+			String masterLanguageField = '';
+			if (afl_ArticleFeedbackSecurityHandler.isMasterLanguageActive) {
+				masterLanguageField = ' AND IsMasterLanguage = true ';
+			}
+
 			// Set Knowledge object
 			String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
 
@@ -66,7 +72,7 @@ public with sharing class afl_TriggerHandler {
 			// Get the article from the post's ParentId
 			String query = 'SELECT KnowledgeArticleId, CreatedDate, ArticleNumber, Title, VersionNumber, Language, LastPublishedDate, LastModifiedById ' + recordTypeField +
 			' FROM ' + knowledgeObject +
-			' WHERE PublishStatus = \'' + pubStatus + '\'' + ' AND KnowledgeArticleId IN :setIds AND IsMasterLanguage = true ' +
+			' WHERE PublishStatus = \'' + pubStatus + '\'' + ' AND KnowledgeArticleId IN :setIds ' + masterLanguageField +
 			' ORDER BY CreatedDate ASC';
 			List<SObject> kavs = Database.query(query);
 
