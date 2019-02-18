@@ -8,16 +8,16 @@ trigger afl_UpdatedArticleFeedback on afl_Article_Feedback__c (after update) {
     List<FeedComment> commentList = new List<FeedComment>();
     List<Id> parentItemsIds = new List<Id>();
     Set<Id> deletedParentsIds = new Set<Id>();
-    
+
     // Iterate through map to check if feedback article exists
     for (afl_Article_Feedback__c af : Trigger.new) {
         afl_Article_Feedback__c oldAf = Trigger.oldMap.get(af.Id);
-        
+
         if (oldAf.Article_Feed_Update__c != af.Article_Feed_Update__c) {
             parentItemsIds.add(af.Parent_FeedItem__c);
         }
     }
-    
+
     // Check with SOQL
     if (parentItemsIds.size() > 0) {
         List<FeedItem> parentFeedList = [
@@ -26,26 +26,14 @@ trigger afl_UpdatedArticleFeedback on afl_Article_Feedback__c (after update) {
         WHERE Id IN : parentItemsIds AND IsDeleted = true
         ALL ROWS
         ];
-        
+
         deletedParentsIds = (new Map<Id,FeedItem>(parentFeedList)).keySet();
     }
-    
+
     for (afl_Article_Feedback__c af : Trigger.new) {
         afl_Article_Feedback__c oldAf = Trigger.oldMap.get(af.Id);
-        
-        // The following check was commented by request of Devra.
-        // Ticket: https:// Altimetrik.assembla.com/spaces/public-knowledge-base/simple_planner#/ticket:893
-        
-        // if (String.isNotBlank(af.Parent_FeedItem__c) && String.isNotBlank(oldAF.Parent_FeedItem__c)) {
-        //     if (af.Parent_FeedItem__c != oldAF.Parent_FeedItem__c) {
-        //         af.Parent_FeedItem__c.addError('An error ocurred. This field cannot be modified');
-        //     }
-        // } else {
-        //     af.Parent_FeedItem__c.addError('An error ocurred. This field cannot be modified or empty');
-        // }
-        
+
         if (oldAf.Article_Feed_Update__c != af.Article_Feed_Update__c) {
-            // Integer feedCount = [SELECT COUNT() FROM FeedItem WHERE Id =:af.Parent_FeedItem__c AND IsDeleted = true ALL ROWS];
             if (deletedParentsIds.contains(af.Parent_FeedItem__c)) {
                 af.Article_Feed_Update__c.addError('An error ocurred trying to update this field.' +
                 ' Please check that the post that generated this article feedback exists');
