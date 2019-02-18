@@ -44,7 +44,7 @@ public with sharing class afl_RelatedArticleCtrl {
 
                     // Get the language - vers from related article
                     result = getCompactLayoutData(kavId, result);
-                    
+
                     Boolean cameFromTrigger = (af.Originated_From_Trigger__c) ? true : false;
                     result.put('originatedFromTrigger', cameFromTrigger);
 
@@ -52,7 +52,7 @@ public with sharing class afl_RelatedArticleCtrl {
                     result.put('isArchived', isArchived);
                 } else {
                     response.state = 'ERROR';
-                    response.error = 'An error occurred getting the Id of the related article, please check that the component is in the correct record page.';
+                    response.error = 'The related article could not be found. It might have changed or no longer exists.';
                 }
             } else {
                 response.state = 'ERROR';
