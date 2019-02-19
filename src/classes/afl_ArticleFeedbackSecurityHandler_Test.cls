@@ -16,13 +16,13 @@ private class afl_ArticleFeedbackSecurityHandler_Test {
 		System.Test.startTest();
 		for (User u : users) {
 			System.runAs(u) {
-				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isAccessible(Case.SObjectType), Case.SObjectType.getDescribe().isAccessible());
-				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isCreateable(Case.SObjectType), Case.SObjectType.getDescribe().isCreateable());
-				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isUpdateable(Case.SObjectType), Case.SObjectType.getDescribe().isUpdateable());
-				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isDeletable(Case.SObjectType), Case.SObjectType.getDescribe().isDeletable());
-				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isAccessible(Case.subject), Case.subject.getDescribe().isAccessible());
-				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isCreateable(Case.subject), Case.subject.getDescribe().isCreateable());
-				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isUpdateable(Case.subject), Case.subject.getDescribe().isUpdateable());
+				System.assertEquals(Case.SObjectType.getDescribe().isAccessible(), afl_ArticleFeedbackSecurityHandler.isAccessible(Case.SObjectType));
+				System.assertEquals(Case.SObjectType.getDescribe().isCreateable(), afl_ArticleFeedbackSecurityHandler.isCreateable(Case.SObjectType));
+				System.assertEquals(Case.SObjectType.getDescribe().isUpdateable(), afl_ArticleFeedbackSecurityHandler.isUpdateable(Case.SObjectType));
+				System.assertEquals(Case.SObjectType.getDescribe().isDeletable(), afl_ArticleFeedbackSecurityHandler.isDeletable(Case.SObjectType));
+				System.assertEquals(Case.subject.getDescribe().isAccessible(), afl_ArticleFeedbackSecurityHandler.isAccessible(Case.subject));
+				System.assertEquals(Case.subject.getDescribe().isCreateable(), afl_ArticleFeedbackSecurityHandler.isCreateable(Case.subject));
+				System.assertEquals(Case.subject.getDescribe().isUpdateable(), afl_ArticleFeedbackSecurityHandler.isUpdateable(Case.subject));
 
 				// Test object permissions
 				// Test isAccessible
