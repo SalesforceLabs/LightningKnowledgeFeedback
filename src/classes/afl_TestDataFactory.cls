@@ -56,21 +56,26 @@ public class afl_TestDataFactory {
 
 	/*
 	* @description
-	*	Creates a standard User
+	*	Creates a given User
 	* @params
-	*	void
+	*	String profile name
 	* @return
-	*	none
+	*	User
 	*/
-	public static User createStandardUser() {
-		Profile p = [SELECT Id FROM Profile WHERE Name = 'Standard User'];
+	public static User createUser(String profileName) {
+		// Create user for test
+		Profile p = [SELECT Id FROM Profile WHERE Name =:profileName];
 		User testUser = new User(
-			Alias = 'testStd', Email = 'teststandarduser@testorg.com',
-			EmailEncodingKey='UTF-8', LastName = 'Testing', LanguageLocaleKey='en_US',
-			LocaleSidKey = 'en_US', ProfileId = p.Id,
-			TimeZoneSidKey='America/Los_Angeles', UserName='afl_test_user@testorg.com');
-		INSERT testUser;
+			Alias = 'newUser',
+			Email='newuser@testorg.com',
+			EmailEncodingKey='UTF-8',
+			LastName='Testing',
+			LanguageLocaleKey='en_US',
+			LocaleSidKey='en_US',
+			ProfileId = p.Id,
+			TimeZoneSidKey='America/Los_Angeles',
+			UserName = String.valueOf(Crypto.getRandomInteger()) + 'myusername@testorg.com');
 
-		return testUser;
+		return testUSer;
 	}
 }

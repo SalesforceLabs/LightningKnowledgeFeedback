@@ -7,27 +7,15 @@
 @isTest
 private class afl_ArticleFeedbackSecurityHandler_Test {
 	public static testMethod void testSecurityEnabled() {
-		Profile[] profileList = [
-		   	SELECT Id, Name
-			FROM Profile
-			WHERE Name = 'System Administrator' OR
-			Name = 'Standar User'
-			LIMIT 2
-		];
+		List<User> users = new List<User> {
+			afl_TestDataFactory.createUser('System Administrator'),
+			afl_TestDataFactory.createUser('Standard User'),
+			afl_TestDataFactory.createUser('Read Only')
+		};
 
-		Map<Id,String> profileMap = new Map<Id,String>();
-
-		for (Profile p : profileList) {
-			profileMap.put(p.id, p.Name);
-		}
-
-		List<User> u = [select id, profileId from User where Id =: UserInfo.getUserId() limit 1];
-
-		if (profileMap.containsKey(UserInfo.getProfileId()) && profileMap.get(UserInfo.getProfileId()) == 'System Administrator') {
-			for (Profile p : profileList) {
-				u[0].profileId = p.id;
-				UPDATE u;
-
+		System.Test.startTest();
+		for (User u : users) {
+			System.runAs(u) {
 				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isAccessible(Case.SObjectType), Case.SObjectType.getDescribe().isAccessible());
 				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isCreateable(Case.SObjectType), Case.SObjectType.getDescribe().isCreateable());
 				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isUpdateable(Case.SObjectType), Case.SObjectType.getDescribe().isUpdateable());
@@ -36,100 +24,126 @@ private class afl_ArticleFeedbackSecurityHandler_Test {
 				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isCreateable(Case.subject), Case.subject.getDescribe().isCreateable());
 				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isUpdateable(Case.subject), Case.subject.getDescribe().isUpdateable());
 
-				if (Case.SObjectType.getDescribe().isAccessible()) {
+				// Test object permissions
+				// Test isAccessible
+				Boolean isAccessible;
+				try {
 					afl_ArticleFeedbackSecurityHandler.canAccess(Case.SObjectType);
+					isAccessible = true;
+				} catch (Exception e) {
+					isAccessible = false;
+				}
+
+				if (Case.SObjectType.getDescribe().isAccessible()) {
+					System.assert(isAccessible, 'The user should have access permissions');
 				} else {
-					try {
-						afl_ArticleFeedbackSecurityHandler.canAccess(Case.SObjectType);
-						System.assert(false);
-					} catch (SecurityException e) {}
+					System.assertEquals(false, isAccessible, 'The user should not have access permissions');
+				}
+
+				// Test isCreateable
+				Boolean isCreateable;
+				try {
+					afl_ArticleFeedbackSecurityHandler.canCreate(Case.SObjectType);
+					isCreateable = true;
+				} catch (Exception e) {
+					isCreateable = false;
 				}
 
 				if (Case.SObjectType.getDescribe().isCreateable()) {
-					afl_ArticleFeedbackSecurityHandler.canCreate(Case.SObjectType);
+					System.assert(isCreateable, 'The user should have create permissions');
 				} else {
-					try {
-						afl_ArticleFeedbackSecurityHandler.canCreate(Case.SObjectType);
-						System.assert(false);
-					} catch (SecurityException e) {}
+					System.assertEquals(false, isCreateable, 'The user should not have create permissions');
+				}
+
+				// Test isUpdateable
+				Boolean isUpdateable;
+				try {
+					afl_ArticleFeedbackSecurityHandler.canUpdate(Case.SObjectType);
+					isUpdateable = true;
+				} catch (Exception e) {
+					isUpdateable = false;
 				}
 
 				if (Case.SObjectType.getDescribe().isUpdateable()) {
-					afl_ArticleFeedbackSecurityHandler.canUpdate(Case.SObjectType);
+					System.assert(isUpdateable, 'The user should have update permissions');
 				} else {
-					try {
-						afl_ArticleFeedbackSecurityHandler.canUpdate(Case.SObjectType);
-						System.assert(false);
-					} catch (SecurityException e) {}
+					System.assertEquals(false, isUpdateable, 'The user should not have update permissions');
+				}
+
+				// Test isDeletable
+				Boolean isDeletable;
+				try {
+					afl_ArticleFeedbackSecurityHandler.canDelete(Case.SObjectType);
+					isDeletable = true;
+				} catch (Exception e) {
+					isDeletable = false;
 				}
 
 				if (Case.SObjectType.getDescribe().isDeletable()) {
-					afl_ArticleFeedbackSecurityHandler.canDelete(Case.SObjectType);
+					System.assert(isDeletable, 'The user should have delete permissions');
 				} else {
-					try {
-						afl_ArticleFeedbackSecurityHandler.canDelete(Case.SObjectType);
-						System.assert(false);
-					} catch (SecurityException e) {}
+					System.assertEquals(false, isDeletable, 'The user should not have delete permissions');
+				}
+
+				// Test field permissions
+				// Test isAccessible
+				try {
+					afl_ArticleFeedbackSecurityHandler.canAccess(Case.subject);
+					isAccessible = true;
+				} catch (Exception e) {
+					isAccessible = false;
 				}
 
 				if (Case.subject.getDescribe().isAccessible()) {
-					afl_ArticleFeedbackSecurityHandler.canAccess(Case.subject);
+					System.assert(isAccessible, 'The user should have access permissions');
 				} else {
-					try {
-						afl_ArticleFeedbackSecurityHandler.canAccess(Case.subject);
-						System.assert(false);
-					} catch (SecurityException e) {}
+					System.assertEquals(false, isAccessible, 'The user should not have access permissions');
+				}
+
+				// Test isCreateable
+				try {
+					afl_ArticleFeedbackSecurityHandler.canCreate(Case.subject);
+					isCreateable = true;
+				} catch (Exception e) {
+					isCreateable = false;
 				}
 
 				if (Case.subject.getDescribe().isCreateable()) {
-					afl_ArticleFeedbackSecurityHandler.canCreate(Case.subject);
+					System.assert(isCreateable, 'The user should have create permissions');
 				} else {
-					try {
-						afl_ArticleFeedbackSecurityHandler.canCreate(Case.subject);
-						System.assert(false);
-					} catch (SecurityException e) {}
+					System.assertEquals(false, isCreateable, 'The user should not have create permissions');
+				}
+
+				// Test isUpdateable
+				try {
+					afl_ArticleFeedbackSecurityHandler.canUpdate(Case.subject);
+					isUpdateable = true;
+				} catch (Exception e) {
+					isUpdateable = false;
 				}
 
 				if (Case.subject.getDescribe().isUpdateable()) {
-					afl_ArticleFeedbackSecurityHandler.canUpdate(Case.subject);
+					System.assert(isUpdateable, 'The user should have update permissions');
 				} else {
-					try {
-						afl_ArticleFeedbackSecurityHandler.canUpdate(Case.subject);
-						System.assert(false);
-					} catch (SecurityException e) {}
+					System.assertEquals(false, isUpdateable, 'The user should not have update permissions');
 				}
 			}
 		}
+		System.Test.stopTest();
 	}
 
 	public static testMethod void testSecurityDisabled() {
 		afl_ArticleFeedbackSecurityHandler.securityEnabled = false;
-		Profile[] profileList = [
-			SELECT Id, Name
-			FROM Profile
-			WHERE Name = 'System Administrator' OR
-			Name = 'Standar User'
-			LIMIT 2
-		];
 
-		Map<Id,String> profileMap = new Map<Id,String>();
+		List<User> users = new List<User> {
+			afl_TestDataFactory.createUSer('System Administrator'),
+			afl_TestDataFactory.createUSer('Standard User'),
+			afl_TestDataFactory.createUSer('Read Only')
+		};
 
-		for (Profile p : profileList) {
-			profileMap.put(p.id, p.Name);
-		}
-
-		List<User> u = [
-			SELECT Id, profileId
-			FROM User
-			WHERE Id =: UserInfo.getUserId()
-			LIMIT 1
-		];
-
-		if (profileMap.containsKey(UserInfo.getProfileId()) && profileMap.get(UserInfo.getProfileId()) == 'System Administrator') {
-			for (Profile p : profileList) {
-				u[0].profileId = p.id;
-				UPDATE u;
-
+		System.Test.startTest();
+		for (User u : users) {
+			System.runAs(u) {
 				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isAccessible(Case.SObjectType), true);
 				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isCreateable(Case.SObjectType), true);
 				System.assertEquals(afl_ArticleFeedbackSecurityHandler.isUpdateable(Case.SObjectType), true);
@@ -155,6 +169,7 @@ private class afl_ArticleFeedbackSecurityHandler_Test {
 				afl_ArticleFeedbackSecurityHandler.toString(objectTypeList);
 			}
 		}
+		System.Test.stopTest();
 	}
 
 	public static testMethod void testGetKAVPermissions() {
@@ -169,7 +184,7 @@ private class afl_ArticleFeedbackSecurityHandler_Test {
 
 	public static testMethod void testIsGuestUser() {
 		SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
-		User testUser = afl_TestDataFactory.createStandardUser();
+		User testUser = afl_TestDataFactory.createUser('Standard User');
 
 		System.runAs(testUser) {
 			System.Test.startTest();

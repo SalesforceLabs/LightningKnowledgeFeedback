@@ -116,7 +116,7 @@ private with sharing class afl_RelatedArticleCtrl_Test {
     */
     static testMethod void testloadKAVId_noFLS() {
         afl_LightningResponse response = new afl_LightningResponse();
-        User testUser = afl_TestDataFactory.createStandardUser();
+        User testUser = afl_TestDataFactory.createUser('Standard User');
 
         System.runAs(testUser) {
             System.Test.StartTest();
