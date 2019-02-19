@@ -37,4 +37,12 @@ private class afl_ArticleFeedbackLgnConfigCtrlTest {
 		System.assertEquals(af.Hashtag__c, '#TestHashtag');
 		System.assertEquals(result.get('status'), 'SUCCESS');
 	}
+
+	static testMethod void getCurrentPrefixTest() {
+		Test.startTest();
+		afl_ArticleFeedbackLgnConfigCtrl ctrl = new afl_ArticleFeedbackLgnConfigCtrl();
+		Test.stopTest();
+
+		System.assertNotEquals('', ctrl.currentPrefix);
+	}
 }

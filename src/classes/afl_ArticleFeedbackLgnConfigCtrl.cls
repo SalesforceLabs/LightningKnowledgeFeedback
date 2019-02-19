@@ -5,6 +5,24 @@
 *    Front Controller for Article Feedback project setup page
 **/
 public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
+	public String currentPrefix {get; private set;}
+
+	public afl_ArticleFeedbackLgnConfigCtrl() {
+		getCurrentNamespace();
+	}
+
+	/*
+    * @description
+    *    Logic to resolve namespace prefix
+    * @return
+    *    String with namespace prefix
+    */
+    private void getCurrentNamespace() {
+		String prefix = afl_ArticleFeedbackLgnConfigCtrl.class.getName().substringBefore('afl_ArticleFeedbackLgnConfigCtrl');
+        prefix = String.isBlank(prefix) ? 'c' : prefix.substringBefore('.');
+        currentPrefix = prefix;
+    }
+
 	/*
 	* @description
 	*	Method that gets the data from the afl_Knowledge_feedback__c object
@@ -58,7 +76,7 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 			result.put('status', 'FAILED');
 		}
 		response.jsonResponse = JSON.serialize(result);
-		
+
 		return response;
 	}
 
