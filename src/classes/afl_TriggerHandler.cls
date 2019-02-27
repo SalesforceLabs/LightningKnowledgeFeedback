@@ -17,7 +17,7 @@ public with sharing class afl_TriggerHandler {
 		Set<Id> setIds = new Set<Id>();
 
 		// Set customs settings
-		if (afl_ArticleFeedbackSecurityHandler.isCreateable(Schema.SObjectType.afl_Knowledge_feedback__c.getSobjectType())) {
+		if (afl_ArticleFeedbackSecurityHandler.isCreateable(Schema.SObjectType.afl_Knowledge_feedback__c.getSobjectType()) && afl_ArticleFeedbackSecurityHandler.isUpdateable(Schema.SObjectType.afl_Knowledge_feedback__c.getSobjectType())) {
 			afl_Knowledge_feedback__c kf = afl_Knowledge_feedback__c.getOrgDefaults();
 			if (String.isEmpty(kf.Hashtag__c)) {
 				kf.Hashtag__c = '#ArticleFeedback';
