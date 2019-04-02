@@ -72,7 +72,7 @@ public class afl_ArticleFeedbackSecurityHandler {
     }
 
     public static Boolean isGuestUser() {
-        List<UserLicense> up = [select Name from UserLicense Where Id IN ( select UserLicenseId from Profile where Id = :UserInfo.getProfileId()) LIMIT 1 ];
+        List<UserLicense> up = [SELECT Name FROM UserLicense WHERE Id IN (SELECT UserLicenseId FROM Profile where Id = :UserInfo.getProfileId()) LIMIT 1];
         return up[0].Name == 'Guest';
     }
 
@@ -85,6 +85,7 @@ public class afl_ArticleFeedbackSecurityHandler {
                 }
             }
         }
+
         return true;
     }
 
@@ -96,6 +97,7 @@ public class afl_ArticleFeedbackSecurityHandler {
                 }
             }
         }
+
         return true;
     }
 
@@ -107,6 +109,7 @@ public class afl_ArticleFeedbackSecurityHandler {
                 }
             }
         }
+
         return true;
     }
 
@@ -118,6 +121,7 @@ public class afl_ArticleFeedbackSecurityHandler {
                 }
             }
         }
+
         return true;
     }
 
@@ -129,6 +133,7 @@ public class afl_ArticleFeedbackSecurityHandler {
                 }
             }
         }
+
         return true;
     }
 
@@ -140,6 +145,7 @@ public class afl_ArticleFeedbackSecurityHandler {
                 }
             }
         }
+
         return true;
     }
 
@@ -151,6 +157,7 @@ public class afl_ArticleFeedbackSecurityHandler {
                 }
             }
         }
+        
         return true;
     }
 
@@ -184,7 +191,6 @@ public class afl_ArticleFeedbackSecurityHandler {
     }
 
     // Exception throwers
-
     // Batch methods
     public static void canAccess(Schema.SObjectType[] objectTypeList) {
         if (!isAccessible(objectTypeList)) {
@@ -228,7 +234,7 @@ public class afl_ArticleFeedbackSecurityHandler {
         }
     }
 
-    // single element methods
+    // Single element methods
     public static void canAccess(Schema.SObjectType objectType) {
         canAccess(new Schema.SObjectType[] {objectType});
     }
@@ -257,7 +263,7 @@ public class afl_ArticleFeedbackSecurityHandler {
         canCreate(new Schema.SObjectField[] {field});
     }
 
-    // output helper functions
+    // Output helper functions
     public static String toString(Schema.SObjectType[] objectTypeList) {
         String result = '';
         if (!objectTypeList.isEmpty()) {
@@ -325,8 +331,10 @@ public class afl_ArticleFeedbackSecurityHandler {
             res.put(rt.Name, rt.Id);
         }
 
-        if (res.size() == 0)
-        res = null;
+        if (res.size() == 0) {
+            res = null;
+        }
+
         return res;
     }
 
@@ -365,6 +373,7 @@ public class afl_ArticleFeedbackSecurityHandler {
                 return ples.get(0).getValue();
             }
         }
+
         return null;
     }
 
@@ -387,6 +396,7 @@ public class afl_ArticleFeedbackSecurityHandler {
                 commName = (String)comm.get('name');
             }
         }
+
         return commName;
     }
 
