@@ -15,13 +15,14 @@ public with sharing class afl_TriggerHandler {
 	*/
 	public static void handleTriggerInsertion(String type, List<SObject> triggerObjects) {
 		Set<Id> setIds = new Set<Id>();
-
 		// Set customs settings
-		if (afl_ArticleFeedbackSecurityHandler.isCreateable(Schema.SObjectType.afl_Knowledge_feedback__c.getSobjectType()) && afl_ArticleFeedbackSecurityHandler.isUpdateable(Schema.SObjectType.afl_Knowledge_feedback__c.getSobjectType())) {
+		if (afl_ArticleFeedbackSecurityHandler.isAccessible(Schema.SObjectType.afl_Knowledge_feedback__c.getSobjectType())) {
 			afl_Knowledge_feedback__c kf = afl_Knowledge_feedback__c.getOrgDefaults();
 			if (String.isEmpty(kf.Hashtag__c)) {
 				kf.Hashtag__c = '#ArticleFeedback';
-				UPSERT kf;
+				if (afl_ArticleFeedbackSecurityHandler.isCreateable(Schema.SObjectType.afl_Knowledge_feedback__c.getSobjectType()) && afl_ArticleFeedbackSecurityHandler.isUpdateable(Schema.SObjectType.afl_Knowledge_feedback__c.getSobjectType())) {
+					UPSERT kf;
+				}
 			}
 
 			// Check that the post originates from a Knowledge Article
@@ -29,6 +30,7 @@ public with sharing class afl_TriggerHandler {
 				for (SObject sObj : triggerObjects) {
 					FeedItem f = (FeedItem) sObj;
 					String parentId = f.parentId;
+					System.debug('FeedItem parentId: ' + parentId);
 					if (parentId.startsWith('kA') && (f.Type == 'TextPost' || f.Type == 'LinkPost') && f.Body.containsIgnoreCase(kf.Hashtag__c)) {
 						setIds.add(f.ParentId);
 					}
@@ -37,6 +39,7 @@ public with sharing class afl_TriggerHandler {
 				for (SObject sObj : trigger.new) {
 					FeedComment f = (FeedComment) sObj;
 					String parentId = f.parentId;
+					System.debug('FeedComment parentId: ' + parentId);
 					if (parentId.startsWith('kA') && f.CommentType == 'TextComment' && f.CommentBody.containsIgnoreCase(kf.Hashtag__c)) {
 						setIds.add(f.ParentId);
 					}
