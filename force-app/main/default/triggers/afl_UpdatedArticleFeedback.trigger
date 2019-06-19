@@ -21,10 +21,10 @@ trigger afl_UpdatedArticleFeedback on afl_Article_Feedback__c (after update) {
     // Check with SOQL
     if (parentItemsIds.size() > 0) {
         List<FeedItem> parentFeedList = [
-        SELECT Id
-        FROM FeedItem
-        WHERE Id IN : parentItemsIds AND IsDeleted = true
-        ALL ROWS
+            SELECT Id
+            FROM FeedItem
+            WHERE Id IN : parentItemsIds AND IsDeleted = true
+            ALL ROWS
         ];
 
         deletedParentsIds = (new Map<Id,FeedItem>(parentFeedList)).keySet();
