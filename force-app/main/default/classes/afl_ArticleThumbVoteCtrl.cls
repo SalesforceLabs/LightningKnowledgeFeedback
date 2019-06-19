@@ -41,8 +41,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				artFeed.Community_Name__c = communityName;
 				artFeed.Feedback_Source__c = 'Communities';
 				artFeed.Article_Link__c = baseUrl+'/' + (String)ntw.get('UrlPathPrefix') + '/s/article/'+recordId;
-			}
-			else {
+			} else {
 				artFeed.Feedback_Source__c = 'Internal';
 				artFeed.Article_Link__c = baseUrl+'/'+recordId;
 			}
@@ -70,8 +69,9 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 					if (String.isNotEmpty((String)sObj.get('RecordTypeId'))) {
 						if (!test.isRunningTest()) {
 							String rTypeId = (String)sObj.get('RecordTypeId');
-							if (recordTypeDetails.containsKey(rTypeId))
-							artFeed.Record_Type__c = recordTypeDetails.get(rTypeId);
+							if (recordTypeDetails.containsKey(rTypeId)) { 
+								artFeed.Record_Type__c = recordTypeDetails.get(rTypeId);
+							}
 						} else {
 							artFeed.Record_Type__c = 'test article type';
 						}
@@ -82,13 +82,15 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			if (!hasNoRate) {
 				if (!isSameVote) {
 					Vote vote = new Vote (
-					ParentId = artFeed.Knowledge_kav_article_Id__c,
-					Type = isLiked ? '5' : '1'
+						ParentId = artFeed.Knowledge_kav_article_Id__c,
+						Type = isLiked ? '5' : '1'
 					);
 					Vote[] sVote = [SELECT Id, ParentId FROM Vote WHERE ParentId=:artFeed.Knowledge_kav_article_Id__c AND LastModifiedById=: UserInfo.getUserId() LIMIT 1];
+					
 					if (!sVote.isEmpty()) {
 						vote.Id = sVote.get(0).Id;
 					}
+					
 					try {
 						UPSERT vote;
 					} catch(DmlException e) {

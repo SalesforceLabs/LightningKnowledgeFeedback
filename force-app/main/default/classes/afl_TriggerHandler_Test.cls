@@ -6,7 +6,8 @@
 **/
 @isTest
 private with sharing class afl_TriggerHandler_Test {
-	static testMethod void testHandleTriggerInsertion_FeedItem() {
+	@isTest
+    static void testHandleTriggerInsertion_FeedItem() {
 		// Create knowledge article
 		SObject article = afl_TestDataFactory.createKnowledgeArticle();
 
@@ -47,7 +48,8 @@ private with sharing class afl_TriggerHandler_Test {
 		System.assert(feedback.Originated_From_Trigger__c, 'The feedback was created from the trigger so the flag should be true');
 	}
 
-	static testMethod void testHandleTriggerInsertion_FeedComment() {
+	@isTest
+    static void testHandleTriggerInsertion_FeedComment() {
 		// Create knowledge article
 		SObject article = afl_TestDataFactory.createKnowledgeArticle();
 

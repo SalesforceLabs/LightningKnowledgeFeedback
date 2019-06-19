@@ -6,7 +6,8 @@
  **/
 @isTest
 private class afl_ArticleFeedbackSecurityHandler_Test {
-	public static testMethod void testSecurityEnabled() {
+	@isTest
+    static void testSecurityEnabled() {
 		List<User> users = new List<User> {
 			afl_TestDataFactory.createUser('System Administrator'),
 			afl_TestDataFactory.createUser('Standard User'),
@@ -132,7 +133,8 @@ private class afl_ArticleFeedbackSecurityHandler_Test {
 		System.Test.stopTest();
 	}
 
-	public static testMethod void testSecurityDisabled() {
+	@isTest
+    static void testSecurityDisabled() {
 		afl_ArticleFeedbackSecurityHandler.securityEnabled = false;
 
 		List<User> users = new List<User> {
@@ -172,34 +174,39 @@ private class afl_ArticleFeedbackSecurityHandler_Test {
 		System.Test.stopTest();
 	}
 
-	public static testMethod void testGetKAVPermissions() {
+	@isTest
+    static void testGetKAVPermissions() {
 		// Create the Knowledge Article
 		SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
 
 		System.Test.startTest();
 		Boolean result = afl_ArticleFeedbackSecurityHandler.getKAVPermissions();
-		System.assertEquals (true,result);
 		System.Test.stopTest();
+
+		System.assertEquals(true, result, 'The user should have permissions');
 	}
 
-	public static testMethod void testIsGuestUser() {
+	@isTest
+    static void testIsGuestUser() {
 		SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
 		User testUser = afl_TestDataFactory.createUser('Standard User');
 
 		System.runAs(testUser) {
 			System.Test.startTest();
 			Boolean result = afl_ArticleFeedbackSecurityHandler.isGuestUser();
-			System.assertEquals(false, result);
+			System.assertEquals(false, result, 'The guest user should not have permissions');
 			System.Test.stopTest();
 		}
 	}
 
-	public static testMethod void testFormatReplace() {
+	@isTest
+    static void testFormatReplace() {
 		String value = '{0}';
-		List<String> lstStr = new List<String> {'value1'};
+		List<String> lstStr = new List<String>{'value1'};
 		System.Test.startTest();
 		String result = afl_ArticleFeedbackSecurityHandler.formatReplace(value, lstStr);
-		System.assertEquals('value1', result);
 		System.Test.stopTest();
+
+		System.assertEquals('value1', result, 'The result should contain "value1"');
 	}
 }

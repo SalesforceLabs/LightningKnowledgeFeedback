@@ -7,13 +7,11 @@
 @isTest
 private class afl_LightningResponse_Test {
     private static afl_LightningResponse lightningResponse = new afl_LightningResponse();
-
-    //***** Test Methods *****//
-
     /*
     Description: Check for the get and set of the class
     */
-    @isTest static void test_getAttributes() {
+    @isTest 
+    static void test_getAttributes() {
         System.Test.startTest();
         lightningResponse.jsonResponse = 'testJSON';
         lightningResponse.error = 'testERROR';
@@ -28,7 +26,8 @@ private class afl_LightningResponse_Test {
     /*
     Description: Check for the state of the constructor
     */
-    @isTest static void test_constructor() {
+    @isTest 
+    static void test_constructor() {
         System.Test.startTest();
         String state = lightningResponse.state;
         System.Test.stopTest();
@@ -39,12 +38,13 @@ private class afl_LightningResponse_Test {
     /*
     Description: Check for the state of the constructor
     */
-    @isTest static void test_exception() {
+    @isTest 
+    static void test_exception() {
         try {
             System.Test.startTest();
             User testUser = new User();
             // This insert will fail because there are no required fields set for the user
-            insert testUser;
+            INSERT testUser;
         } catch (Exception e) {
             afl_LightningResponse klr = new afl_LightningResponse(e);
             System.Test.stopTest();

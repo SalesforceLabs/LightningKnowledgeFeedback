@@ -9,7 +9,7 @@ public with sharing class afl_ArticleFeedbackRelatedCtrl {
 
     public afl_ArticleFeedbackRelatedCtrl(ApexPages.StandardController std) {
         if (afl_ArticleFeedbackSecurityHandler.isAccessible(Schema.SObjectType.afl_Article_Feedback__c.getSobjectType())) {
-            afl_Article_Feedback__c af = (afl_Article_Feedback__c)std.getRecord();
+            afl_Article_Feedback__c af = (afl_Article_Feedback__c) std.getRecord();
             if (af != null) {
                 af = [
                     SELECT Article_Number__c, Record_Type__c, Article_Version__c

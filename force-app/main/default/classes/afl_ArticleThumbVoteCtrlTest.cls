@@ -7,37 +7,42 @@
 
 @isTest
 private class afl_ArticleThumbVoteCtrlTest {
-	static testMethod void upsertThumbArticleVoteTest() {
+	@isTest
+    static void upsertThumbArticleVoteTest() {
 		SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
 		Test.startTest();
 		afl_LightningResponse response = afl_ArticleThumbVoteCtrl.upsertThumbArticleVote(knowledgeObject.Id, '', 'Test Description', true, false, false);
 		Test.stopTest();
+		
 		afl_Article_Feedback__c[] afl = [SELECT Name FROM afl_Article_Feedback__c WHERE Knowledge_Article_Version_Id__c =: knowledgeObject.Id LIMIT 1];
 		System.assert(!afl.isEmpty());
-		System.assertEquals(1, afl.size());
+		System.assertEquals(1, afl.size(), 'There should be a thumbs up');
 	}
 
-	static testMethod void getPickListValuesIntoListTest() {
+	@isTest
+    static void getPickListValuesIntoListTest() {
 		Test.startTest();
 		afl_LightningResponse response = afl_ArticleThumbVoteCtrl.getPickListValuesIntoList();
 		Map<String, Object> mResult = (Map<String, Object>)JSON.deserializeUntyped(response.jsonResponse);
 		List<Object> pickListValuesList = (List<Object>)JSON.deserializeUntyped((String)mResult.get('result'));
 		Test.stopTest();
+
 		Schema.DescribeFieldResult fieldResult = afl_Article_Feedback__c.Unlike_Reason__c.getDescribe();
 		List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
 		System.assert(!pickListValuesList.isEmpty());
-		System.assertEquals(ple.size(), pickListValuesList.size());
+		System.assertEquals(ple.size(), pickListValuesList.size(), 'The list values should be the same');
 	}
 
-	static testMethod void getVoteTest() {
+	@isTest
+    static void getVoteTest() {
 		SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
 		String kavId = (String)knowledgeObject.get('Id');
 
 		Test.startTest();
 		afl_LightningResponse response = afl_ArticleThumbVoteCtrl.getVote(kavId);
 		Map<String, Object> mResult = (Map<String, Object>)JSON.deserializeUntyped(response.jsonResponse);
-		// Object value = (Object)JSON.deserialize(mResult.get('vote'), Boolean.class);
 		Test.stopTest();
-		System.assertEquals('true', mResult.get('vote'));
+
+		System.assertEquals('true', mResult.get('vote'), 'The record returned should be a vote');
 	}
 }

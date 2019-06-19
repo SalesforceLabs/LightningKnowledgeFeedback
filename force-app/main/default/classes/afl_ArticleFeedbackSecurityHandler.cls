@@ -5,13 +5,13 @@
 *    Security Handler class for Article Feedback object
 **/
 public class afl_ArticleFeedbackSecurityHandler {
-    public static final String  ERROR_OBJECT_NOT_ACCESSIBLE = 'You do not have access to the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
-    public static final String  ERROR_OBJECT_NOT_UPDATEABLE = 'You cannot update the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
-    public static final String  ERROR_OBJECT_NOT_CREATEABLE = 'You cannot create the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
-    public static final String  ERROR_OBJECT_NOT_DELETABLE = 'You cannot delete the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
-    public static final String  ERROR_FIELD_NOT_ACCESSIBLE = 'You do not have access to the following fields: {0} Please contact your Salesforce Administrator for assistance.';
-    public static final String  ERROR_FIELD_NOT_UPDATEABLE = 'You cannot update the following fields: {0} Please contact your Salesforce Administrator for assistance.';
-    public static final String  ERROR_FIELD_NOT_CREATEABLE = 'You cannot create the following fields: {0} Please contact your Salesforce Administrator for assistance.';
+    public static final String ERROR_OBJECT_NOT_ACCESSIBLE = 'You do not have access to the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
+    public static final String ERROR_OBJECT_NOT_UPDATEABLE = 'You cannot update the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
+    public static final String ERROR_OBJECT_NOT_CREATEABLE = 'You cannot create the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
+    public static final String ERROR_OBJECT_NOT_DELETABLE = 'You cannot delete the following objects: {0}. Please contact your Salesforce Administrator for assistance.';
+    public static final String ERROR_FIELD_NOT_ACCESSIBLE = 'You do not have access to the following fields: {0} Please contact your Salesforce Administrator for assistance.';
+    public static final String ERROR_FIELD_NOT_UPDATEABLE = 'You cannot update the following fields: {0} Please contact your Salesforce Administrator for assistance.';
+    public static final String ERROR_FIELD_NOT_CREATEABLE = 'You cannot create the following fields: {0} Please contact your Salesforce Administrator for assistance.';
 
     public static Boolean securityEnabled {get; set;}
     public static Boolean isPrivateSharingEnabled {get; set;}
@@ -71,6 +71,14 @@ public class afl_ArticleFeedbackSecurityHandler {
         return result ;
     }
 
+    /*
+    * @description
+    *   Returns a boolean to know if the user is a guest
+    * @params
+    *   N/A
+    * @return
+    *   Boolean
+    */
     public static Boolean isGuestUser() {
         List<UserLicense> up = [SELECT Name FROM UserLicense WHERE Id IN (SELECT UserLicenseId FROM Profile where Id = :UserInfo.getProfileId()) LIMIT 1];
         return up[0].Name == 'Guest';
@@ -393,7 +401,7 @@ public class afl_ArticleFeedbackSecurityHandler {
             if (String.isNotEmpty(netId)) {
                 String query = 'select name from Network where id =: netId';
                 SObject comm = Database.query(query);
-                commName = (String)comm.get('name');
+                commName = (String) comm.get('name');
             }
         }
 
