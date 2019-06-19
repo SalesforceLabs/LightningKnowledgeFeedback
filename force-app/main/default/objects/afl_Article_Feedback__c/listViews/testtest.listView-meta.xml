@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>testtest</fullName>
+    <columns>NAME</columns>
+    <columns>Article_Title__c</columns>
+    <columns>Article_Version__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>Feedback__c</columns>
+    <columns>Feedback_Source__c</columns>
+    <filterScope>Mine</filterScope>
+    <label>test</label>
+</ListView>
