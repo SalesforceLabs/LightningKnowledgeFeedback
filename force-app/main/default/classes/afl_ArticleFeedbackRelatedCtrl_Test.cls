@@ -6,7 +6,8 @@
  **/
 @isTest
 private class afl_ArticleFeedbackRelatedCtrl_Test {
-	static testMethod void testTrigger() {
+	@isTest
+    static void testTrigger() {
 		// Creates dummy Article Feedback objects
 		afl_Article_Feedback__c afeedback = new afl_Article_Feedback__c();
         afeedback.Feedback_Status__c = 'New';
@@ -24,8 +25,8 @@ private class afl_ArticleFeedbackRelatedCtrl_Test {
         afeedback2.Article_Version__c = 1;
         afeedback2.Internal_Notes__c = 'Test notes 2';
 
-		insert afeedback;
-        insert afeedback2;
+		INSERT afeedback;
+        INSERT afeedback2;
 
         PageReference pageRef = Page.afl_ArticleFeedbackPage;
 
@@ -34,7 +35,8 @@ private class afl_ArticleFeedbackRelatedCtrl_Test {
         ApexPages.CurrentPage().getparameters().put('id', afeedback.id);
         ApexPages.StandardController sc = new ApexPages.standardController(afeedback);
         afl_ArticleFeedbackRelatedCtrl afsc = new afl_ArticleFeedbackRelatedCtrl(sc);
-        System.assertNotEquals(afsc.records,null);
         System.Test.stopTest();
+
+        System.assertNotEquals(afsc.records, null, 'There should be records');
 	}
 }

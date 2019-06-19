@@ -9,7 +9,7 @@ public with sharing class afl_TriggerHandler {
 	* @description
 	*	Handles the trigger values and inserts an Article Feedback if applicable
 	* @params
-	*	None
+	*	String with type of Feed, List of the trigger records.
 	* @return
 	*	void
 	*/

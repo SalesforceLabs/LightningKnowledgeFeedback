@@ -6,7 +6,8 @@
  **/
 @isTest
 private class afl_InsertLgtnArticleFeedback_Test {
-    static testMethod void testTrigger() {
+    @isTest
+    static void testTrigger() {
         String publishStatus = 'draft';
 
         // Create the Knowledge Article
@@ -22,7 +23,7 @@ private class afl_InsertLgtnArticleFeedback_Test {
         System.Test.startTest();
     	FeedItem f = new FeedItem();
         f.Body = 'test';
-        f.ParentId = (String)kavObj.get('KnowledgeArticleId');
+        f.ParentId = (String) kavObj.get('KnowledgeArticleId');
         INSERT f;
 
         FeedComment fc = new FeedComment();
@@ -31,9 +32,12 @@ private class afl_InsertLgtnArticleFeedback_Test {
         fc.FeedItemId = f.Id;
         INSERT fc;
 
-        String theTitle = (String)kavObj.get('Title');
-        List<afl_Article_Feedback__c> afs = [select id, Article_Number__c, Article_Link__c, Article_Title__c, Record_Type__c from afl_Article_Feedback__c where Article_Title__c =: theTitle ];
-        System.assertNotEquals (afs,null);
+        String theTitle = (String) kavObj.get('Title');
+        List<afl_Article_Feedback__c> afs = [
+            SELECT Id, Article_Number__c, Article_Link__c, Article_Title__c, Record_Type__c 
+            FROM afl_Article_Feedback__c 
+            WHERE Article_Title__c =: theTitle];
+        System.assertEquals(afs.get(0).Article_Title__c, theTitle, 'The titles should match');
         System.Test.stopTest();
     }
 }

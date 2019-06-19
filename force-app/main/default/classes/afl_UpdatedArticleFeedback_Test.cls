@@ -7,7 +7,8 @@
 
 @isTest
 private class afl_UpdatedArticleFeedback_Test{
-	static testMethod void testTrigger() {
+	@isTest
+    static void testTrigger() {
         // creates dummy KnowledgeArticleVersion
         String publishStatus = 'draft';
 
@@ -37,7 +38,7 @@ private class afl_UpdatedArticleFeedback_Test{
 
     	System.Test.startTest();
     	afeedback.Article_Feed_Update__c = 'Test update';
-        update afeedback;
+        UPDATE afeedback;
         System.assertEquals (afeedback.Article_Feed_Update__c ,'Test update');
         System.Test.stopTest();
 	}
