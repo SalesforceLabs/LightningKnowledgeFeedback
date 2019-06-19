@@ -118,8 +118,8 @@ public with sharing class afl_TriggerHandler {
 				// Check object permissions
 				if (afl_ArticleFeedbackSecurityHandler.isCreateable(Schema.SObjectType.afl_Article_Feedback__c.getSobjectType())) {
 					List<afl_Article_Feedback__c> lstAfd = new List<afl_Article_Feedback__c>();
-					for (SObject f : triggerObjects) {
-	                    String parentId = (String) f.get('ParentId');
+					for (SObject feed : triggerObjects) {
+	                    String parentId = (String) feed.get('ParentId');
 
 	                    if (mKav.containsKey(parentId)) {
 	                        SObject kav = mKav.get(parentId);
@@ -141,11 +141,13 @@ public with sharing class afl_TriggerHandler {
 									afd.Record_Type__c = 'test article type';
 								}
 
-								// Set feedback from Feed Body
+								// Set feedback from Feed Body and Id
 								if (type.equals('FeedItem')) {
-									afd.Feedback__c = (String) f.get('Body');
+									afd.Feedback__c = (String) feed.get('Body');
+									afd.Parent_FeedItem__c = (String) feed.get('Id');
 								} else {
-									afd.Feedback__c = (String) f.get('CommentBody');
+									afd.Feedback__c = (String) feed.get('CommentBody');
+									afd.Parent_FeedItem__c = (String) feed.get('FeedItemId');
 								}
 
 								afd.Article_Version__c = (Decimal) kav.get('VersionNumber');
@@ -154,7 +156,7 @@ public with sharing class afl_TriggerHandler {
 								afd.Last_Published_Date__c = (Datetime) kav.get('LastPublishedDate');
 								afd.Last_Published_By__c = (String) kav.get('LastModifiedById');
 								afd.Article_Created_Date__c = (Datetime) kav.get('CreatedDate');
-								afd.Parent_FeedItem__c = (String) f.get('Id');
+								
 								afd.Originated_From_Trigger__c = true;
 
 								if (communitiesAvailable) {
