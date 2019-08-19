@@ -1,8 +1,18 @@
 <aura:component controller="afl_ArticleFeedbackLgnConfigCtrl" extends="c:afl_abstract">
     <!-- Attributes -->
     <aura:attribute name="hashtagValue" type="String" description="Knowledge Configuration object hashtag value"/>
-    <aura:attribute name="editMode" type="Boolean" description="false"/>
-    <aura:attribute name="readonlyMode" type="Boolean" description="true"/>
+    <aura:attribute name="positiveValuesList" type="List" default="[]"/>
+    <aura:attribute name="defaultPositiveValue" type="List" default="[]"/>
+    <aura:attribute name="requiredPositiveValues" type="List" default="[]"/>
+    <aura:attribute name="negativeValuesList" type="List" default="[]"/>
+    <aura:attribute name="defaultNegativeValue" type="List" default="[]"/>
+    <aura:attribute name="requiredNegativeValues" type="List" default="[]"/>
+    <aura:attribute name="feedbackTypeOptions" type="List" default="[
+        {'label': 'Positive', 'value': 'positiveOption'},
+        {'label': 'Negative', 'value': 'negativeOption'}]"
+    />
+    <aura:attribute name="feedbackTypeValue" type="List" default="positiveOption"/>
+
 
     <!-- Handlers -->
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
@@ -29,35 +39,72 @@
                 </div>
 
                 <div class="slds-card__body slds-card__body_inner slds-m-around--medium">
-                    <lightning:layout horizontalAlign="center">
-                        <lightning:layoutItem flexibility="grow" size="3">
+                        <lightning:layoutItem size="8">
                             <div class="slds-form slds-form_horizontal">
                                 <div class="slds-form-element">
-                                    <label class="slds-form-element__label slds-text-color--default" for="hashtagValue">
-                                    <abbr class="slds-required" title="required">*</abbr>Hashtag</label>
-
-                                    <div class="slds-form-element__control">
-                                        <ui:inputText aura:id="inputHashtag" class="slds-input slds-m-left--medium" value="{!v.hashtagValue}" placeholder="#ArticleFeedback" disabled="true" maxlength="99"/>
-                                    </div>
+                                    <lightning:input aura:id="inputHashtag" label="Hashtag" placeholder="#ArticleFeedback" value="{!v.hashtagValue}" required="true" maxlength="99"></lightning:input>
                                 </div>
                             </div>
                         </lightning:layoutItem>
-                    </lightning:layout>
+
+                        <lightning:layoutItem size="8">
+                            <div class="slds-form slds-form_horizontal">
+                                <div class="slds-form-element">
+                                    <lightning:input aura:id="picklistValue" label="Add value to Feedback Reason picklist" placeholder="Picklist value" maxlength="99"></lightning:input>
+                                </div>
+                            </div>
+                        </lightning:layoutItem>
+
+                        <lightning:layoutItem size="8">
+                            <div class="slds-form slds-form_horizontal">
+                                <lightning:checkboxGroup aura:id="feedbackType"
+                                    name="feedbackType"
+                                    label="" class="feedBackTypeCheckbox"
+                                    options="{!v.feedbackTypeOptions}"
+                                    value="{!v.feedbackTypeValue}"
+                                />
+
+                                <lightning:button label="Add" variant="brand" onclick="{!c.addPicklistValue}"/>
+                            </div>
+                        </lightning:layoutItem>
+
+                        <lightning:layoutItem size="8">
+                            <div class="slds-form slds-form_horizontal">
+                                <div class="slds-form-element">
+                                   <lightning:dualListbox aura:id="positiveValues" name="positiveValues"  label= ""
+                                        sourceLabel="Available positive values"
+                                        selectedLabel="Selected positive values"
+                                        options="{!v.positiveValuesList}"
+                                        value="{!v.defaultPositiveValue}"
+                                        requiredOptions="{!v.requiredPositiveValues}"
+                                        onchange="{!c.handlePositiveChange }"
+                                    />
+                                </div>
+                            </div>
+                        </lightning:layoutItem>
+
+                        <lightning:layoutItem size="8">
+                            <div class="slds-form slds-form_horizontal">
+                                <div class="slds-form-element">
+                                <lightning:dualListbox aura:id="negativeValues" name="negativeValues"  label= ""
+                                        sourceLabel="Available negative values"
+                                        selectedLabel="Selected negative values"
+                                        options="{!v.negativeValuesList}"
+                                        value="{!v.defaultNegativeValue}"
+                                        requiredOptions="{!v.requiredNegativeValues}"
+                                        onchange="{!c.handleNegativeChange }"
+                                    />
+                                </div>
+                            </div>
+                        </lightning:layoutItem>
                 </div>
 
                 <footer class="slds-card__footer">
                     <lightning:layout horizontalAlign="center">
                         <lightning:layoutItem flexibility="grow" class="slds-align--absolute-center">
-                            <aura:if isTrue="{!v.editMode}">
-                                <button class="slds-button slds-button_brand" onclick="{!c.updateHashtag}">Save</button>
-                                <button class="slds-button slds-button_neutral" onclick="{!c.cancelEditMode}">Cancel</button>
-
-                                <aura:set attribute="else">
-                                    <button class="slds-button slds-button_brand" onclick="{!c.setEditMode}">Edit</button>
-                                </aura:set>
-                            </aura:if>
+                            <button class="slds-button slds-button_brand" onclick="{!c.updateHashtag}">Save</button>
                         </lightning:layoutItem>
-                </lightning:layout>
+                    </lightning:layout>
                 </footer>
             </article>
         </lightning:layoutItem>

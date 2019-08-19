@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Unlike_Reason__c</fullName>
+    <fullName>Feedback_Reason__c</fullName>
+    <description>Reason provided for feedback</description>
     <externalId>false</externalId>
     <label>Feedback Reason</label>
     <required>false</required>
@@ -42,11 +43,6 @@
                 <label>Outdated  (needs update)</label>
             </value>
             <value>
-                <fullName>Positive feedback</fullName>
-                <default>false</default>
-                <label>Positive feedback</label>
-            </value>
-            <value>
                 <fullName>Poorly Written (not clear)</fullName>
                 <default>false</default>
                 <label>Poorly Written (not clear)</label>
@@ -55,24 +51,6 @@
                 <fullName>Other</fullName>
                 <default>false</default>
                 <label>Other</label>
-            </value>
-            <value>
-                <fullName>Does not Work</fullName>
-                <default>false</default>
-                <isActive>false</isActive>
-                <label>Does not Work</label>
-            </value>
-            <value>
-                <fullName>Outdated</fullName>
-                <default>false</default>
-                <isActive>false</isActive>
-                <label>Outdated</label>
-            </value>
-            <value>
-                <fullName>Poorly Written</fullName>
-                <default>false</default>
-                <isActive>false</isActive>
-                <label>Poorly Written</label>
             </value>
         </valueSetDefinition>
     </valueSet>
