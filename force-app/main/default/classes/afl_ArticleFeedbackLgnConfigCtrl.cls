@@ -174,25 +174,60 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 		Map<String,String> result = new Map<String,String>();
 		List<Article_Feedback_Values__c> newValues = new List<Article_Feedback_Values__c>();
 
-		if (reasonType == 'bothOption') {
-			newValues.add(createNewFeedbackValue(picklistValue, true, false));
-			newValues.add(createNewFeedbackValue(picklistValue, false, true));
-		} else if (reasonType == 'positiveOption') {
-			newValues.add(createNewFeedbackValue(picklistValue, true, false));
-		} else {
-			newValues.add(createNewFeedbackValue(picklistValue, false, true));
-		}
+		List<Article_Feedback_Values__c> existingValues = [
+			SELECT Positive__c, Negative__c 
+			FROM Article_Feedback_Values__c 
+			WHERE Value__c =: picklistValue
+		];
 
-		try {
-			if (newValues.size() > 0) {
-				UPSERT newValues;
-				result.put('status', 'SUCCESS');
+		Boolean canCreatePositiveValue = true;
+		Boolean canCreateNegativeValue = true;
+		if (existingValues.size() > 0) {
+			for (Article_Feedback_Values__c currentValue : existingValues) {
+				if (currentValue.Positive__c == true) {
+					canCreatePositiveValue = false;
+				} else {
+					canCreateNegativeValue = false;
+				}
 			}
-		} catch(Exception e) {
-			response = new afl_LightningResponse(e);
-			result.put('status', 'FAILED');
 		}
 
+		Boolean hasDuplicatedRecord = false;
+		if (reasonType == 'bothOption') {
+			if (canCreatePositiveValue && canCreateNegativeValue) {
+				newValues.add(createNewFeedbackValue(picklistValue, true, false));
+				newValues.add(createNewFeedbackValue(picklistValue, false, true));
+			} else {
+				hasDuplicatedRecord = true;
+			}
+		} else if (reasonType == 'positiveOption') {
+			if (canCreatePositiveValue) {			
+				newValues.add(createNewFeedbackValue(picklistValue, true, false));
+			} else {
+				hasDuplicatedRecord = true;
+			}
+		} else {
+			if (canCreateNegativeValue) {			
+				newValues.add(createNewFeedbackValue(picklistValue, false, true));
+			} else {
+				hasDuplicatedRecord = true;
+			}
+		}
+
+		if (hasDuplicatedRecord) {
+			result.put('status', 'DUPLICATED');
+		} else {
+			try {
+				if (newValues.size() > 0) {
+					UPSERT newValues;
+					result.put('status', 'SUCCESS');
+				}
+			} catch(Exception e) {
+				response = new afl_LightningResponse(e);
+				result.put('status', 'FAILED');
+			}
+		}
+		
 		response.jsonResponse = JSON.serialize(result);
 
 		return response;
