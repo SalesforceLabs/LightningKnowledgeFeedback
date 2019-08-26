@@ -6,12 +6,13 @@
 		}
 
 		var self = this;
-		action.setCallback(self,function(a) {
+		action.setCallback(self, function(a) {
 			try {
 				if (a.getState() !== 'SUCCESS') {
 					throw {'message' : 'An undetermined error occurred with the Apex call.'};
 				}
 
+				console.log('resutl');
 				var result = a.getReturnValue();
 
 				// Some error likely inside of the Apex code occurred.

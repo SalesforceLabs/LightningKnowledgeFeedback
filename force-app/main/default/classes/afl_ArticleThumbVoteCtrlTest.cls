@@ -27,7 +27,7 @@ private class afl_ArticleThumbVoteCtrlTest {
 		List<Object> pickListValuesList = (List<Object>)JSON.deserializeUntyped((String)mResult.get('result'));
 		Test.stopTest();
 
-		Schema.DescribeFieldResult fieldResult = afl_Article_Feedback__c.Unlike_Reason__c.getDescribe();
+		Schema.DescribeFieldResult fieldResult = afl_Article_Feedback__c.Feedback_Reason__c.getDescribe();
 		List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
 		System.assert(!pickListValuesList.isEmpty());
 		System.assertEquals(ple.size(), pickListValuesList.size(), 'The list values should be the same');

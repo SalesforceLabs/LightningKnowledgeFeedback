@@ -29,7 +29,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			if (!hasNoRate) {
 				artFeed.Like__c = isLiked;
 			}
-			artFeed.Unlike_Reason__c = unlikeReason;
+			artFeed.Feedback_Reason__c = unlikeReason;
 
 			String baseUrl = System.URL.getSalesforceBaseUrl().toExternalForm();
 			String communityName = afl_ArticleFeedbackSecurityHandler.getCommunityName();
@@ -125,7 +125,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 		Map<String, Object> mResult = new Map<String, Object>();
 		List<String> pickListValuesList= new List<String>();
 
-		Schema.DescribeFieldResult fieldResult = afl_Article_Feedback__c.Unlike_Reason__c.getDescribe();
+		Schema.DescribeFieldResult fieldResult = afl_Article_Feedback__c.Feedback_Reason__c.getDescribe();
 		List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
 		for ( Schema.PicklistEntry pickListVal : ple) {
 			pickListValuesList.add(pickListVal.getLabel());
