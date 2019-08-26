@@ -99,7 +99,7 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 		List<Article_Feedback_Values__c> activeValues = [
 			SELECT Value__c, Positive__c, Negative__c, Order__c, Active__c
 			FROM Article_Feedback_Values__c
-			WHERE Active__c = false
+			WHERE Active__c = true
 			ORDER BY Order__c ASC
 		];
 
@@ -120,8 +120,6 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 		result.put('allPositiveValues', allPositiveValues);
 		result.put('allNegativeValues', allNegativeValues);
 		result.put('allPicklistValues', allPicklistValues);
-
-		System.debug('result: ' + result);
 
 		return result;
 	}
@@ -193,7 +191,6 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 		} catch(Exception e) {
 			response = new afl_LightningResponse(e);
 			result.put('status', 'FAILED');
-			System.debug(e);
 		}
 
 		response.jsonResponse = JSON.serialize(result);
@@ -238,9 +235,6 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 
 		Map<String,Object> savedValues = (Map<String,Object>) System.JSON.deserializeUntyped(savedValuesJSON);
 
-		System.debug('savedValuesJSON: ' + savedValuesJSON);
-		System.debug('savedValues: ' + savedValues);
-
 		List<Object> activePositiveValues = (List<Object>) savedValues.get('activePositiveValues');
 		List<Object> activeNegativeValues = (List<Object>) savedValues.get('activeNegativeValues');
 
@@ -253,17 +247,29 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 			allValuesList.add((String) valueName);
 		}
 
-		System.debug('allValuesList: ' + allValuesList);
-
 		if (allValuesList.size() > 0) {
 			List<Article_Feedback_Values__c> valuesToUpdate = new List<Article_Feedback_Values__c>();
+
+			List<Article_Feedback_Values__c> otherExistingActiveValues = [
+				SELECT Value__c, Order__c, Positive__c, Negative__c, Active__c
+				FROM Article_Feedback_Values__c
+				WHERE Value__c NOT IN : allValuesList AND Active__c = true
+			];
+			
+			// Reset existing values not in the list sent from the component
+			if (otherExistingActiveValues.size() > 0) {
+				for (Article_Feedback_Values__c currentValue : otherExistingActiveValues) {
+					currentValue.Active__c = false;
+					valuesToUpdate.add(currentValue);
+				}
+			}
+			
+			// Get values that were sent in the list from the component
 			List<Article_Feedback_Values__c> existingValues = [
 				SELECT Value__c, Order__c, Positive__c, Negative__c, Active__c
 				FROM Article_Feedback_Values__c
 				WHERE Value__c IN : allValuesList
 			];
-
-			System.debug('existingValues: ' + existingValues);
 
 			Map<String,Article_Feedback_Values__c> positiveValuesMap = new Map<String,Article_Feedback_Values__c>();
 			Map<String,Article_Feedback_Values__c> negativeValuesMap = new Map<String,Article_Feedback_Values__c>();
@@ -276,12 +282,7 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 				}
 			}
 
-			System.debug('activePositiveValues.size(): ' + activePositiveValues.size());
-			System.debug('activePositiveValues: ' + activePositiveValues);
-			System.debug('positiveValuesMap: ' + positiveValuesMap);
-
 			for (Integer i = 0; i < activePositiveValues.size(); ++i) {
-				System.debug('i: ' + i);
                 Article_Feedback_Values__c updatedValue = positiveValuesMap.get((String) activePositiveValues.get(i));
 				
 				if (updatedValue.Active__c == false) {
@@ -309,13 +310,9 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 				} catch(Exception e) {
 					response = new afl_LightningResponse(e);
 					result.put('status', 'FAILED');
-					System.debug(e);
 				}
 			}
 		}
-
-		System.debug('activePositiveValues: ' + activePositiveValues);
-		System.debug('activeNegativeValues: ' + activeNegativeValues);
 
 		result.put('status', 'SUCCESS');
 		response.jsonResponse = JSON.serialize(result);
