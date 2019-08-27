@@ -14,7 +14,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 	*  Object - afl_LightningResponse
 	*/
 	@AuraEnabled
-	public static afl_LightningResponse upsertThumbArticleVote(Id recordId, String unlikeReason, String voteDescription, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate) {
+	public static afl_LightningResponse upsertThumbArticleVote(Id recordId, String feedbackReason, String voteDescription, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate) {
 		try {
 			// Check FLS and CRUD
 			afl_ArticleFeedbackSecurityHandler.canCreate(afl_Article_Feedback__c.SObjectType);
@@ -29,7 +29,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			if (!hasNoRate) {
 				artFeed.Like__c = isLiked;
 			}
-			artFeed.Feedback_Reason__c = unlikeReason;
+			artFeed.Feedback_Reason__c = feedbackReason;
 
 			String baseUrl = System.URL.getSalesforceBaseUrl().toExternalForm();
 			String communityName = afl_ArticleFeedbackSecurityHandler.getCommunityName();
@@ -120,19 +120,42 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 	public static afl_LightningResponse getPickListValuesIntoList() {
 		// Check FLS
 		afl_ArticleFeedbackSecurityHandler.canAccess(afl_Article_Feedback__c.SObjectType);
+		afl_ArticleFeedbackSecurityHandler.canAccess(Article_Feedback_Values__c.SObjectType);
 
 		afl_LightningResponse response = new afl_LightningResponse();
-		Map<String, Object> mResult = new Map<String, Object>();
-		List<String> pickListValuesList= new List<String>();
+		Map<String,String> result = new Map<String,String>();
+		
+		List<String> activePositiveValues = new List<String>();
+		List<String> activeNegativeValues = new List<String>();
 
-		Schema.DescribeFieldResult fieldResult = afl_Article_Feedback__c.Feedback_Reason__c.getDescribe();
-		List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
-		for ( Schema.PicklistEntry pickListVal : ple) {
-			pickListValuesList.add(pickListVal.getLabel());
+		try {
+			List<Article_Feedback_Values__c> activeValues = [
+				SELECT Value__c, Positive__c, Negative__c, Order__c, Active__c
+				FROM Article_Feedback_Values__c
+				WHERE Active__c = true
+				ORDER BY Order__c ASC
+			];
+
+			if (activeValues.size() > 0) {
+				for (Article_Feedback_Values__c currentValue : activeValues) {
+					if (currentValue.Positive__c == true) {
+						activePositiveValues.add(currentValue.Value__c);
+					} else {
+						activeNegativeValues.add(currentValue.Value__c);
+					}
+				}
+			} else {
+				activePositiveValues.add('Other');
+				activeNegativeValues.add('Other');
+			}
+		} catch(Exception e) {
+			response = new afl_LightningResponse(e);
 		}
 
-		mResult.put('result', JSON.serialize(pickListValuesList));
-		response.jsonResponse = JSON.serialize(mResult);
+		result.put('activePositiveValues', JSON.serialize(activePositiveValues));
+		result.put('activeNegativeValues', JSON.serialize(activeNegativeValues));
+
+		response.jsonResponse = JSON.serialize(result);
 
 		return response;
 	}
