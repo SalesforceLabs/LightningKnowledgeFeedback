@@ -1,12 +1,11 @@
 <aura:component controller="afl_ArticleFeedbackLgnConfigCtrl" extends="c:afl_abstract">
     <!-- Attributes -->
     <aura:attribute name="hashtagValue" type="String" description="Knowledge Configuration object hashtag value"/>
-    <aura:attribute name="positiveValuesList" type="List" default="[]"/>
-    <aura:attribute name="defaultPositiveValue" type="List" default="[]"/>
-    <aura:attribute name="requiredPositiveValues" type="List" default="[]"/>
-    <aura:attribute name="negativeValuesList" type="List" default="[]"/>
-    <aura:attribute name="defaultNegativeValue" type="List" default="[]"/>
-    <aura:attribute name="requiredNegativeValues" type="List" default="[]"/>
+    <aura:attribute name="deleteValues" type="String[]" default=""/>
+    <aura:attribute name="activePositiveValues" type="List" default="[]"/>
+    <aura:attribute name="allPositiveValues" type="List" default="[]"/>
+    <aura:attribute name="activeNegativeValues" type="List" default="[]"/>
+    <aura:attribute name="allNegativeValues" type="List" default="[]"/>
     <aura:attribute name="feedbackTypeOptions" type="List" default="[
         {'label': 'Positive', 'value': 'positiveOption'},
         {'label': 'Negative', 'value': 'negativeOption'}]"
@@ -39,73 +38,84 @@
                 </div>
 
                 <div class="slds-card__body slds-card__body_inner slds-m-around--medium">
-                        <lightning:layoutItem size="8">
-                            <div class="slds-form slds-form_horizontal">
-                                <div class="slds-form-element">
-                                    <lightning:input aura:id="inputHashtag" label="Hashtag" placeholder="#ArticleFeedback" value="{!v.hashtagValue}" required="true" maxlength="99"></lightning:input>
-                                </div>
+                    <lightning:layoutItem size="8">
+                        <div class="slds-form slds-form_horizontal">
+                            <div class="slds-form-element">
+                                <lightning:input aura:id="inputHashtag" label="Hashtag" placeholder="#ArticleFeedback" value="{!v.hashtagValue}" required="true" maxlength="99"></lightning:input>
                             </div>
-                        </lightning:layoutItem>
 
-                        <lightning:layoutItem size="8">
-                            <div class="slds-form slds-form_horizontal">
-                                <div class="slds-form-element">
-                                    <lightning:input aura:id="picklistValue" label="Add value to Feedback Reason picklist" placeholder="Picklist value" maxlength="99"></lightning:input>
-                                </div>
+                            <lightning:button label="Save" class="slds-align--absolute-center" variant="brand" onclick="{!c.updateHashtag}"/>
+                        </div>
+                    </lightning:layoutItem>
+
+                    <lightning:layoutItem size="8">
+                        <div class="slds-form slds-form_horizontal">
+                            <div class="slds-form-element">
+                                <lightning:input aura:id="picklistValue" label="Add value to Feedback Reason picklist" placeholder="Picklist value" maxlength="99"></lightning:input>
                             </div>
-                        </lightning:layoutItem>
+                        </div>
+                    </lightning:layoutItem>
 
-                        <lightning:layoutItem size="8">
-                            <div class="slds-form slds-form_horizontal">
-                                <lightning:checkboxGroup aura:id="feedbackType"
-                                    name="feedbackType"
-                                    label="" class="feedBackTypeCheckbox"
-                                    options="{!v.feedbackTypeOptions}"
-                                    value="{!v.feedbackTypeValue}"
+                    <lightning:layoutItem size="8">
+                        <div class="slds-form slds-form_horizontal">
+                            <lightning:checkboxGroup aura:id="feedbackType"
+                                name="feedbackType"
+                                label="" class="feedBackTypeCheckbox"
+                                options="{!v.feedbackTypeOptions}"
+                                value="{!v.feedbackTypeValue}"
+                            />
+
+                            <lightning:button label="Add" class="slds-align--absolute-center" variant="brand" onclick="{!c.addPicklistValue}"/>
+                        </div>
+                    </lightning:layoutItem>
+
+                    <lightning:layoutItem size="8">
+                        <div class="slds-form slds-form_horizontal">
+                            <div class="slds-form-element">
+                                <lightning:dualListbox aura:id="positiveValues" name="positiveValues"  label= ""
+                                    sourceLabel="Available positive values"
+                                    selectedLabel="Selected positive values"
+                                    options="{!v.allPositiveValues}"
+                                    value="{!v.activePositiveValues}"
+                                    onchange="{!c.handlePositiveChange}"
                                 />
-
-                                <lightning:button label="Add" variant="brand" onclick="{!c.addPicklistValue}"/>
                             </div>
-                        </lightning:layoutItem>
+                        </div>
+                    </lightning:layoutItem>
 
-                        <lightning:layoutItem size="8">
-                            <div class="slds-form slds-form_horizontal">
-                                <div class="slds-form-element">
-                                   <lightning:dualListbox aura:id="positiveValues" name="positiveValues"  label= ""
-                                        sourceLabel="Available positive values"
-                                        selectedLabel="Selected positive values"
-                                        options="{!v.positiveValuesList}"
-                                        value="{!v.defaultPositiveValue}"
-                                        requiredOptions="{!v.requiredPositiveValues}"
-                                        onchange="{!c.handlePositiveChange }"
-                                    />
-                                </div>
+                    <lightning:layoutItem size="8">
+                        <div class="slds-form slds-form_horizontal">
+                            <div class="slds-form-element">
+                            <lightning:dualListbox aura:id="negativeValues" name="negativeValues"  label= ""
+                                    sourceLabel="Available negative values"
+                                    selectedLabel="Selected negative values"
+                                    options="{!v.allNegativeValues}"
+                                    value="{!v.activeNegativeValues}"
+                                    onchange="{!c.handleNegativeChange}"
+                                />
                             </div>
-                        </lightning:layoutItem>
+                        </div>                        
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="8">
+                        <div class="slds-form slds-form_horizontal">
+                            <lightning:button label="Save" class="slds-align--absolute-center" variant="brand" onclick="{!c.saveValueOrder}"/>
+                        </div>
+                    </lightning:layoutItem>
 
-                        <lightning:layoutItem size="8">
-                            <div class="slds-form slds-form_horizontal">
-                                <div class="slds-form-element">
-                                <lightning:dualListbox aura:id="negativeValues" name="negativeValues"  label= ""
-                                        sourceLabel="Available negative values"
-                                        selectedLabel="Selected negative values"
-                                        options="{!v.negativeValuesList}"
-                                        value="{!v.defaultNegativeValue}"
-                                        requiredOptions="{!v.requiredNegativeValues}"
-                                        onchange="{!c.handleNegativeChange }"
-                                    />
-                                </div>
+                    <lightning:layoutItem size="8">
+                        <div class="slds-form slds-form_horizontal">
+                            <div class="slds-form-element">
+                                <lightning:select name="select" label="Select a value to delete">
+                                    <aura:iteration items="{!v.deleteValues}" var="deleteValue">
+                                        <option value="{!deleteValue}" text="{!deleteValue}"></option>
+                                    </aura:iteration>
+                                </lightning:select>
                             </div>
-                        </lightning:layoutItem>
+
+                            <lightning:button label="Delete" class="slds-align--absolute-center" variant="brand" onclick="{!c.deleteValue}"/>
+                        </div>
+                    </lightning:layoutItem>
                 </div>
-
-                <footer class="slds-card__footer">
-                    <lightning:layout horizontalAlign="center">
-                        <lightning:layoutItem flexibility="grow" class="slds-align--absolute-center">
-                            <button class="slds-button slds-button_brand" onclick="{!c.updateHashtag}">Save</button>
-                        </lightning:layoutItem>
-                    </lightning:layout>
-                </footer>
             </article>
         </lightning:layoutItem>
     </lightning:layout>
