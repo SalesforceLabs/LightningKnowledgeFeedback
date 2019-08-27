@@ -144,8 +144,15 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 						activeNegativeValues.add(currentValue.Value__c);
 					}
 				}
-			} else {
+			} 
+
+			if (activePositiveValues.size() == 0) {
+				// Set default value
 				activePositiveValues.add('Other');
+			}
+
+			if (activePositiveValues.size() == 0) {
+				// Set default value
 				activeNegativeValues.add('Other');
 			}
 		} catch(Exception e) {
