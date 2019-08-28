@@ -9,7 +9,6 @@
 				return;
 			}
 
-			console.log('test'); 
 			if (!$A.util.isUndefinedOrNull(response.hashtag)) {
 				component.set('v.hashtagValue', response.hashtag);
 			}
@@ -37,8 +36,6 @@
 				var selectedValues = ctx.getPicklistValuesFromJSON(jsonValues);
 				component.set('v.allNegativeValues', selectedValues);
 			}
-
-			console.log('end test');
 		}
 	},
 
@@ -79,7 +76,6 @@
 	},
 
 	addPicklistValueCallback: function(component, response, ctx) {
-		console.log('addPicklistValueCallback');
 		if (!$A.util.isUndefinedOrNull(response) && response.status === 'SUCCESS') {
 			if (!component.isValid()) {
 				return;
@@ -124,15 +120,10 @@
 	saveValueOrderHelper: function(component) {
 		var activePositiveValues = component.get('v.activePositiveValues');
 		var activeNegativeValues = component.get('v.activeNegativeValues');
-		console.log('activePositiveValues: ' + activePositiveValues);
-		console.log('activeNegativeValues: ' + activeNegativeValues);
 
 		var valuesJSON = {};
 		valuesJSON['activePositiveValues'] = activePositiveValues;
 		valuesJSON['activeNegativeValues'] = activeNegativeValues;
-
-		console.log('valuesJSON: ' + valuesJSON);
-		console.log('JSON.stringify(valuesJSON): ' + JSON.stringify(valuesJSON));
 
 		if (!$A.util.isUndefinedOrNull(activePositiveValues) || !$A.util.isUndefinedOrNull(activeNegativeValues)) {
 			var actionParams = {'savedValuesJSON' : JSON.stringify(valuesJSON)};
