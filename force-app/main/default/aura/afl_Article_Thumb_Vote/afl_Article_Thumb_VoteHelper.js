@@ -11,24 +11,6 @@
 		$A.util.addClass(spinner, "slds-hide");
 	},
 
-	loadPicklistValues: function(component, ctx) {
-		this.handleAction(component, null, 'c.getPickListValuesIntoList', this.loadPicklistValuesCallback);
-	},
-
-	loadPicklistValuesCallback: function(component, response, ctx) {
-		if (!$A.util.isUndefinedOrNull(response)) {
-			var listValues = JSON.parse(response.result);
-			var finalList = [];
-
-			for (var i=0; i<listValues.length; i++) {
-				var option = {value: listValues[i], label: listValues[i]};
-				finalList.push(option);
-			}
-
-			component.set("v.unlikeReasonOptions", finalList);
-		}
-	},
-
 	getUserVote: function(component, event, helper) {
 		var actionParams = {
 			'recordId': component.get("v.recordId")
@@ -65,6 +47,46 @@
 		ctx.loadPicklistValues(component, ctx);
 	},
 
+	loadPicklistValues: function(component, ctx) {
+		this.handleAction(component, null, 'c.getPickListValuesIntoList', this.loadPicklistValuesCallback);
+	},
+
+	loadPicklistValuesCallback: function(component, response, ctx) {
+		console.log('loadPicklistValuesCallback');
+		if (!$A.util.isUndefinedOrNull(response)) {
+			if (!$A.util.isUndefinedOrNull(response.activePositiveValues)) {
+				component.set('v.activePositiveValues', JSON.parse(response.activePositiveValues));
+
+				if (component.get("v.liked")) {
+					ctx.getPicklistValuesFromAttribute(component, component.get('v.activePositiveValues'));
+				}
+			}
+
+			if (!$A.util.isUndefinedOrNull(response.activeNegativeValues)) {
+				component.set('v.activeNegativeValues', JSON.parse(response.activeNegativeValues));
+
+				if (component.get("v.disliked")) {
+					ctx.getPicklistValuesFromAttribute(component, component.get('v.activeNegativeValues'));
+				}
+			}
+		}
+	},
+
+	getPicklistValuesFromAttribute: function (component, listValues) {
+		var finalList = [];
+		
+		// Initialize the attribute
+		component.set("v.reasonTypeOptions", finalList);
+
+		for (var i=0; i<listValues.length; i++) {
+			var option = {value: listValues[i], label: listValues[i]};
+			finalList.push(option);
+		}
+
+		component.set("v.reasonTypeOptions", finalList);
+		component.set("v.reasonType", listValues[0]);
+	},
+
 	saveThumbVote: function (component, event) {
 		var ratingRequired = false;
 		var hasNoRate = false;
@@ -90,13 +112,13 @@
 			hasNoRate = true;
 		}
 
-		var reason = component.get("v.unlikeReason");
+		var reason = component.get("v.reasonType");
 		var description = component.get("v.voteReasonDescription");
 		var isLiked = !component.get("v.disliked");
 		var articleId = component.get("v.recordId");
 		var actionParams = {
 			"recordId": articleId,
-			"unlikeReason" : reason,
+			"feedbackReason" : reason,
 			"voteDescription" : description,
 			"isLiked" : isLiked,
 			"isSameVote": isSameVote,
