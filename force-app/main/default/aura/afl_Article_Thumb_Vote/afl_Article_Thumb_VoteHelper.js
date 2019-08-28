@@ -52,7 +52,6 @@
 	},
 
 	loadPicklistValuesCallback: function(component, response, ctx) {
-		console.log('loadPicklistValuesCallback');
 		if (!$A.util.isUndefinedOrNull(response)) {
 			if (!$A.util.isUndefinedOrNull(response.activePositiveValues)) {
 				component.set('v.activePositiveValues', JSON.parse(response.activePositiveValues));
