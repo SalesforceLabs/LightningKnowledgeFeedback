@@ -55,7 +55,7 @@
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
                                 <ui:outputText value="Add value to Feedback Reason picklist" class="labelSLDS"/>
-                                <lightning:input aura:id="picklistValue" placeholder="Picklist value" maxlength="99"></lightning:input>
+                                <lightning:input aura:id="picklistValue" placeholder="Picklist value" maxlength="150"></lightning:input>
                             </div>
                         </div>
                     </lightning:layoutItem>
