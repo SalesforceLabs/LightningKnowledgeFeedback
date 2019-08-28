@@ -17,6 +17,8 @@
 	},
 
 	handleToggleLike : function (component, event, helper) {
+		helper.getPicklistValuesFromAttribute(component, component.get("v.activePositiveValues"));
+
 		component.set("v.disliked", false);
 		component.set("v.liked", true);
 
@@ -32,11 +34,14 @@
 	},
 
 	handleToggleDislike : function (component, event, helper) {
+		helper.getPicklistValuesFromAttribute(component, component.get("v.activeNegativeValues"));
+
+		component.set("v.disliked", true);
+		component.set("v.liked", false);
+
 		var feedbackDivContainerCmp = component.find("feedbackDivContainer");
         $A.util.addClass(feedbackDivContainerCmp, "slds-show");
         $A.util.removeClass(feedbackDivContainerCmp, "slds-hide");
-		component.set("v.disliked", true);
-		component.set("v.liked", false);
     },
 
 	handleClick : function (component, event, helper) {
