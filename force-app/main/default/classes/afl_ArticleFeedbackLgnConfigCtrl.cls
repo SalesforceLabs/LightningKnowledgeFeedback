@@ -33,8 +33,6 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 	*/
 	@auraEnabled
 	public static afl_LightningResponse getInitialData() {
-		// afl_ArticleFeedbackSecurityHandler.canAccess(Article_Feedback_Configuration__c.SObjectType);
-
 		afl_LightningResponse response = new afl_LightningResponse();
 		Map<String,String> result = new Map<String, String>();
 		afl_Knowledge_feedback__c af = afl_Knowledge_feedback__c.getOrgDefaults();
