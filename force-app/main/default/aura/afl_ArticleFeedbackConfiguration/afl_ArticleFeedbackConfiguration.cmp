@@ -41,7 +41,9 @@
                     <lightning:layoutItem size="8">
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
-                                <lightning:input aura:id="inputHashtag" label="Hashtag" placeholder="#ArticleFeedback" value="{!v.hashtagValue}" required="true" maxlength="99" class="inputSLDS"></lightning:input>
+                                <ui:outputText value="Hashtag" class="labelSLDS"/>
+                                <p class="required">*</p>
+                                <lightning:input aura:id="inputHashtag" placeholder="#ArticleFeedback" value="{!v.hashtagValue}" required="true" maxlength="99"></lightning:input>
                             </div>
                         </div>
                     </lightning:layoutItem>
@@ -52,7 +54,8 @@
                     <lightning:layoutItem size="8">
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
-                                <lightning:input aura:id="picklistValue" label="Add value to Feedback Reason picklist" placeholder="Picklist value" maxlength="99" class="inputSLDS"></lightning:input>
+                                <ui:outputText value="Add value to Feedback Reason picklist" class="labelSLDS"/>
+                                <lightning:input aura:id="picklistValue" placeholder="Picklist value" maxlength="99"></lightning:input>
                             </div>
                         </div>
                     </lightning:layoutItem>
@@ -77,7 +80,7 @@
                     <lightning:layoutItem size="8">
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
-                                <lightning:dualListbox aura:id="positiveValues" name="positiveValues"  label= "" class="dualList"
+                                <lightning:dualListbox aura:id="positiveValues" name="positiveValues"  label= ""
                                     sourceLabel="Available positive values"
                                     selectedLabel="Selected positive values"
                                     options="{!v.allPositiveValues}"

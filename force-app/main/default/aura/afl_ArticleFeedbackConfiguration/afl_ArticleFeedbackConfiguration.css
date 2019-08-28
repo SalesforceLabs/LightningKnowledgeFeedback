@@ -20,12 +20,22 @@
     hyphens: auto;
     display: inline-block;
     color: rgb(107, 109, 112);
-    font-size: .75rem;
+    font-size: 1rem;
     padding-right: .5rem;
     padding-top: .25rem;
     margin-bottom: .125rem;
+    margin-left: 33%;
 }
 
-.THIS .dualList {
-    width: 120%
+.THIS .slds-required {
+    display: none;
+}
+
+.THIS .required {
+    display: inline;
+    color: red;
+}
+
+.THIS .slds-checkbox {
+    display: inline !important;
 }
