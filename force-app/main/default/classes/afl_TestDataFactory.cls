@@ -78,4 +78,44 @@ public class afl_TestDataFactory {
 
 		return testUSer;
 	}
+
+	/*
+	* @description
+	*	Creates picklist values
+	* @params
+	*	None
+	* @return
+	*	None
+	*/
+	public static void insertPicklistValues() {
+		// Insert test data
+		List<Article_Feedback_Values__c> valuesToInsert = new List<Article_Feedback_Values__c>();
+		
+		valuesToInsert.add(createPicklistValue('value1', true, false, 1, true));
+		valuesToInsert.add(createPicklistValue('value2', false, true, 1, true));
+		valuesToInsert.add(createPicklistValue('value3', true, false, 0, false));
+		valuesToInsert.add(createPicklistValue('value4', false, true, 0, false));
+
+		INSERT valuesToInsert;
+	}
+
+	/*
+	* @description
+	*	Creates picklist values
+	* @params
+	*	String, Boolean, Boolean, Integer, Boolean
+	* @return
+	*	Article_Feedback_Values__c with value
+	*/
+	static Article_Feedback_Values__c createPicklistValue(String sValue, Boolean isPositive, Boolean isNegative, Integer nOrder, Boolean isActive) {
+		Article_Feedback_Values__c result = new Article_Feedback_Values__c(
+			Value__c = sValue, 
+			Positive__c = isPositive, 
+			Negative__c = isNegative, 
+			Order__c = nOrder, 
+			Active__c = isActive
+		);
+
+		return result;
+	}
 }

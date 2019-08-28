@@ -151,7 +151,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				activePositiveValues.add('Other');
 			}
 
-			if (activePositiveValues.size() == 0) {
+			if (activeNegativeValues.size() == 0) {
 				// Set default value
 				activeNegativeValues.add('Other');
 			}
@@ -183,7 +183,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 
 			String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
 			afl_LightningResponse response = new afl_LightningResponse();
-			Map<String, Object> result = new Map<String, Object>();
+			Map<String,Object> result = new Map<String,Object>();
 			String query = 'SELECT KnowledgeArticleId FROM '+knowledgeObject+' WHERE Id = \''+recordId+'\' LIMIT 1';
 			List<SObject> knowledgeObjList = Database.query(query);
 
