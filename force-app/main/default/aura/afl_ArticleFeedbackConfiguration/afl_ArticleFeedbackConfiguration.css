@@ -1,4 +1,31 @@
 .THIS .feedBackTypeCheckbox {
     display: inline-block;
-	float: left;
+}
+
+.THIS .boxBorderSLDS {
+    float: right;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(217, 219, 221);
+    border-image: initial;
+    border-radius: 4px;
+    height:125px;
+}
+
+.THIS .labelSLDS {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    display: inline-block;
+    color: rgb(107, 109, 112);
+    font-size: .75rem;
+    padding-right: .5rem;
+    padding-top: .25rem;
+    margin-bottom: .125rem;
+}
+
+.THIS .dualList {
+    width: 120%
 }
