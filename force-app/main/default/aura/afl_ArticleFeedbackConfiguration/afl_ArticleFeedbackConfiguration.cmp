@@ -41,34 +41,42 @@
                     <lightning:layoutItem size="8">
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
-                                <lightning:input aura:id="inputHashtag" label="Hashtag" placeholder="#ArticleFeedback" value="{!v.hashtagValue}" required="true" maxlength="99"></lightning:input>
+                                <ui:outputText value="Hashtag" class="labelSLDS"/>
+                                <p class="required">*</p>
+                                <lightning:input aura:id="inputHashtag" placeholder="#ArticleFeedback" value="{!v.hashtagValue}" required="true" maxlength="99"></lightning:input>
                             </div>
-
-                            <lightning:button label="Save" class="slds-align--absolute-center" variant="brand" onclick="{!c.updateHashtag}"/>
                         </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="10">
+                        <lightning:button label="Save" class="slds-align--absolute-center slds-m-bottom_large slds-m-top_small" variant="brand" onclick="{!c.updateHashtag}"/>
                     </lightning:layoutItem>
 
                     <lightning:layoutItem size="8">
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
-                                <lightning:input aura:id="picklistValue" label="Add value to Feedback Reason picklist" placeholder="Picklist value" maxlength="150"></lightning:input>
+                                <ui:outputText value="Add value to Feedback Reason picklist" class="labelSLDS"/>
+                                <lightning:input aura:id="picklistValue" placeholder="Picklist value" maxlength="150"></lightning:input>
                             </div>
                         </div>
                     </lightning:layoutItem>
 
-                    <lightning:layoutItem size="8">
-                        <div class="slds-form slds-form_horizontal">
-                            <lightning:checkboxGroup aura:id="feedbackType"
-                                name="feedbackType"
-                                label="" class="feedBackTypeCheckbox"
-                                options="{!v.feedbackTypeOptions}"
-                                value="{!v.feedbackTypeValue}"
-                            />
-
-                            <lightning:button label="Add" class="slds-align--absolute-center" variant="brand" onclick="{!c.addPicklistValue}"/>
-                        </div>
-                    </lightning:layoutItem>
-
+                    <lightning:layout multipleRows="true">
+                        <lightning:layoutItem size="8">
+                            <div class="slds-form slds-form_horizontal">
+                                <lightning:checkboxGroup aura:id="feedbackType"
+                                    name="feedbackType"
+                                    label="" class="feedBackTypeCheckbox"
+                                    options="{!v.feedbackTypeOptions}"
+                                    value="{!v.feedbackTypeValue}"
+                                />
+    
+                            </div>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="10">
+                            <lightning:button label="Add" class="slds-align--absolute-center slds-m-bottom_large" variant="brand" onclick="{!c.addPicklistValue}"/>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                    
                     <lightning:layoutItem size="8">
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
@@ -96,25 +104,27 @@
                             </div>
                         </div>                        
                     </lightning:layoutItem>
-                    <lightning:layoutItem size="8">
+                    <lightning:layoutItem size="10">
                         <div class="slds-form slds-form_horizontal">
-                            <lightning:button label="Save" class="slds-align--absolute-center" variant="brand" onclick="{!c.saveValueOrder}"/>
+                            <lightning:button label="Save" class="slds-align--absolute-center slds-m-bottom_xx-large slds-m-top_small" variant="brand" onclick="{!c.saveValueOrder}"/>
                         </div>
                     </lightning:layoutItem>
-
-                    <lightning:layoutItem size="8">
-                        <div class="slds-form slds-form_horizontal">
-                            <div class="slds-form-element">
-                                <lightning:select name="select" label="Select a value to delete">
+                    <lightning:layout multipleRows="true">
+                        <lightning:layoutItem size="8">
+                            <div class="slds-form slds-form_horizontal">
+                                <ui:outputText value="Select a value to delete:" class="labelSLDS"/>
+                                <ui:inputSelect multiple="true" class="boxBorderSLDS slds-size_8-of-12 slds-m-top_xx-small" aura:id="selectDelete" >
                                     <aura:iteration items="{!v.deleteValues}" var="deleteValue">
-                                        <option value="{!deleteValue}" text="{!deleteValue}"></option>
+                                        <ui:inputSelectOption text="{!deleteValue}" label="{!deleteValue}"/>
                                     </aura:iteration>
-                                </lightning:select>
+                                </ui:inputSelect>
+    
                             </div>
-
-                            <lightning:button label="Delete" class="slds-align--absolute-center" variant="brand" onclick="{!c.deleteValue}"/>
-                        </div>
-                    </lightning:layoutItem>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem size="10">
+                            <lightning:button label="Delete" class="slds-align--absolute-center slds-m-top_small" variant="brand" onclick="{!c.deleteValue}"/>
+                        </lightning:layoutItem>
+                    </lightning:layout>
                 </div>
             </article>
         </lightning:layoutItem>
