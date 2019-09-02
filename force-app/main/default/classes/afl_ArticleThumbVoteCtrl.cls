@@ -127,41 +127,47 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 		
 		List<String> activePositiveValues = new List<String>();
 		List<String> activeNegativeValues = new List<String>();
+		List<String> allActiveValues = new List<String>();
 
 		try {
-			List<Article_Feedback_Values__c> activeValues = [
-				SELECT Value__c, Positive__c, Negative__c, Order__c, Active__c
+			 List<Article_Feedback_Values__c> allValues = [
+				SELECT Value__c, OrderPositive__c, OrderNegative__c, Positive__c, Negative__c
 				FROM Article_Feedback_Values__c
-				WHERE Active__c = true
-				ORDER BY Order__c ASC
+				ORDER BY Value__c ASC
 			];
 
-			if (activeValues.size() > 0) {
-				for (Article_Feedback_Values__c currentValue : activeValues) {
-					if (currentValue.Positive__c == true) {
-						activePositiveValues.add(currentValue.Value__c);
-					} else {
-						activeNegativeValues.add(currentValue.Value__c);
+			if (allValues.size() > 0){
+				for(Integer i=0; i<allValues.size(); i++){
+					allActiveValues.add(allValues[i].Value__c);
+					for(Article_Feedback_Values__c currentValue : allValues){
+						if(currentValue.OrderPositive__c == i && currentValue.Positive__c == true){
+							activePositiveValues.add(currentValue.Value__c);
+						}
+						if(currentValue.OrderNegative__c == i && currentValue.Negative__c == true){
+							activeNegativeValues.add(currentValue.Value__c);
+						}
 					}
 				}
-			} 
+			} else {
+				allActiveValues.add('Other');
+			}
 
-			if (activePositiveValues.size() == 0) {
-				// Set default value
+			if (activePositiveValues.size() < 1) {
 				activePositiveValues.add('Other');
 			}
 
-			if (activeNegativeValues.size() == 0) {
-				// Set default value
+			if (activeNegativeValues.size() < 1) {
 				activeNegativeValues.add('Other');
 			}
+
 		} catch(Exception e) {
 			response = new afl_LightningResponse(e);
 		}
 
 		result.put('activePositiveValues', JSON.serialize(activePositiveValues));
 		result.put('activeNegativeValues', JSON.serialize(activeNegativeValues));
-
+		result.put('allValues', JSON.serialize(allActiveValues));
+		
 		response.jsonResponse = JSON.serialize(result);
 
 		return response;

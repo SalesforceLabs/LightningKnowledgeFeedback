@@ -90,15 +90,15 @@ private class afl_ArticleFeedbackLgnConfigCtrlTest {
 
 		Test.startTest();
 		// Create both negative and positive picklist values
-		response1 = afl_ArticleFeedbackLgnConfigCtrl.addNewPicklistValue('value1', 'bothOption');
+		response1 = afl_ArticleFeedbackLgnConfigCtrl.addNewPicklistValue('value1');
 		// Create both a positive picklist value
-		response2 = afl_ArticleFeedbackLgnConfigCtrl.addNewPicklistValue('value2', 'positiveOption');
+		response2 = afl_ArticleFeedbackLgnConfigCtrl.addNewPicklistValue('value2');
 		// Create both a negative picklist value
-		response3 = afl_ArticleFeedbackLgnConfigCtrl.addNewPicklistValue('value3', 'negativeOption');
+		response3 = afl_ArticleFeedbackLgnConfigCtrl.addNewPicklistValue('value3');
 		// Try to create values that will fail because they already exist
-		response4 = afl_ArticleFeedbackLgnConfigCtrl.addNewPicklistValue('value1', 'bothOption');
-		response5 = afl_ArticleFeedbackLgnConfigCtrl.addNewPicklistValue('value2', 'positiveOption');
-		response6 = afl_ArticleFeedbackLgnConfigCtrl.addNewPicklistValue('value3', 'negativeOption');
+		response4 = afl_ArticleFeedbackLgnConfigCtrl.addNewPicklistValue('value1');
+		response5 = afl_ArticleFeedbackLgnConfigCtrl.addNewPicklistValue('value2');
+		response6 = afl_ArticleFeedbackLgnConfigCtrl.addNewPicklistValue('value3');
 		Test.stopTest();
 
 		Map<String,Object> result1 = (Map<String,Object>) JSON.deserializeUntyped(response1.jsonResponse);
@@ -148,8 +148,7 @@ private class afl_ArticleFeedbackLgnConfigCtrlTest {
 
 		List<Article_Feedback_Values__c> updatedValues = [
 			SELECT Value__c 
-			FROM Article_Feedback_Values__c 
-			WHERE Active__C = true
+			FROM Article_Feedback_Values__c
 			ORDER BY Value__C ASC
 		];
 

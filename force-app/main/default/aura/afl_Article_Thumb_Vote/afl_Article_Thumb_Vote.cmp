@@ -9,6 +9,7 @@
     <aura:attribute name="recordId" type="String"/>
     <aura:attribute name="activePositiveValues" type="List" default="[]"/>
     <aura:attribute name="activeNegativeValues" type="List" default="[]"/>
+    <aura:attribute name="allValues" type="List" default="[]"/>
     <aura:attribute name="reasonType" type="String" />
     <aura:attribute name="reasonTypeOptions" type="String[]" />
     <aura:attribute access="global" name="alwaysDisplayFeedDescription" type="Boolean" default="true" />
