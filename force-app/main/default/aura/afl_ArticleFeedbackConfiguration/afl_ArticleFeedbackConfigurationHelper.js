@@ -14,32 +14,23 @@
 			}
 
 			if (!$A.util.isUndefinedOrNull(response.allPicklistValues)) {
-				component.set('v.deleteValues', JSON.parse(response.allPicklistValues));
+				var jsonValues = response.allPicklistValues;
+			 	var selectedValues = ctx.getPicklistValuesFromJSON(jsonValues);
+				component.set('v.allValues', selectedValues);
 			}
 			
-			if (!$A.util.isUndefinedOrNull(response.activePositiveValues)) {
-				component.set('v.activePositiveValues', JSON.parse(response.activePositiveValues));
-			}
-
-			if (!$A.util.isUndefinedOrNull(response.activeNegativeValues)) {
-				component.set('v.activeNegativeValues', JSON.parse(response.activeNegativeValues));
-			}
-
 			if (!$A.util.isUndefinedOrNull(response.allPositiveValues)) {
-				var jsonValues = response.allPositiveValues;
-				var selectedValues = ctx.getPicklistValuesFromJSON(jsonValues);
-				component.set('v.allPositiveValues', selectedValues);
+				component.set('v.allPositiveValues', JSON.parse(response.allPositiveValues));
 			}
 
 			if (!$A.util.isUndefinedOrNull(response.allNegativeValues)) {
-				var jsonValues = response.allNegativeValues;
-				var selectedValues = ctx.getPicklistValuesFromJSON(jsonValues);
-				component.set('v.allNegativeValues', selectedValues);
+				component.set('v.allNegativeValues', JSON.parse(response.allNegativeValues));
 			}
+
 		}
 	},
 
-	getPicklistValuesFromJSON: function(picklistValuesJSON) {
+	getPicklistValuesFromJSON : function(picklistValuesJSON) {
 		var selectedValues = [];
 		var returnSelectedValues = JSON.parse(picklistValuesJSON);
 		for (var i = 0; i < returnSelectedValues.length; i++) {
@@ -53,21 +44,11 @@
 	addPicklistValueHelper: function(component) {
 		var picklistValue = component.find('picklistValue').get('v.value');
 		if (!$A.util.isEmpty(picklistValue) && !$A.util.isUndefinedOrNull(picklistValue)) {
-			var feedbackType = component.find('feedbackType').get('v.value');
 			
 			if (picklistValue.indexOf(";") > -1) {
 				this.showToast('fail', 'Error', 'The picklist value cannot include a semi-colon.');
-			} else if (feedbackType.length === 0) {
-				this.showToast('fail', 'Error', 'You need to select at least one checbox to set a Reason Type.');
-			} else { 
-				var reasonType = '';
-				if (feedbackType.length === 2) {
-					reasonType = 'bothOption';
-				} else {
-					reasonType = feedbackType[0];
-				}
-
-				var actionParams = {'picklistValue' : picklistValue, 'reasonType' : reasonType};
+			} else {
+				var actionParams = {'picklistValue' : picklistValue};
 				this.handleAction(component, actionParams, 'c.addNewPicklistValue', this.addPicklistValueCallback);
 			}
 		} else {
@@ -118,14 +99,14 @@
 	}, 
 
 	saveValueOrderHelper: function(component) {
-		var activePositiveValues = component.get('v.activePositiveValues');
-		var activeNegativeValues = component.get('v.activeNegativeValues');
+		var allPositiveValues = component.get('v.allPositiveValues');
+		var allNegativeValues = component.get('v.allNegativeValues');
 
 		var valuesJSON = {};
-		valuesJSON['activePositiveValues'] = activePositiveValues;
-		valuesJSON['activeNegativeValues'] = activeNegativeValues;
+		valuesJSON['allPositiveValues'] = allPositiveValues;
+		valuesJSON['allNegativeValues'] = allNegativeValues;
 
-		if (!$A.util.isUndefinedOrNull(activePositiveValues) || !$A.util.isUndefinedOrNull(activeNegativeValues)) {
+		if (!$A.util.isUndefinedOrNull(allPositiveValues) || !$A.util.isUndefinedOrNull(allNegativeValues)) {
 			var actionParams = {'savedValuesJSON' : JSON.stringify(valuesJSON)};
 
 			this.handleAction(component, actionParams, 'c.savePicklistOrder', this.saveValueOrderCallback);
@@ -147,6 +128,24 @@
 	}, 
 
 	deleteValueHelper: function(component) {
-		// Do something
+		var deleteValuesString = component.find("selectDelete").get('v.value');
+		if(!$A.util.isEmpty(deleteValuesString) && !$A.util.isUndefinedOrNull(deleteValuesString)){
+			var deleteValuesList = deleteValuesString.split(';');
+			var actionParams ={
+				'deleteValuesList' : deleteValuesList
+			};
+			this.handleAction(component, actionParams, 'c.deleteValues', this.deleteValueCallback);
+		} else {
+			this.showToast('fail', 'Error', 'You need to select at least one value to delete');
+		}
+	},
+
+	deleteValueCallback : function(component, response, ctx) {
+		if (!$A.util.isUndefinedOrNull(response) && response.length > 0) {
+			ctx.getInitialData(component);
+			ctx.showToast(' SUCCESS ', ' SUCCESS ', 'Values succesfully deleted');
+		} else {
+			this.showToast('fail', 'Error', 'An error ocurred while deleting the values');
+		}
 	}
 })

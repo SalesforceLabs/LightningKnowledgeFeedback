@@ -1,10 +1,8 @@
 <aura:component controller="afl_ArticleFeedbackLgnConfigCtrl" extends="c:afl_abstract">
     <!-- Attributes -->
     <aura:attribute name="hashtagValue" type="String" description="Knowledge Configuration object hashtag value"/>
-    <aura:attribute name="deleteValues" type="String[]" default=""/>
-    <aura:attribute name="activePositiveValues" type="List" default="[]"/>
+    <aura:attribute name="allValues" type="List" default="[]"/>
     <aura:attribute name="allPositiveValues" type="List" default="[]"/>
-    <aura:attribute name="activeNegativeValues" type="List" default="[]"/>
     <aura:attribute name="allNegativeValues" type="List" default="[]"/>
     <aura:attribute name="feedbackTypeOptions" type="List" default="[
         {'label': 'Positive', 'value': 'positiveOption'},
@@ -61,17 +59,6 @@
                     </lightning:layoutItem>
 
                     <lightning:layout multipleRows="true">
-                        <lightning:layoutItem size="8">
-                            <div class="slds-form slds-form_horizontal">
-                                <lightning:checkboxGroup aura:id="feedbackType"
-                                    name="feedbackType"
-                                    label="" class="feedBackTypeCheckbox"
-                                    options="{!v.feedbackTypeOptions}"
-                                    value="{!v.feedbackTypeValue}"
-                                />
-    
-                            </div>
-                        </lightning:layoutItem>
                         <lightning:layoutItem size="10">
                             <lightning:button label="Add" class="slds-align--absolute-center slds-m-bottom_large" variant="brand" onclick="{!c.addPicklistValue}"/>
                         </lightning:layoutItem>
@@ -83,8 +70,8 @@
                                 <lightning:dualListbox aura:id="positiveValues" name="positiveValues"  label= ""
                                     sourceLabel="Available positive values"
                                     selectedLabel="Selected positive values"
-                                    options="{!v.allPositiveValues}"
-                                    value="{!v.activePositiveValues}"
+                                    options="{!v.allValues}"
+                                    value="{!v.allPositiveValues}"
                                     onchange="{!c.handlePositiveChange}"
                                 />
                             </div>
@@ -97,8 +84,8 @@
                             <lightning:dualListbox aura:id="negativeValues" name="negativeValues"  label= ""
                                     sourceLabel="Available negative values"
                                     selectedLabel="Selected negative values"
-                                    options="{!v.allNegativeValues}"
-                                    value="{!v.activeNegativeValues}"
+                                    options="{!v.allValues}"
+                                    value="{!v.allNegativeValues}"
                                     onchange="{!c.handleNegativeChange}"
                                 />
                             </div>
@@ -114,8 +101,8 @@
                             <div class="slds-form slds-form_horizontal">
                                 <ui:outputText value="Select a value to delete:" class="labelSLDS"/>
                                 <ui:inputSelect multiple="true" class="boxBorderSLDS slds-size_8-of-12 slds-m-top_xx-small" aura:id="selectDelete" >
-                                    <aura:iteration items="{!v.deleteValues}" var="deleteValue">
-                                        <ui:inputSelectOption text="{!deleteValue}" label="{!deleteValue}"/>
+                                    <aura:iteration items="{!v.allValues}" var="deleteValue">
+                                        <ui:inputSelectOption text="{!deleteValue.value}" label="{!deleteValue.label}"/>
                                     </aura:iteration>
                                 </ui:inputSelect>
     

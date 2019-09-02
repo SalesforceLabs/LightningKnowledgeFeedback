@@ -111,9 +111,7 @@ public class afl_TestDataFactory {
 		Article_Feedback_Values__c result = new Article_Feedback_Values__c(
 			Value__c = sValue, 
 			Positive__c = isPositive, 
-			Negative__c = isNegative, 
-			Order__c = nOrder, 
-			Active__c = isActive
+			Negative__c = isNegative
 		);
 
 		return result;
