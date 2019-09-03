@@ -48,7 +48,7 @@ private class afl_ArticleThumbVoteCtrlTest {
 
 		System.assert(!positiveList.isEmpty());
 		System.assert(!negativeList.isEmpty());
-		System.assertEquals('value1', (String) positiveList.get(0), 'The existing value should match.');
+		System.assertEquals('value3', (String) positiveList.get(0), 'The existing value should match.');
 		System.assertEquals('value2', (String) negativeList.get(0), 'The existing value should match.');
 	}
 
