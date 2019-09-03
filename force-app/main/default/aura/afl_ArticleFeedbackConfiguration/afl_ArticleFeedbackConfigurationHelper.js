@@ -62,7 +62,6 @@
 				return;
 			} 
 
-			ctx.showToast(' SUCCESS ', ' SUCCESS ', 'Value added correctly.');
 			component.find('picklistValue').set('v.value', '');
 			ctx.getInitialData(component);
 		} else if (response.status === 'DUPLICATED') {
