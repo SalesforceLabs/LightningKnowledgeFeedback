@@ -74,8 +74,8 @@
 	updateHashtagHelper: function(component) {
 		var hashtag = component.find('inputHashtag').get('v.value');
 		if ((!$A.util.isEmpty(hashtag) && !$A.util.isUndefinedOrNull(hashtag)) && hashtag.indexOf("]") === -1) {
-			if (hashtag.indexOf("#") === -1) {
-				this.showToast('fail', 'Error', 'The text needs to includ a hashtag (#) sign to be valid.');
+			if (hashtag.charAt(0).indexOf("#") === -1) {
+				this.showToast('fail', 'Error', 'The text needs to include a hashtag (#) sign at the beginning to be valid.');
 			} else { 
 				var actionParams = {'hashtag' : hashtag};
 				this.handleAction(component, actionParams, 'c.updateHashtagValue', this.updateHashtagValueCallback);
