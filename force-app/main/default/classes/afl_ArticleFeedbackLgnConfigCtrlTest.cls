@@ -154,4 +154,23 @@ private class afl_ArticleFeedbackLgnConfigCtrlTest {
 		System.assertEquals(0, updatedValues.get(2).OrderPositive__c, 'The order number should match');
 		System.assertEquals(0, updatedValues.get(3).OrderNegative__c, 'The order number should match');
 	}
+
+	@isTest
+	static void deleteValueTest() {
+		// Insert test data
+		afl_TestDataFactory.insertPicklistValues();
+
+		List<String> deleteValues = new List<String>{'value3', 'value2'};
+		Test.startTest();
+		afl_LightningResponse response = afl_ArticleFeedbackLgnConfigCtrl.deleteValues(deleteValues);
+
+		List<Article_Feedback_Values__c> deletedValues = [
+			SELECT Value__c
+			FROM Article_Feedback_Values__c
+			WHERE Value__c = 'value3' OR Value__c = 'value2'
+		];
+		Test.stopTest();
+
+		System.assertEquals(0, deletedValues.size(), 'The values should have been deleted.');
+	}
 }
