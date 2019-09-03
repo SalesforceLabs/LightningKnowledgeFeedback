@@ -62,11 +62,10 @@
 				return;
 			} 
 
-			ctx.showToast(' SUCCESS ', ' SUCCESS ', 'Value added correctly.');
 			component.find('picklistValue').set('v.value', '');
 			ctx.getInitialData(component);
 		} else if (response.status === 'DUPLICATED') {
-			ctx.showToast('fail', 'Error', 'A value with the same Reason Type (positive or negative) already exists.');
+			ctx.showToast('fail', 'Error', 'The value already exists.');
 		} else {
 			this.showToast('fail', 'Error', 'An error ocurred while adding the value');
 		}

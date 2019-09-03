@@ -40,27 +40,20 @@ private class afl_ArticleFeedbackLgnConfigCtrlTest {
 		// Insert test data
 		afl_TestDataFactory.insertPicklistValues();
 
-		Map<String,List<String>> result = new Map<String,List<String>>();
 		Test.startTest();
-		result = afl_ArticleFeedbackLgnConfigCtrl.getPicklistValues();
+		Map<String,List<String>> result = afl_ArticleFeedbackLgnConfigCtrl.getPicklistValues();
 		Test.stopTest();
 
-		List<String> activePositiveValues = result.get('activePositiveValues');
-		List<String> activeNegativeValues = result.get('activeNegativeValues');
 		List<String> allPositiveValues = result.get('allPositiveValues');
 		List<String> allNegativeValues = result.get('allNegativeValues');
 		List<String> allPicklistValues = result.get('allPicklistValues');
 
-		System.assertEquals(1, activePositiveValues.size(), 'There should be 1 record in the list');
-		System.assertEquals(1, activeNegativeValues.size(), 'There should be 1 record in the list');
 		System.assertEquals(2, allPositiveValues.size(), 'There should be 2 records in the list');
 		System.assertEquals(2, allNegativeValues.size(), 'There should be 2 records in the list');
 		System.assertEquals(4, allPicklistValues.size(), 'There should be 4 records in the list');
 
-		System.assertEquals('value1', activePositiveValues.get(0), 'The name of the value should match');
-		System.assertEquals('value2', activeNegativeValues.get(0), 'The name of the value should match');
-		System.assertEquals('value3', allPositiveValues.get(1), 'The name of the value should match');
-		System.assertEquals('value4', allNegativeValues.get(1), 'The name of the value should match');
+		System.assertEquals('value1', allPositiveValues.get(1), 'The name of the value should match');
+		System.assertEquals('value2', allNegativeValues.get(1), 'The name of the value should match');
 	}
 
 	@isTest
@@ -118,8 +111,8 @@ private class afl_ArticleFeedbackLgnConfigCtrlTest {
 		System.assertEquals('DUPLICATED', result5.get('status'), 'The operation should fail because of the duplicated value.');
 		System.assertEquals('DUPLICATED', result6.get('status'), 'The operation should fail because of the duplicated value.');
 
-		// There should be only 4 created records because one failed
-		System.assertEquals(4, nCreatedValues, 'There should be 4 new values created.');
+		// There should be only 3 created records because three failed
+		System.assertEquals(3, nCreatedValues, 'There should be 3 new values created.');
 	}
 
 	@isTest
@@ -133,27 +126,32 @@ private class afl_ArticleFeedbackLgnConfigCtrlTest {
 		List<String> negativeValues = new List<String>();
 
 		positiveValues.add('value3');
+		positiveValues.add('value1');
 		negativeValues.add('value4');
+		negativeValues.add('value2');
 
-		valuesMap.put('activePositiveValues', positiveValues);
-		valuesMap.put('activeNegativeValues', negativeValues);
+		valuesMap.put('allPositiveValues', positiveValues);
+		valuesMap.put('allNegativeValues', negativeValues);
 
 		String valuesJSON = JSON.serialize(valuesMap);
 
 		Test.startTest();
 		response = afl_ArticleFeedbackLgnConfigCtrl.savePicklistOrder(valuesJSON);
-		Test.stopTest();
 
 		Map<String,Object> result = (Map<String,Object>) JSON.deserializeUntyped(response.jsonResponse);
 
 		List<Article_Feedback_Values__c> updatedValues = [
-			SELECT Value__c 
+			SELECT Value__c, OrderPositive__c, OrderNegative__c
 			FROM Article_Feedback_Values__c
-			ORDER BY Value__C ASC
+			ORDER BY Value__c ASC
 		];
 
+		Test.stopTest();
+
 		System.assertEquals('SUCCESS', result.get('status'), 'The operation should be succesful.');
-		System.assertEquals('value3', updatedValues.get(0).Value__c, 'The values name should match');
-		System.assertEquals('value4', updatedValues.get(1).Value__c, 'The values name should match');
+		System.assertEquals(1, updatedValues.get(0).OrderPositive__c, 'The order number should match');
+		System.assertEquals(1, updatedValues.get(1).OrderNegative__c, 'The order number should match');
+		System.assertEquals(0, updatedValues.get(2).OrderPositive__c, 'The order number should match');
+		System.assertEquals(0, updatedValues.get(3).OrderNegative__c, 'The order number should match');
 	}
 }

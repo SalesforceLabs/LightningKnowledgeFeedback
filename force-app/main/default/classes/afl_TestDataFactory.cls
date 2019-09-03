@@ -91,10 +91,10 @@ public class afl_TestDataFactory {
 		// Insert test data
 		List<Article_Feedback_Values__c> valuesToInsert = new List<Article_Feedback_Values__c>();
 		
-		valuesToInsert.add(createPicklistValue('value1', true, false, 1, true));
-		valuesToInsert.add(createPicklistValue('value2', false, true, 1, true));
-		valuesToInsert.add(createPicklistValue('value3', true, false, 0, false));
-		valuesToInsert.add(createPicklistValue('value4', false, true, 0, false));
+		valuesToInsert.add(createPicklistValue('value1', true, false, 1, null));
+		valuesToInsert.add(createPicklistValue('value2', false, true, null, 1));
+		valuesToInsert.add(createPicklistValue('value3', true, false, 0, null));
+		valuesToInsert.add(createPicklistValue('value4', false, true, null, 0));
 
 		INSERT valuesToInsert;
 	}
@@ -107,11 +107,13 @@ public class afl_TestDataFactory {
 	* @return
 	*	Article_Feedback_Values__c with value
 	*/
-	static Article_Feedback_Values__c createPicklistValue(String sValue, Boolean isPositive, Boolean isNegative, Integer nOrder, Boolean isActive) {
+	static Article_Feedback_Values__c createPicklistValue(String sValue, Boolean isPositive, Boolean isNegative, Integer orderPositive, Integer orderNegative) {
 		Article_Feedback_Values__c result = new Article_Feedback_Values__c(
 			Value__c = sValue, 
 			Positive__c = isPositive, 
-			Negative__c = isNegative
+			Negative__c = isNegative,
+			OrderPositive__c = orderPositive,
+			OrderNegative__c = orderNegative
 		);
 
 		return result;
