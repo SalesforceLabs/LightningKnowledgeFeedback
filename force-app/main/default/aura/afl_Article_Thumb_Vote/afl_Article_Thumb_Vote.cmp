@@ -32,9 +32,7 @@
 
             <p class="slds-p-horizontal_medium">
                 <div aura:id="feedbackDivContainer" class="slds-show">
-                    <aura:if isTrue="{!or(v.disliked, v.liked)}">
-                        <lightning:combobox name="comboGroup" label="Choose a general reason:" value="{!v.reasonType}" placeholder="Select reason" options="{!v.reasonTypeOptions}" />
-                    </aura:if>
+                    <lightning:combobox name="comboGroup" label="Choose a general reason:" value="{!v.reasonType}" placeholder="Select reason" options="{!v.reasonTypeOptions}" />
 
                     <div class="slds-p-top--medium">
                         <lightning:textarea aura:id ="feedbackReason" value="{!v.voteReasonDescription}" label="Description" placeholder="Please, leave us some feedback..." maxlength="29000"/>
