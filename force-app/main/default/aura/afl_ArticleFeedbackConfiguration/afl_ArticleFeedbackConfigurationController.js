@@ -12,11 +12,11 @@
 	},
 
 	handlePositiveChange: function(component, event, helper) {
-		// TODO
+		helper.saveValueOrderHelper(component, event);
 	},
 
 	handleNegativeChange: function(component, event, helper) {
-		// TODO
+		helper.saveValueOrderHelper(component, event);
 	},
 
 	saveValueOrder: function(component, event, helper) {
