@@ -30,8 +30,8 @@ private class afl_ArticleThumbVoteCtrlTest {
 
 		System.assert(!positiveList.isEmpty());
 		System.assert(!negativeList.isEmpty());
-		System.assertEquals('Other', (String) positiveList.get(0), 'The default value should match.');
-		System.assertEquals('Other', (String) negativeList.get(0), 'The default value should match.');
+		System.assertEquals('Duplicate', (String) positiveList.get(0), 'The default value should match.');
+		System.assertEquals('Duplicate', (String) negativeList.get(0), 'The default value should match.');
 	}
 
 	@isTest

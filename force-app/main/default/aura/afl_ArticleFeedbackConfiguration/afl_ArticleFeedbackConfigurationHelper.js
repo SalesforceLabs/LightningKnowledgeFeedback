@@ -131,7 +131,7 @@
 
 	deleteValueHelper: function(component) {
 		var deleteValuesString = component.find("selectDelete").get('v.value');
-		if(!$A.util.isEmpty(deleteValuesString) && !$A.util.isUndefinedOrNull(deleteValuesString)){
+		if (!$A.util.isEmpty(deleteValuesString) && !$A.util.isUndefinedOrNull(deleteValuesString)) {
 			var deleteValuesList = deleteValuesString.split(';');
 			var actionParams ={
 				'deleteValuesList' : deleteValuesList
