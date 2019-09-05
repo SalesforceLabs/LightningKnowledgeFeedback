@@ -209,4 +209,25 @@ private class afl_ArticleFeedbackSecurityHandler_Test {
 
 		System.assertEquals('value1', result, 'The result should contain "value1"');
 	}
+
+	@isTest
+    static void getPicklistValuesTest() {
+		// Insert test data
+		afl_TestDataFactory.insertPicklistValues();
+
+		Test.startTest();
+		Map<String,List<String>> result = afl_ArticleFeedbackSecurityHandler.getPicklistValues();
+		Test.stopTest();
+
+		List<String> allPositiveValues = result.get('allPositiveValues');
+		List<String> allNegativeValues = result.get('allNegativeValues');
+		List<String> allPicklistValues = result.get('allPicklistValues');
+
+		System.assertEquals(2, allPositiveValues.size(), 'There should be 2 records in the list');
+		System.assertEquals(2, allNegativeValues.size(), 'There should be 2 records in the list');
+		System.assertEquals(4, allPicklistValues.size(), 'There should be 4 records in the list');
+
+		System.assertEquals('value1', allPositiveValues.get(1), 'The name of the value should match');
+		System.assertEquals('value2', allNegativeValues.get(1), 'The name of the value should match');
+	}
 }

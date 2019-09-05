@@ -91,10 +91,10 @@ public class afl_TestDataFactory {
 		// Insert test data
 		List<Article_Feedback_Values__c> valuesToInsert = new List<Article_Feedback_Values__c>();
 		
-		valuesToInsert.add(createPicklistValue('value1', true, false, 1, null));
-		valuesToInsert.add(createPicklistValue('value2', false, true, null, 1));
-		valuesToInsert.add(createPicklistValue('value3', true, false, 0, null));
-		valuesToInsert.add(createPicklistValue('value4', false, true, null, 0));
+		valuesToInsert.add(createPicklistValue('value1', true, false, 1, 0));
+		valuesToInsert.add(createPicklistValue('value2', false, true, 0, 1));
+		valuesToInsert.add(createPicklistValue('value3', true, false, 0, 0));
+		valuesToInsert.add(createPicklistValue('value4', false, true, 0, 0));
 
 		INSERT valuesToInsert;
 	}
