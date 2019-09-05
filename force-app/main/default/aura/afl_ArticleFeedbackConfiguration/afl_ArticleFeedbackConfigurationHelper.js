@@ -97,7 +97,7 @@
 		}
 	}, 
 
-	saveValueOrderHelper: function(component) {
+	saveValueOrderHelper: function(component, event) {
 		var allPositiveValues = component.get('v.allPositiveValues');
 		var allNegativeValues = component.get('v.allNegativeValues');
 
@@ -107,8 +107,11 @@
 
 		if (!$A.util.isUndefinedOrNull(allPositiveValues) || !$A.util.isUndefinedOrNull(allNegativeValues)) {
 			var actionParams = {'savedValuesJSON' : JSON.stringify(valuesJSON)};
-
-			this.handleAction(component, actionParams, 'c.savePicklistOrder', this.saveValueOrderCallback);
+			if (event.getSource().get('v.label') == 'Save') {
+				this.handleAction(component, actionParams, 'c.savePicklistOrder', this.saveValueOrderCallback);
+			} else {
+				this.handleAction(component, actionParams, 'c.savePicklistOrder', function(){});
+			}
 		} else {
 			this.showToast('fail', 'Error', 'This field cannot be empty or include a closing square bracket (])');
 		}
