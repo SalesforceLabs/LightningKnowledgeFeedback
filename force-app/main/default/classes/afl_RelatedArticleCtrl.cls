@@ -87,8 +87,6 @@ public with sharing class afl_RelatedArticleCtrl {
         // Find the associated record type
         String queryString = '';
         List<SObject> sObjList = new List<SObject>();
-        // String recType = 'This article has no record type';
-        Map<Id,String> recordTypeDetails = afl_ArticleFeedbackSecurityHandler.getAllowedRecordTypesMap();
         String recordTypeField = '';
         if (afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive) {
             recordTypeField = ',RecordTypeId';
@@ -102,14 +100,7 @@ public with sharing class afl_RelatedArticleCtrl {
             // Get record type name
             if (afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive) {
                 if (String.isNotEmpty((String) sObjKnowledge.get('RecordTypeId'))) {
-                    if (!test.isRunningTest()) {
-                        String rTypeId = (String) sObjKnowledge.get('RecordTypeId');
-                        if (recordTypeDetails.containsKey(rTypeId)) {
-                            result.put('articleRecordType', recordTypeDetails.get(rTypeId));
-                        }
-                    } else {
-                        result.put('articleRecordType', 'test article type');
-                    }
+                    result.put('articleRecordType', afl_ArticleFeedbackSecurityHandler.getRecordTypeName(sObjKnowledge));
                 }
             }
 

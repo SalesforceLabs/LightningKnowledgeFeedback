@@ -22,7 +22,6 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			afl_ArticleFeedbackSecurityHandler.canUpdate(Vote.SObjectType);
 
 			afl_Article_Feedback__c artFeed = new afl_Article_Feedback__c();
-			Map<Id,String> recordTypeDetails = afl_ArticleFeedbackSecurityHandler.getAllowedRecordTypesMap();
 
 			artFeed.Feedback_Status__c = 'New';
 			artFeed.Feedback_Vote_Description__c = voteDescription;
@@ -67,14 +66,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				// Get record type name
 				if (hasRecordType) {
 					if (String.isNotEmpty((String)sObj.get('RecordTypeId'))) {
-						if (!test.isRunningTest()) {
-							String rTypeId = (String)sObj.get('RecordTypeId');
-							if (recordTypeDetails.containsKey(rTypeId)) { 
-								artFeed.Record_Type__c = recordTypeDetails.get(rTypeId);
-							}
-						} else {
-							artFeed.Record_Type__c = 'test article type';
-						}
+						artFeed.Record_Type__c = afl_ArticleFeedbackSecurityHandler.getRecordTypeName(sObj);
 					}
 				}
 			}

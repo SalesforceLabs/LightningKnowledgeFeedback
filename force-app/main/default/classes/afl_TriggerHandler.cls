@@ -85,9 +85,6 @@ public with sharing class afl_TriggerHandler {
 				}
 			}
 
-			// Get allowed recordTypes
-			Map<Id,String> recordTypeDetails = afl_ArticleFeedbackSecurityHandler.getAllowedRecordTypesMap();
-
 			// Get languages
 			Map<String,String> mapLanguages = new Map<String,String>();
 			Schema.DescribeFieldResult fieldResult = KnowledgeArticleVersion.Language.getDescribe();
@@ -130,15 +127,9 @@ public with sharing class afl_TriggerHandler {
 								afd.Article_Title__c = (String) kav.get('Title');
 								afd.Knowledge_Article_Version_Id__c = (String) kav.get('Id');
 
-								if (!Test.isRunningTest()) {
-									if (hasRecordType) {
-										String rTypeId = String.valueOf(kav.get('RecordTypeId'));
-										if (recordTypeDetails.containsKey(rTypeId)) {
-											afd.Record_Type__c = recordTypeDetails.get(rTypeId);
-										}
-									}
-								} else {
-									afd.Record_Type__c = 'test article type';
+								if(hasRecordType) {
+									afd.Record_Type__c = afl_ArticleFeedbackSecurityHandler.getRecordTypeName(kav);
+
 								}
 
 								// Set feedback from Feed Body and Id

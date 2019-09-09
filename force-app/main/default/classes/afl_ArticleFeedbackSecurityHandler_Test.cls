@@ -211,6 +211,19 @@ private class afl_ArticleFeedbackSecurityHandler_Test {
 	}
 
 	@isTest
+	static void testGetRecordTypeName() {
+		SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
+		Test.startTest();
+		String recordTypeName = afl_ArticleFeedbackSecurityHandler.getRecordTypeName(kavObj);
+		Test.stopTest();
+		if(afl_ArticleFeedbackSecurityHandler.allRecordTypes != null && afl_ArticleFeedbackSecurityHandler.allRecordTypes.size() > 0){
+			System.assertEquals(afl_ArticleFeedbackSecurityHandler.allRecordTypes[0].DeveloperName, recordTypeName, 'The names should match');
+		} else {
+			System.assertEquals(null, recordTypeName, 'The method should return null');
+		}
+	}
+
+	@isTest
     static void getPicklistValuesTest() {
 		// Insert test data
 		afl_TestDataFactory.insertPicklistValues();
