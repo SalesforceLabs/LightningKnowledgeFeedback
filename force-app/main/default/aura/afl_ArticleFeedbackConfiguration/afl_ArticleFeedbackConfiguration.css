@@ -20,10 +20,21 @@
     hyphens: auto;
     display: inline-block;
     color: rgb(107, 109, 112);
-    font-size: 1rem;
     padding-right: .5rem;
     padding-top: .25rem;
     margin-bottom: .125rem;
+    margin-left: 33%;
+}
+
+.THIS .mainTitleSLDS {
+    margin-left: 19%;
+}
+
+.THIS .titleSLDS {
+    margin-left: 33%;
+}
+
+.THIS .helptextSLDS {
     margin-left: 33%;
 }
 

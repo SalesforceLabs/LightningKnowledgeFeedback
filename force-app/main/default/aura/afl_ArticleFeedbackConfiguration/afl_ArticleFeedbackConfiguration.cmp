@@ -21,7 +21,7 @@
                     <header class="slds-media slds-media_center slds-has-flexi-truncate">
                         <div class="slds-media__body">
                             <div class="slds-page-header">
-                                <div class="slds-media">
+                                <div class="slds-media mainTitleSLDS">
                                     <div class="slds-media__figure">
                                         <lightning:icon iconName="custom:custom108" class="slds-icon" alternativeText="icon"/>
                                     </div>
@@ -39,14 +39,58 @@
                     <lightning:layoutItem size="8">
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
+                                <h2 class="slds-card__header-title titleSLDS">
+                                    Hashtag settings 
+                                </h2>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+
+                    <lightning:layoutItem size="8">
+                        <div class="slds-form slds-form_horizontal">
+                            <div class="slds-form-element">
                                 <ui:outputText value="Hashtag" class="labelSLDS"/>
                                 <p class="required">*</p>
                                 <lightning:input aura:id="inputHashtag" placeholder="#ArticleFeedback" value="{!v.hashtagValue}" required="true" maxlength="99"></lightning:input>
                             </div>
                         </div>
                     </lightning:layoutItem>
+
                     <lightning:layoutItem size="10">
                         <lightning:button label="Save" class="slds-align--absolute-center slds-m-bottom_large slds-m-top_small" variant="brand" onclick="{!c.updateHashtag}"/>
+                    </lightning:layoutItem>
+
+                    <lightning:layoutItem size="8">
+                        <div class="slds-form slds-form_horizontal">
+                            <div class="slds-form-element">
+                                <h2 class="slds-card__header-title titleSLDS">
+                                    All values available for Feedback reason picklist
+                                </h2>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+                    
+                    <lightning:layout multipleRows="true">
+                        <lightning:layoutItem size="8">
+                            <div class="slds-form slds-form_horizontal slds-m-bottom_large">
+                                <ui:outputText value="Available picklist values:" class="labelSLDS"/>
+                                <ui:inputSelect multiple="true" class="boxBorderSLDS slds-size_8-of-12 slds-m-top_xx-small" aura:id="allValuesList" >
+                                    <aura:iteration items="{!v.allValues}" var="currentValue">
+                                        <ui:inputSelectOption text="{!currentValue.value}" label="{!currentValue.label}"/>
+                                    </aura:iteration>
+                                </ui:inputSelect>
+                            </div>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+
+                    <lightning:layoutItem size="8">
+                        <div class="slds-form slds-form_horizontal">
+                            <div class="slds-form-element">
+                                <h2 class="slds-card__header-title titleSLDS slds-m-top_large">
+                                    Add picklist values
+                                </h2>
+                            </div>
+                        </div>
                     </lightning:layoutItem>
 
                     <lightning:layoutItem size="8">
@@ -63,12 +107,54 @@
                             <lightning:button label="Add" class="slds-align--absolute-center slds-m-bottom_large" variant="brand" onclick="{!c.addPicklistValue}"/>
                         </lightning:layoutItem>
                     </lightning:layout>
+
+                    <lightning:layoutItem size="8">
+                        <div class="slds-form slds-form_horizontal">
+                            <div class="slds-form-element">
+                                <h2 class="slds-card__header-title titleSLDS">
+                                    Delete picklist values
+                                </h2>
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
+
+                    <lightning:layout multipleRows="true">
+                        <lightning:layoutItem size="8">
+                            <div class="slds-form slds-form_horizontal">
+                                <ui:outputText value="Select a value to delete:" class="labelSLDS"/>
+                                <ui:inputSelect multiple="true" class="boxBorderSLDS slds-size_8-of-12 slds-m-top_xx-small" aura:id="selectDelete" >
+                                    <aura:iteration items="{!v.allValues}" var="deleteValue">
+                                        <ui:inputSelectOption text="{!deleteValue.value}" label="{!deleteValue.label}"/>
+                                    </aura:iteration>
+                                </ui:inputSelect>
+    
+                            </div>
+                        </lightning:layoutItem>
+                        
+                        <lightning:layoutItem size="10">
+                            <lightning:button label="Delete" class="slds-align--absolute-center slds-m-top_small" variant="brand" onclick="{!c.deleteValue}"/>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+
+                    <lightning:layoutItem size="8">
+                        <div class="slds-form slds-form_horizontal">
+                            <div class="slds-m-top_large">
+                                <h2 class="slds-card__header-title titleSLDS">
+                                    Configure values to be displayed for positive and negative vote (optional)
+                                </h2>
+
+                                <lightning:helptext class="helptextSLDS"
+                                    content="The selected values from these lists will be displayed when a user leaves a positive or negative vote using the Article Feedback component. If there are no values selected, the default list will be displayed."
+                                />
+                            </div>
+                        </div>
+                    </lightning:layoutItem>
                     
                     <lightning:layoutItem size="8">
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
                                 <lightning:dualListbox aura:id="positiveValues" name="positiveValues"  label= ""
-                                    sourceLabel="Available positive values"
+                                    sourceLabel="Available values"
                                     selectedLabel="Selected positive values"
                                     options="{!v.allValues}"
                                     value="{!v.allPositiveValues}"
@@ -82,7 +168,7 @@
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
                             <lightning:dualListbox aura:id="negativeValues" name="negativeValues"  label= ""
-                                    sourceLabel="Available negative values"
+                                    sourceLabel="Available values"
                                     selectedLabel="Selected negative values"
                                     options="{!v.allValues}"
                                     value="{!v.allNegativeValues}"
@@ -96,22 +182,6 @@
                             <lightning:button label="Save" class="slds-align--absolute-center slds-m-bottom_xx-large slds-m-top_small" variant="brand" onclick="{!c.saveValueOrder}"/>
                         </div>
                     </lightning:layoutItem>
-                    <lightning:layout multipleRows="true">
-                        <lightning:layoutItem size="8">
-                            <div class="slds-form slds-form_horizontal">
-                                <ui:outputText value="Select a value to delete:" class="labelSLDS"/>
-                                <ui:inputSelect multiple="true" class="boxBorderSLDS slds-size_8-of-12 slds-m-top_xx-small" aura:id="selectDelete" >
-                                    <aura:iteration items="{!v.allValues}" var="deleteValue">
-                                        <ui:inputSelectOption text="{!deleteValue.value}" label="{!deleteValue.label}"/>
-                                    </aura:iteration>
-                                </ui:inputSelect>
-    
-                            </div>
-                        </lightning:layoutItem>
-                        <lightning:layoutItem size="10">
-                            <lightning:button label="Delete" class="slds-align--absolute-center slds-m-top_small" variant="brand" onclick="{!c.deleteValue}"/>
-                        </lightning:layoutItem>
-                    </lightning:layout>
                 </div>
             </article>
         </lightning:layoutItem>
