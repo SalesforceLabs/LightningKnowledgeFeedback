@@ -209,4 +209,17 @@ private class afl_ArticleFeedbackSecurityHandler_Test {
 
 		System.assertEquals('value1', result, 'The result should contain "value1"');
 	}
+
+	@isTest
+	static void testGetRecordTypeName() {
+		SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
+		Test.startTest();
+		String recordTypeName = afl_ArticleFeedbackSecurityHandler.getRecordTypeName(kavObj);
+		Test.stopTest();
+		if(afl_ArticleFeedbackSecurityHandler.allRecordTypes != null && afl_ArticleFeedbackSecurityHandler.allRecordTypes.size() > 0){
+			System.assertEquals(afl_ArticleFeedbackSecurityHandler.allRecordTypes[0].DeveloperName, recordTypeName, 'The names should match');
+		} else {
+			System.assertEquals(null, recordTypeName, 'The method should return null');
+		}
+	}
 }

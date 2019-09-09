@@ -34,6 +34,10 @@ public class afl_TestDataFactory {
 	    kavObj.put('UrlName', 'testUrlName' + String.valueOf(Crypto.getRandomInteger()));
 	    kavObj.put('Summary', 'testSummary');
 	    kavObj.put('Language', afl_ArticleFeedbackSecurityHandler.getValidLanguagePicklistValue(objType));
+		List<RecordType> allRecordTypes = afl_ArticleFeedbackSecurityHandler.allRecordTypes;
+		if(allRecordTypes != null && allRecordTypes.size() > 0){
+			kavObj.put('RecordTypeId', allRecordTypes[0].Id);
+		}
 	    INSERT kavObj;
 
 		return kavObj;

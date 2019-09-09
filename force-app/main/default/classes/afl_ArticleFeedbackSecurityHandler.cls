@@ -408,5 +408,26 @@ public class afl_ArticleFeedbackSecurityHandler {
         return commName;
     }
 
+
+    /*
+    * @description
+    *   Method that returns the knowledge article record type name
+    * @params
+    *  Knowledge object
+    * @return
+    *   String - Record type name
+    */
+    public static String getRecordTypeName(SObject sObj) {
+        Map<Id,String> recordTypeDetails = getAllowedRecordTypesMap();
+        if(allRecordTypes != null && allRecordTypes.size() > 0){
+            String rTypeId = (String)sObj.get('RecordTypeId');
+            if (recordTypeDetails.containsKey(rTypeId)) { 
+                return recordTypeDetails.get(rTypeId);
+            }
+            return null;
+        }
+        return null;
+	}
+
     public class SecurityException extends Exception {}
 }
