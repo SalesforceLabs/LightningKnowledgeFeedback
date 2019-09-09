@@ -110,57 +110,30 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 	*/
 	@AuraEnabled
 	public static afl_LightningResponse getPickListValuesIntoList() {
-		// Check FLS
-		afl_ArticleFeedbackSecurityHandler.canAccess(afl_Article_Feedback__c.SObjectType);
-		afl_ArticleFeedbackSecurityHandler.canAccess(Article_Feedback_Values__c.SObjectType);
-
 		afl_LightningResponse response = new afl_LightningResponse();
 		Map<String,String> result = new Map<String,String>();
-		
-		List<String> activePositiveValues = new List<String>();
-		List<String> activeNegativeValues = new List<String>();
-		List<String> allActiveValues = new List<String>();
 
 		try {
-			 List<Article_Feedback_Values__c> allValues = [
-				SELECT Value__c, OrderPositive__c, OrderNegative__c, Positive__c, Negative__c
-				FROM Article_Feedback_Values__c
-				ORDER BY Value__c ASC
-			];
+			// Retrieve picklist values
+			Map<String,List<String>> picklistValues = afl_ArticleFeedbackSecurityHandler.getPicklistValues();
+			result.put('allValues', JSON.serialize(picklistValues.get('allPicklistValues')));
 
-			if (allValues.size() > 0){
-				for(Integer i=0; i<allValues.size(); i++){
-					allActiveValues.add(allValues[i].Value__c);
-					for(Article_Feedback_Values__c currentValue : allValues){
-						if(currentValue.OrderPositive__c == i && currentValue.Positive__c == true){
-							activePositiveValues.add(currentValue.Value__c);
-						}
-						if(currentValue.OrderNegative__c == i && currentValue.Negative__c == true){
-							activeNegativeValues.add(currentValue.Value__c);
-						}
-					}
-				}
+			if (picklistValues.get('allPositiveValues').size() == 0) {
+				result.put('activePositiveValues', JSON.serialize(picklistValues.get('allPicklistValues')));
 			} else {
-				allActiveValues.add('Other');
+				result.put('activePositiveValues', JSON.serialize(picklistValues.get('allPositiveValues')));
 			}
 
-			if (activePositiveValues.size() < 1) {
-				activePositiveValues.add('Other');
+			if (picklistValues.get('allNegativeValues').size() == 0) {
+				result.put('activeNegativeValues', JSON.serialize(picklistValues.get('allPicklistValues')));
+			} else {
+				result.put('activeNegativeValues', JSON.serialize(picklistValues.get('allNegativeValues')));
 			}
-
-			if (activeNegativeValues.size() < 1) {
-				activeNegativeValues.add('Other');
-			}
-
-		} catch(Exception e) {
-			response = new afl_LightningResponse(e);
+			
+			response.jsonResponse = JSON.serialize(result);
+		} catch (Exception e) {
+			return new afl_LightningResponse(e);
 		}
-
-		result.put('activePositiveValues', JSON.serialize(activePositiveValues));
-		result.put('activeNegativeValues', JSON.serialize(activeNegativeValues));
-		result.put('allValues', JSON.serialize(allActiveValues));
-		
-		response.jsonResponse = JSON.serialize(result);
 
 		return response;
 	}

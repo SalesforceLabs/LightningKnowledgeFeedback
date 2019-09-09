@@ -71,6 +71,140 @@ public class afl_ArticleFeedbackSecurityHandler {
         return result ;
     }
 
+
+    /*
+    * @description
+    *   Checks if default picklist values need to be created
+    * @params
+    *   None
+    * @return
+    *   None
+    */
+    public static void checkDefaultValues() {
+        // Check FLS
+        afl_ArticleFeedbackSecurityHandler.canAccess(afl_Knowledge_feedback__c.SObjectType);
+        afl_ArticleFeedbackSecurityHandler.canCreate(afl_Knowledge_feedback__c.SObjectType);
+        afl_ArticleFeedbackSecurityHandler.canUpdate(afl_Knowledge_feedback__c.SObjectType);
+
+        afl_Knowledge_feedback__c af = afl_Knowledge_feedback__c.getOrgDefaults();
+        if (!af.defaultPicklistValuesInserted__c) {
+            try {
+                insertDefaultValues();
+
+                af.defaultPicklistValuesInserted__c = true;
+                UPSERT af;
+            } catch(Exception e) {
+                System.debug(e);
+            }
+        }
+    }
+
+    /*
+	* @description
+	*	Method that adds retrieves picklist values from Article_Feedback_Values__c 
+	* @params
+	*	None
+	* @return
+	*	Map with active and inactive values
+	*/
+	public static Map<String,List<String>> getPicklistValues() {
+		// Check FLS
+		canAccess(Article_Feedback_Values__c.SObjectType);
+        canAccess(afl_Knowledge_feedback__c.SObjectType);
+
+		afl_Knowledge_feedback__c af = afl_Knowledge_feedback__c.getOrgDefaults();
+
+		Map<String,List<String>> result = new Map<String,List<String>>();
+		List<String> allPositiveValues = new List<String>();
+		List<String> allNegativeValues = new List<String>();
+		List<String> allPicklistValues = new List<String>();
+
+		List<Article_Feedback_Values__c> existingValues = [
+			SELECT Value__c, Positive__c, Negative__c, OrderPositive__c, OrderNegative__c
+			FROM Article_Feedback_Values__c
+			ORDER BY Value__c ASC
+		];
+
+		if (existingValues.size() > 0) {
+			for (Integer i=0; i<existingValues.size(); i++) {
+				allPicklistValues.add(existingValues[i].Value__c);
+				for (Article_Feedback_Values__c currentValue : existingValues) {
+					if (currentValue.OrderPositive__c == i && currentValue.Positive__c == true) {
+						allPositiveValues.add(currentValue.Value__c);
+					}
+					if (currentValue.OrderNegative__c == i && currentValue.Negative__c == true) {
+						allNegativeValues.add(currentValue.Value__c);
+					}
+				}
+			}
+
+		    allPicklistValues.sort();
+		} else {
+            if (!af.defaultPicklistValuesInserted__c) {
+                allPicklistValues.add('Duplicate');
+                allPicklistValues.add('Enhancement suggestion');
+                allPicklistValues.add('Information inaccurate');
+                allPicklistValues.add('Link broken');
+                allPicklistValues.add('Need to archive');
+                allPicklistValues.add('Outdated (needs update)');
+                allPicklistValues.add('Positive feedback');
+                allPicklistValues.add('Poorly written (not clear)');
+                allPicklistValues.add('Other');
+            }
+        }
+
+		result.put('allPositiveValues', allPositiveValues);
+		result.put('allNegativeValues', allNegativeValues);
+		result.put('allPicklistValues', allPicklistValues);
+
+		return result;
+	}
+
+    /*
+	* @description
+	*	Inserts default Article_Feedback_Values__c values
+	* @params
+	*	None
+	* @return
+	*	None
+	*/
+	public static void insertDefaultValues() {
+		canAccess(Article_Feedback_Values__c.SObjectType);
+		canCreate(Article_Feedback_Values__c.SObjectType);
+
+        List<Article_Feedback_Values__c> newValues = new List<Article_Feedback_Values__c>();
+
+        newValues.add(createNewFeedbackValue('Duplicate'));
+        newValues.add(createNewFeedbackValue('Enhancement suggestion'));
+        newValues.add(createNewFeedbackValue('Information inaccurate'));
+        newValues.add(createNewFeedbackValue('Link broken'));
+        newValues.add(createNewFeedbackValue('Need to archive'));
+        newValues.add(createNewFeedbackValue('Outdated (needs update)'));
+        newValues.add(createNewFeedbackValue('Positive feedback'));
+        newValues.add(createNewFeedbackValue('Poorly written (not clear)'));
+        newValues.add(createNewFeedbackValue('Other'));
+            
+        INSERT newValues;
+    }
+
+    /*
+	* @description
+	*	Method that creates a new instance of Article_Feedback_Values__c
+	* @params
+	*	String with picklist value, Boolean with positive value, Boolean with negative value
+	* @return
+	*	Article_Feedback_Values__c
+	*/
+	public static Article_Feedback_Values__c createNewFeedbackValue(String picklistValue) {
+		Article_Feedback_Values__c newValue = new Article_Feedback_Values__c(
+			Value__c = picklistValue, 
+			Positive__c = false,
+			Negative__c = false
+		);
+	
+		return newValue;
+	}
+
     /*
     * @description
     *   Returns a boolean to know if the user is a guest

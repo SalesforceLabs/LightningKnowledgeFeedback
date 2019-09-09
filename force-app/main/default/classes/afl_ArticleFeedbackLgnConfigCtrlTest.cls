@@ -36,27 +36,6 @@ private class afl_ArticleFeedbackLgnConfigCtrlTest {
 	}
 
 	@isTest
-    static void getPicklistValuesTest() {
-		// Insert test data
-		afl_TestDataFactory.insertPicklistValues();
-
-		Test.startTest();
-		Map<String,List<String>> result = afl_ArticleFeedbackLgnConfigCtrl.getPicklistValues();
-		Test.stopTest();
-
-		List<String> allPositiveValues = result.get('allPositiveValues');
-		List<String> allNegativeValues = result.get('allNegativeValues');
-		List<String> allPicklistValues = result.get('allPicklistValues');
-
-		System.assertEquals(2, allPositiveValues.size(), 'There should be 2 records in the list');
-		System.assertEquals(2, allNegativeValues.size(), 'There should be 2 records in the list');
-		System.assertEquals(4, allPicklistValues.size(), 'There should be 4 records in the list');
-
-		System.assertEquals('value1', allPositiveValues.get(1), 'The name of the value should match');
-		System.assertEquals('value2', allNegativeValues.get(1), 'The name of the value should match');
-	}
-
-	@isTest
     static void updateHashtagValueTest() {
 		afl_LightningResponse response = new afl_LightningResponse();
 		Map<String,Object> result = new Map<String,Object>();
@@ -111,14 +90,19 @@ private class afl_ArticleFeedbackLgnConfigCtrlTest {
 		System.assertEquals('DUPLICATED', result5.get('status'), 'The operation should fail because of the duplicated value.');
 		System.assertEquals('DUPLICATED', result6.get('status'), 'The operation should fail because of the duplicated value.');
 
-		// There should be only 3 created records because three failed
-		System.assertEquals(3, nCreatedValues, 'There should be 3 new values created.');
+		// There should be 12 created records because three failed
+		System.assertEquals(12, nCreatedValues, 'There should be 12 new values created.');
 	}
 
 	@isTest
     static void savePicklistOrderTest() {
 		// Insert test data
 		afl_TestDataFactory.insertPicklistValues();
+
+		// Prevent creation of default picklist values
+		afl_Knowledge_feedback__c af = afl_Knowledge_feedback__c.getOrgDefaults();
+		af.defaultPicklistValuesInserted__c = true;
+		UPSERT af;
 
 		afl_LightningResponse response = new afl_LightningResponse();
 		Map<String,List<String>> valuesMap = new Map<String,List<String>>();
@@ -145,6 +129,12 @@ private class afl_ArticleFeedbackLgnConfigCtrlTest {
 			FROM Article_Feedback_Values__c
 			ORDER BY Value__c ASC
 		];
+
+		for (Article_Feedback_Values__c afv : updatedValues) {
+			System.debug('Value__c: ' + afv.Value__c);
+			System.debug('OrderPositive__c: ' + afv.OrderPositive__c);
+			System.debug('OrderNegative__c: ' + afv.OrderNegative__c);
+		}
 
 		Test.stopTest();
 

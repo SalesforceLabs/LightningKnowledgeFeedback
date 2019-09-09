@@ -69,10 +69,10 @@
 				}
 			}
 
-			if (!$A.util.isUndefinedOrNull(response.allValues)){
+			if (!$A.util.isUndefinedOrNull(response.allValues)) {
 				component.set('v.allValues', JSON.parse(response.allValues));
 
-				if(!component.get('v.liked') && !component.get('v.disliked')){
+				if (!component.get('v.liked') && !component.get('v.disliked')) {
 					ctx.getPicklistValuesFromAttribute(component, component.get('v.allValues'));
 				}
 			}
