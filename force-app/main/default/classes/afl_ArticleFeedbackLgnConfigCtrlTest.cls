@@ -129,13 +129,6 @@ private class afl_ArticleFeedbackLgnConfigCtrlTest {
 			FROM Article_Feedback_Values__c
 			ORDER BY Value__c ASC
 		];
-
-		for (Article_Feedback_Values__c afv : updatedValues) {
-			System.debug('Value__c: ' + afv.Value__c);
-			System.debug('OrderPositive__c: ' + afv.OrderPositive__c);
-			System.debug('OrderNegative__c: ' + afv.OrderNegative__c);
-		}
-
 		Test.stopTest();
 
 		System.assertEquals('SUCCESS', result.get('status'), 'The operation should be succesful.');

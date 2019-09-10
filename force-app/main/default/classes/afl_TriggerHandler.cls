@@ -30,7 +30,6 @@ public with sharing class afl_TriggerHandler {
 				for (SObject sObj : triggerObjects) {
 					FeedItem f = (FeedItem) sObj;
 					String parentId = f.parentId;
-					System.debug('FeedItem parentId: ' + parentId);
 					if (parentId.startsWith('kA') && (f.Type == 'TextPost' || f.Type == 'LinkPost') && f.Body.containsIgnoreCase(kf.Hashtag__c)) {
 						setIds.add(f.ParentId);
 					}
@@ -39,7 +38,6 @@ public with sharing class afl_TriggerHandler {
 				for (SObject sObj : trigger.new) {
 					FeedComment f = (FeedComment) sObj;
 					String parentId = f.parentId;
-					System.debug('FeedComment parentId: ' + parentId);
 					if (parentId.startsWith('kA') && f.CommentType == 'TextComment' && f.CommentBody.containsIgnoreCase(kf.Hashtag__c)) {
 						setIds.add(f.ParentId);
 					}
@@ -176,7 +174,6 @@ public with sharing class afl_TriggerHandler {
 	            '\n getLineNumber: ' + e.getLineNumber() +
 	            '\n getStackTraceString: ' + e.getStackTraceString() +
 	            '\n getTypeName: ' + e.getTypeName();
-	            System.debug('\n====== InsertArticleFeedback Exception:\n' +  errorStr);
 	        }
 		}
 	}
