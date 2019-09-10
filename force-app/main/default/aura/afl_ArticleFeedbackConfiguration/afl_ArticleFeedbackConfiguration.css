@@ -35,7 +35,8 @@
 }
 
 .THIS .helptextSLDS {
-    margin-left: 33%;
+    position: relative;
+    bottom: 0.3rem;
 }
 
 .THIS .slds-required {
