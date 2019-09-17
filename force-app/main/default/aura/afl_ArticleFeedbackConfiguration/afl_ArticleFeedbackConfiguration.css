@@ -31,12 +31,30 @@
 }
 
 .THIS .titleSLDS {
-    margin-left: 33%;
+    margin-left: 32%;
+    margin-right: -1%;
+    padding-left: 1%;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+    color: white;
+    background-color: rgb(28, 69, 135);
+}
+
+.THIS .secondTitleSLDS {
+    margin-left: 22%;
+}
+
+.THIS .displayInline {
+    display: inline;
 }
 
 .THIS .helptextSLDS {
     position: relative;
     bottom: 0.3rem;
+}
+
+.THIS .slds-button_icon{
+    color: white !important;
 }
 
 .THIS .slds-required {
