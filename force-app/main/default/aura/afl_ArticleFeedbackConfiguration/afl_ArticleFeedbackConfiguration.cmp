@@ -63,31 +63,8 @@
                     <lightning:layoutItem size="8">
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
-                                <h2 class="slds-card__header-title titleSLDS">
-                                    All values available for Feedback reason picklist
-                                </h2>
-                            </div>
-                        </div>
-                    </lightning:layoutItem>
-                    
-                    <lightning:layout multipleRows="true">
-                        <lightning:layoutItem size="8">
-                            <div class="slds-form slds-form_horizontal slds-m-bottom_large">
-                                <ui:outputText value="Available picklist values:" class="labelSLDS"/>
-                                <ui:inputSelect multiple="true" class="boxBorderSLDS slds-size_8-of-12 slds-m-top_xx-small" aura:id="allValuesList" >
-                                    <aura:iteration items="{!v.allValues}" var="currentValue">
-                                        <ui:inputSelectOption text="{!currentValue.value}" label="{!currentValue.label}"/>
-                                    </aura:iteration>
-                                </ui:inputSelect>
-                            </div>
-                        </lightning:layoutItem>
-                    </lightning:layout>
-
-                    <lightning:layoutItem size="8">
-                        <div class="slds-form slds-form_horizontal">
-                            <div class="slds-form-element">
                                 <h2 class="slds-card__header-title titleSLDS slds-m-top_large">
-                                    Add picklist values
+                                    Setup picklist values for Feedback Reason field
                                 </h2>
                             </div>
                         </div>
@@ -108,12 +85,13 @@
                         </lightning:layoutItem>
                     </lightning:layout>
 
-                    <lightning:layoutItem size="8">
+                    <lightning:layoutItem size="12">
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
-                                <h2 class="slds-card__header-title titleSLDS">
-                                    Delete picklist values
+                                <h2 class="slds-card__header-title secondTitleSLDS displayInline">
+                                    Feedback reason picklist 
                                 </h2>
+                                <p class="displayInline">(select a value to delete, then press the Delete button below)</p>
                             </div>
                         </div>
                     </lightning:layoutItem>
@@ -121,7 +99,6 @@
                     <lightning:layout multipleRows="true">
                         <lightning:layoutItem size="8">
                             <div class="slds-form slds-form_horizontal">
-                                <ui:outputText value="Select a value to delete:" class="labelSLDS"/>
                                 <ui:inputSelect multiple="true" class="boxBorderSLDS slds-size_8-of-12 slds-m-top_xx-small" aura:id="selectDelete" >
                                     <aura:iteration items="{!v.allValues}" var="deleteValue">
                                         <ui:inputSelectOption text="{!deleteValue.value}" label="{!deleteValue.label}"/>
