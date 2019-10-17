@@ -117,7 +117,7 @@
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-m-top_large">
                                 <h2 class="slds-card__header-title titleSLDS">
-                                    Configure values to be displayed for positive and negative vote (optional) <lightning:helptext class="helptextSLDS" content="The selected values from these lists will be displayed when a user leaves a positive or negative vote using the Article Feedback component. If there are no values selected, the default list will be displayed."/>
+                                    Configure values to be displayed for positive and negative vote (optional) <lightning:helptext class="iconStyle" content="The selected values from these lists will be displayed when a user leaves a positive or negative vote using the Article Feedback component. If there are no values selected, the default list will be displayed."/>
                                 </h2>
                             </div>
                         </div>
