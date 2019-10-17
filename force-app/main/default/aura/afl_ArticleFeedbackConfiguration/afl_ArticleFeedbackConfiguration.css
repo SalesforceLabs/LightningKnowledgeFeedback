@@ -53,8 +53,8 @@
     bottom: 0.3rem;
 }
 
-.THIS .slds-button_icon{
-    color: white !important;
+.THIS .iconStyle svg{ 
+    fill: #ffffff; 
 }
 
 .THIS .slds-required {
