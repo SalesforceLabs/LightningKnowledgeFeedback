@@ -501,6 +501,10 @@ public class afl_ArticleFeedbackSecurityHandler {
     *	Boolean
     */
     public static Boolean checkForSchemaFieldActive(String fieldName) {
+        if (!isVisibleKav()) {
+			return false;
+		}
+
         Schema.DescribeSObjectResult sor = Schema.getGlobalDescribe().get(knowledgeObject).getDescribe();
         Map<String,Schema.SObjectField> sofs = sor.fields.getMap();
 
