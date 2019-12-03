@@ -14,6 +14,14 @@ public with sharing class afl_TriggerHandler {
 	*	void
 	*/
 	public static void handleTriggerInsertion(String type, List<SObject> triggerObjects) {
+		if (!afl_ArticleFeedbackSecurityHandler.isVisibleKav()) {
+			return;
+		}
+
+		if (!afl_ArticleFeedbackSecurityHandler.isCreateable(afl_Article_Feedback__c.SObjectType)) {
+			return;
+		}
+
 		Set<Id> setIds = new Set<Id>();
 		// Set customs settings
 		if (afl_ArticleFeedbackSecurityHandler.isAccessible(Schema.SObjectType.afl_Knowledge_feedback__c.getSobjectType())) {
