@@ -181,9 +181,11 @@ private class afl_ArticleFeedbackSecurityHandler_Test {
 
 		System.Test.startTest();
 		Boolean result = afl_ArticleFeedbackSecurityHandler.getKAVPermissions();
+		Boolean result2 = afl_ArticleFeedbackSecurityHandler.isVisibleKav();
 		System.Test.stopTest();
 
 		System.assertEquals(true, result, 'The user should have permissions');
+		System.assertEquals(true, result2, 'The user should have permissions');
 	}
 
 	@isTest
