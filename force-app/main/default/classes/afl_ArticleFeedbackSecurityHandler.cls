@@ -23,6 +23,18 @@ public class afl_ArticleFeedbackSecurityHandler {
         isPrivateSharingEnabled = true;
     }
 
+    public static Boolean isVisibleKav() {
+        Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
+        Set<String> keySet = gd.keySet();
+        for (String key : keySet) {
+            Schema.SObjectType objectType = gd.get(key);
+            if (key.endsWith('kav')&& objectType.getDescribe().isAccessible()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static String knowledgeObject {
         get {
             if (knowledgeObject == null) {
