@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>Add_button</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Add button</shortDescription>
+        <value>Add</value>
+    </labels>
+    <labels>
+        <fullName>Add_value_to_Feedback_picklist</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Add value to Feedback picklist</shortDescription>
+        <value>Add value to Feedback Reason picklist</value>
+    </labels>
+    <labels>
+        <fullName>Add_value_to_Feedback_picklist_placeholder</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Add value to Feedback picklist placeholder</shortDescription>
+        <value>Picklist value</value>
+    </labels>
+    <labels>
+        <fullName>Available_values_label</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Available values label</shortDescription>
+        <value>Available values</value>
+    </labels>
+    <labels>
         <fullName>Choose_a_general_reason</fullName>
         <categories>AQI</categories>
         <language>en_US</language>
@@ -9,12 +41,116 @@
         <value>Choose a general reason</value>
     </labels>
     <labels>
+        <fullName>Configure_values_helptext</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Configure values helptext</shortDescription>
+        <value>The selected values from these lists will be displayed when a user leaves a positive or negative vote using the Article Feedback component. If there are no values selected, the default list will be displayed.</value>
+    </labels>
+    <labels>
+        <fullName>Configure_values_to_be_displayed</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Configure values to be displayed</shortDescription>
+        <value>Configure values to be displayed for positive and negative vote (optional)</value>
+    </labels>
+    <labels>
+        <fullName>Delete_button</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Delete button</shortDescription>
+        <value>Delete</value>
+    </labels>
+    <labels>
         <fullName>Description</fullName>
         <categories>AQI</categories>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Description</shortDescription>
         <value>Description</value>
+    </labels>
+    <labels>
+        <fullName>Description_placeholder</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Description placeholder</shortDescription>
+        <value>Please, leave us some feedback...</value>
+    </labels>
+    <labels>
+        <fullName>Feedback_reason_picklist</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Feedback reason picklist</shortDescription>
+        <value>Feedback reason picklist</value>
+    </labels>
+    <labels>
+        <fullName>Feedback_reason_picklist_explanation</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Feedback reason picklist explanation</shortDescription>
+        <value>(select a value to delete, then press the Delete button below)</value>
+    </labels>
+    <labels>
+        <fullName>Hashtag_settings_title</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Hashtag settings title</shortDescription>
+        <value>Hashtag settings</value>
+    </labels>
+    <labels>
+        <fullName>Save_button</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Save button</shortDescription>
+        <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>Selected_negative_values_label</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Selected negative values label</shortDescription>
+        <value>Selected negative values</value>
+    </labels>
+    <labels>
+        <fullName>Selected_positive_values_label</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Selected positive values label</shortDescription>
+        <value>Selected positive values</value>
+    </labels>
+    <labels>
+        <fullName>Setup_page_title</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Setup page title</shortDescription>
+        <value>Settings for Knowledge Feedback Tracking</value>
+    </labels>
+    <labels>
+        <fullName>Setup_picklist_values_title</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Setup picklist values title</shortDescription>
+        <value>Setup picklist values for Feedback Reason field</value>
+    </labels>
+    <labels>
+        <fullName>Submit_button</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Submit button</shortDescription>
+        <value>Submit</value>
     </labels>
     <labels>
         <fullName>Was_this_article_helpful</fullName>
