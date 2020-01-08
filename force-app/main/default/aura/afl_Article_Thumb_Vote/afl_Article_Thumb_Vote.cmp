@@ -20,7 +20,7 @@
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
     <aura:if isTrue="{!!v.invalidRecordId}">
-        <lightning:card title="Was this article helpful?">
+        <lightning:card title="{!$Label.c.Was_this_article_helpful}">
             <center>
                 <lightning:spinner variant="brand" size="small" aura:id="spinner" class="slds-hide"/>
             </center>
@@ -32,15 +32,15 @@
 
             <p class="slds-p-horizontal_medium">
                 <div aura:id="feedbackDivContainer" class="slds-show">
-                    <lightning:combobox name="comboGroup" label="Choose a general reason:" value="{!v.reasonType}" placeholder="Select reason" options="{!v.reasonTypeOptions}" />
+                    <lightning:combobox name="comboGroup" label="{!$Label.c.Choose_a_general_reason}" value="{!v.reasonType}" placeholder="Select reason" options="{!v.reasonTypeOptions}" />
 
                     <div class="slds-p-top--medium">
-                        <lightning:textarea aura:id ="feedbackReason" value="{!v.voteReasonDescription}" label="Description" placeholder="Please, leave us some feedback..." maxlength="29000"/>
+                        <lightning:textarea aura:id ="feedbackReason" value="{!v.voteReasonDescription}" label="{!$Label.c.Description}" placeholder="{!$Label.c.Description_placeholder}" maxlength="29000"/>
                         
                         <br></br>
                         
                         <center>
-                            <lightning:button variant="brand" label="Submit" onclick="{! c.handleClick }" />
+                            <lightning:button variant="brand" label="{!$Label.c.Submit_button}" onclick="{!c.handleClick }" />
                         </center>
                     </div>
                 </div>

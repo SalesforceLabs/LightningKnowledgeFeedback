@@ -27,7 +27,7 @@
                                     </div>
 
                                     <div class="slds-media__body">
-                                        <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Rohde Corp - 80,000 Widgets">Settings for Knowledge Feedback Tracking</h1>
+                                        <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Rohde Corp - 80,000 Widgets">{!$Label.c.Setup_page_title}</h1>
                                     </div>
                                 </div>
                             </div>
@@ -40,7 +40,7 @@
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
                                 <h2 class="slds-card__header-title titleSLDS">
-                                    Hashtag settings 
+                                    {!$Label.c.Hashtag_settings_title}
                                 </h2>
                             </div>
                         </div>
@@ -57,14 +57,14 @@
                     </lightning:layoutItem>
 
                     <lightning:layoutItem size="10">
-                        <lightning:button label="Save" class="slds-align--absolute-center slds-m-bottom_large slds-m-top_small" variant="brand" onclick="{!c.updateHashtag}"/>
+                        <lightning:button label="{!$Label.c.Save_button}" class="slds-align--absolute-center slds-m-bottom_large slds-m-top_small" variant="brand" onclick="{!c.updateHashtag}"/>
                     </lightning:layoutItem>
 
                     <lightning:layoutItem size="8">
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
                                 <h2 class="slds-card__header-title titleSLDS slds-m-top_large">
-                                    Setup picklist values for Feedback Reason field
+                                    {!$Label.c.Setup_picklist_values_title}
                                 </h2>
                             </div>
                         </div>
@@ -73,15 +73,15 @@
                     <lightning:layoutItem size="8">
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
-                                <ui:outputText value="Add value to Feedback Reason picklist" class="labelSLDS"/>
-                                <lightning:input aura:id="picklistValue" placeholder="Picklist value" maxlength="150"></lightning:input>
+                                <ui:outputText value="{!$Label.c.Add_value_to_Feedback_picklist}" class="labelSLDS"/>
+                                <lightning:input aura:id="picklistValue" placeholder="{!$Label.c.Add_value_to_Feedback_picklist_placeholder}" maxlength="150"></lightning:input>
                             </div>
                         </div>
                     </lightning:layoutItem>
 
                     <lightning:layout multipleRows="true">
                         <lightning:layoutItem size="10">
-                            <lightning:button label="Add" class="slds-align--absolute-center slds-m-bottom_large" variant="brand" onclick="{!c.addPicklistValue}"/>
+                            <lightning:button label="{!$Label.c.Add_button}" class="slds-align--absolute-center slds-m-bottom_large" variant="brand" onclick="{!c.addPicklistValue}"/>
                         </lightning:layoutItem>
                     </lightning:layout>
 
@@ -89,9 +89,9 @@
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
                                 <h2 class="slds-card__header-title secondTitleSLDS displayInline">
-                                    Feedback reason picklist 
+                                    {!$Label.c.Feedback_reason_picklist}
                                 </h2>
-                                <p class="displayInline">(select a value to delete, then press the Delete button below)</p>
+                                <p class="displayInline marginLeft">{!$Label.c.Feedback_reason_picklist_explanation}</p>
                             </div>
                         </div>
                     </lightning:layoutItem>
@@ -109,7 +109,7 @@
                         </lightning:layoutItem>
                         
                         <lightning:layoutItem size="10">
-                            <lightning:button label="Delete" class="slds-align--absolute-center slds-m-top_small" variant="brand" onclick="{!c.deleteValue}"/>
+                            <lightning:button label="{!$Label.c.Delete_button}" class="slds-align--absolute-center slds-m-top_small" variant="brand" onclick="{!c.deleteValue}"/>
                         </lightning:layoutItem>
                     </lightning:layout>
 
@@ -117,7 +117,8 @@
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-m-top_large">
                                 <h2 class="slds-card__header-title titleSLDS">
-                                    Configure values to be displayed for positive and negative vote (optional) <lightning:helptext class="iconStyle" content="The selected values from these lists will be displayed when a user leaves a positive or negative vote using the Article Feedback component. If there are no values selected, the default list will be displayed."/>
+                                    {!$Label.c.Configure_values_to_be_displayed}
+                                    <lightning:helptext class="iconStyle marginLeft" content="{!$Label.c.Configure_values_helptext}"/>
                                 </h2>
                             </div>
                         </div>
@@ -127,8 +128,8 @@
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
                                 <lightning:dualListbox aura:id="positiveValues" name="positiveValues"  label= ""
-                                    sourceLabel="Available values"
-                                    selectedLabel="Selected positive values"
+                                    sourceLabel="{!$Label.c.Available_values_label}"
+                                    selectedLabel="{!$Label.c.Selected_positive_values_label}"
                                     options="{!v.allValues}"
                                     value="{!v.allPositiveValues}"
                                     onchange="{!c.handlePositiveChange}"
@@ -141,8 +142,8 @@
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
                             <lightning:dualListbox aura:id="negativeValues" name="negativeValues"  label= ""
-                                    sourceLabel="Available values"
-                                    selectedLabel="Selected negative values"
+                                    sourceLabel="{!$Label.c.Available_values_label}"
+                                    selectedLabel="{!$Label.c.Selected_negative_values_label}"
                                     options="{!v.allValues}"
                                     value="{!v.allNegativeValues}"
                                     onchange="{!c.handleNegativeChange}"
@@ -152,7 +153,7 @@
                     </lightning:layoutItem>
                     <lightning:layoutItem size="10">
                         <div class="slds-form slds-form_horizontal">
-                            <lightning:button label="Save" class="slds-align--absolute-center slds-m-bottom_xx-large slds-m-top_small" variant="brand" onclick="{!c.saveValueOrder}"/>
+                            <lightning:button label="{!$Label.c.Save_button}" class="slds-align--absolute-center slds-m-bottom_xx-large slds-m-top_small" variant="brand" onclick="{!c.saveValueOrder}"/>
                         </div>
                     </lightning:layoutItem>
                 </div>

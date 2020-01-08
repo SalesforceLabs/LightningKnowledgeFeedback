@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Choose_a_general_reason</fullName>
+        <categories>AQI</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Choose a general reason</shortDescription>
+        <value>Choose a general reason</value>
+    </labels>
+    <labels>
+        <fullName>Description</fullName>
+        <categories>AQI</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Description</shortDescription>
+        <value>Description</value>
+    </labels>
+    <labels>
+        <fullName>Was_this_article_helpful</fullName>
+        <categories>AQI</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Was this article helpful</shortDescription>
+        <value>Was this article helpful?</value>
+    </labels>
+</CustomLabels>

@@ -44,6 +44,10 @@
     margin-left: 22%;
 }
 
+.THIS .marginLeft {
+    margin-left: 0.3rem;
+}
+
 .THIS .displayInline {
     display: inline;
 }
