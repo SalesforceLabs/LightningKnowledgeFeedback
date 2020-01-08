@@ -34,7 +34,7 @@
     </labels>
     <labels>
         <fullName>Choose_a_general_reason</fullName>
-        <categories>AQI</categories>
+        <categories>Article Feedback</categories>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Choose a general reason</shortDescription>
@@ -66,7 +66,7 @@
     </labels>
     <labels>
         <fullName>Description</fullName>
-        <categories>AQI</categories>
+        <categories>Article Feedback</categories>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Description</shortDescription>
@@ -154,7 +154,7 @@
     </labels>
     <labels>
         <fullName>Was_this_article_helpful</fullName>
-        <categories>AQI</categories>
+        <categories>Article Feedback</categories>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Was this article helpful</shortDescription>
