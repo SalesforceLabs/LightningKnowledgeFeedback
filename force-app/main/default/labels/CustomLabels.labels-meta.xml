@@ -25,6 +25,22 @@
         <value>Picklist value</value>
     </labels>
     <labels>
+        <fullName>Adding_value_error</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Adding value error</shortDescription>
+        <value>An error ocurred while adding the value.</value>
+    </labels>
+    <labels>
+        <fullName>Always_display_feedback_section</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Always display feedback section</shortDescription>
+        <value>Always display feedback section?</value>
+    </labels>
+    <labels>
         <fullName>Available_values_label</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
@@ -63,6 +79,14 @@
         <protected>true</protected>
         <shortDescription>Delete button</shortDescription>
         <value>Delete</value>
+    </labels>
+    <labels>
+        <fullName>Deleting_values_error</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Deleting values error</shortDescription>
+        <value>An error occurred while deleting the values</value>
     </labels>
     <labels>
         <fullName>Description</fullName>
@@ -105,12 +129,68 @@
         <value>Hashtag settings</value>
     </labels>
     <labels>
+        <fullName>Hashtag_value_updated_message</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Hashtag value updated message</shortDescription>
+        <value>Hashtag value successfully updated</value>
+    </labels>
+    <labels>
+        <fullName>Make_rating_required</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Make rating required</shortDescription>
+        <value>Make rating required?</value>
+    </labels>
+    <labels>
+        <fullName>No_hashtag_error</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>No hashtag error</shortDescription>
+        <value>The text needs to include a hashtag (#) sign at the beginning to be valid.</value>
+    </labels>
+    <labels>
+        <fullName>No_hashtag_or_square_bracket_error</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>No hashtag or square bracket error</shortDescription>
+        <value>This field cannot be empty or include a closing square bracket (])</value>
+    </labels>
+    <labels>
+        <fullName>Picklist_empty_error</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Picklist empty error</shortDescription>
+        <value>The picklist value field cannot be empty.</value>
+    </labels>
+    <labels>
+        <fullName>Picklist_with_semicolon_error</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Picklist with semicolon error</shortDescription>
+        <value>The picklist value cannot include a semi-colon.</value>
+    </labels>
+    <labels>
         <fullName>Save_button</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Save button</shortDescription>
         <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>Select_a_value_to_delete_error</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Select a value to delete error</shortDescription>
+        <value>You need to select at least one value to delete</value>
     </labels>
     <labels>
         <fullName>Selected_negative_values_label</fullName>
@@ -151,6 +231,46 @@
         <protected>true</protected>
         <shortDescription>Submit button</shortDescription>
         <value>Submit</value>
+    </labels>
+    <labels>
+        <fullName>Update_hashtag_error</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Update hashtag error</shortDescription>
+        <value>An error ocurred while updating the hashtag value</value>
+    </labels>
+    <labels>
+        <fullName>Update_values_error</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Update values error</shortDescription>
+        <value>An error ocurred while updating the values</value>
+    </labels>
+    <labels>
+        <fullName>Value_exists_error</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Value exists error</shortDescription>
+        <value>The value already exists.</value>
+    </labels>
+    <labels>
+        <fullName>Values_deleted_message</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Values deleted message</shortDescription>
+        <value>Values succesfully deleted</value>
+    </labels>
+    <labels>
+        <fullName>Values_updated_message</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Values updated message</shortDescription>
+        <value>Values succesfully updated</value>
     </labels>
     <labels>
         <fullName>Was_this_article_helpful</fullName>
