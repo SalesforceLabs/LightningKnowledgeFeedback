@@ -26,7 +26,6 @@
 			if (!$A.util.isUndefinedOrNull(response.allNegativeValues)) {
 				component.set('v.allNegativeValues', JSON.parse(response.allNegativeValues));
 			}
-
 		}
 	},
 
@@ -46,13 +45,13 @@
 		if (!$A.util.isEmpty(picklistValue) && !$A.util.isUndefinedOrNull(picklistValue)) {
 			
 			if (picklistValue.indexOf(";") > -1) {
-				this.showToast('fail', 'Error', 'The picklist value cannot include a semi-colon.');
+				this.showToast('fail', 'Error', $A.get("$Label.c.Picklist_with_semicolon_error"));
 			} else {
 				var actionParams = {'picklistValue' : picklistValue};
 				this.handleAction(component, actionParams, 'c.addNewPicklistValue', this.addPicklistValueCallback);
 			}
 		} else {
-			this.showToast('fail', 'Error', 'The picklist value field cannot be empty.');
+			this.showToast('fail', 'Error', $A.get("$Label.c.Picklist_empty_error"));
 		}
 	},
 
@@ -65,9 +64,9 @@
 			component.find('picklistValue').set('v.value', '');
 			ctx.getInitialData(component);
 		} else if (response.status === 'DUPLICATED') {
-			ctx.showToast('fail', 'Error', 'The value already exists.');
+			ctx.showToast('fail', 'Error', $A.get("$Label.c.Value_exists_error"));
 		} else {
-			this.showToast('fail', 'Error', 'An error ocurred while adding the value');
+			this.showToast('fail', 'Error', $A.get("$Label.c.Adding_value_error"));
 		}
 	},
 
@@ -75,13 +74,13 @@
 		var hashtag = component.find('inputHashtag').get('v.value');
 		if ((!$A.util.isEmpty(hashtag) && !$A.util.isUndefinedOrNull(hashtag)) && hashtag.indexOf("]") === -1) {
 			if (hashtag.charAt(0).indexOf("#") === -1) {
-				this.showToast('fail', 'Error', 'The text needs to include a hashtag (#) sign at the beginning to be valid.');
+				this.showToast('fail', 'Error', $A.get("$Label.c.No_hashtag_error"));
 			} else { 
 				var actionParams = {'hashtag' : hashtag};
 				this.handleAction(component, actionParams, 'c.updateHashtagValue', this.updateHashtagValueCallback);
 			}
 		} else {
-			this.showToast('fail', 'Error', 'This field cannot be empty or include a closing square bracket (])');
+			this.showToast('fail', 'Error', $A.get("$Label.c.No_hashtag_or_square_bracket_error"));
 		}
 	},
 
@@ -91,9 +90,9 @@
 				return;
 			} 
 
-			ctx.showToast(' SUCCESS ', ' SUCCESS ', 'Hashtag value successfully updated');
+			ctx.showToast(' SUCCESS ', ' SUCCESS ', $A.get("$Label.c.Hashtag_value_updated_message"));
 		} else {
-			this.showToast('fail', 'Error', 'An error ocurred while updating the hashtag value');
+			this.showToast('fail', 'Error', $A.get("$Label.c.Update_hashtag_error"));
 		}
 	}, 
 
@@ -113,7 +112,7 @@
 				this.handleAction(component, actionParams, 'c.savePicklistOrder', function(){});
 			}
 		} else {
-			this.showToast('fail', 'Error', 'This field cannot be empty or include a closing square bracket (])');
+			this.showToast('fail', 'Error', $A.get("$Label.c.No_hashtag_or_square_bracket_error"));
 		}
 	},
 
@@ -123,9 +122,9 @@
 				return;
 			} 
 
-			ctx.showToast(' SUCCESS ', ' SUCCESS ', 'Values succesfully updated');
+			ctx.showToast(' SUCCESS ', ' SUCCESS ', $A.get("$Label.c.Values_updated_message"));
 		} else {
-			this.showToast('fail', 'Error', 'An error ocurred while updating the values');
+			this.showToast('fail', 'Error', $A.get("$Label.c.Update_values_error"));
 		}
 	}, 
 
@@ -138,16 +137,16 @@
 			};
 			this.handleAction(component, actionParams, 'c.deleteValues', this.deleteValueCallback);
 		} else {
-			this.showToast('fail', 'Error', 'You need to select at least one value to delete');
+			this.showToast('fail', 'Error', $A.get("$Label.c.Select_a_value_to_delete_error"));
 		}
 	},
 
 	deleteValueCallback : function(component, response, ctx) {
 		if (!$A.util.isUndefinedOrNull(response) && response.length > 0) {
 			ctx.getInitialData(component);
-			ctx.showToast(' SUCCESS ', ' SUCCESS ', 'Values succesfully deleted');
+			ctx.showToast(' SUCCESS ', ' SUCCESS ', $A.get("$Label.c.Values_deleted_message"));
 		} else {
-			this.showToast('fail', 'Error', 'An error ocurred while deleting the values');
+			this.showToast('fail', 'Error', $A.get("$Label.c.Deleting_values_error"));
 		}
 	}
 })
