@@ -106,7 +106,7 @@
 
 		if (!$A.util.isUndefinedOrNull(allPositiveValues) || !$A.util.isUndefinedOrNull(allNegativeValues)) {
 			var actionParams = {'savedValuesJSON' : JSON.stringify(valuesJSON)};
-			if (event.getSource().get('v.label') == 'Save') {
+			if (event.getSource().getLocalId() == 'saveButton') {
 				this.handleAction(component, actionParams, 'c.savePicklistOrder', this.saveValueOrderCallback);
 			} else {
 				this.handleAction(component, actionParams, 'c.savePicklistOrder', function(){});
