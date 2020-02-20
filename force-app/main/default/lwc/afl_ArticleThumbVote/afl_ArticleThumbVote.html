@@ -1,0 +1,33 @@
+<template>
+    <div>
+        <template if:true={invalidRecordId}>
+            <lightning-card title={label.cardTitle}>
+                <div class="removeSpace">
+                    <center>
+                        <lightning-spinner variant="brand" size="small" class="slds-hide"></lightning-spinner>
+                    </center>
+    
+                    <div class="slds-float_right moveUp">
+                        <lightning-button-icon-stateful class="slds-m-right_large" icon-name="utility:like"></lightning-button-icon-stateful>
+                        <lightning-button-icon-stateful class="slds-m-right_medium" icon-name="utility:dislike"></lightning-button-icon-stateful>
+                    </div>
+    
+                    <br></br>
+    
+                    <div class="slds-show slds-m-left_medium slds-m-right_medium moveUp">
+                        <lightning-combobox name="comboGroup" label={label.chooseGeneralReason}></lightning-combobox>
+    
+                            <lightning-textarea class="slds-m-top_medium slds-m-bottom_medium" label={label.description} placeholder={label.descriptionPlaceholder} maxlength="29000"></lightning-textarea>
+                            
+                            <center>
+                                <lightning-button variant="brand" label="Submit"></lightning-button>
+                            </center>
+    
+                    </div>    
+                </div>
+                    
+            </lightning-card>
+        </template>
+    </div>
+    
+</template>
