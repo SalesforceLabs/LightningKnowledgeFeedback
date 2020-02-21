@@ -9,6 +9,8 @@
 		<members>afl_ArticleFeedbackSecurityHandler_Test</members>
 		<members>afl_ArticleThumbVoteCtrl</members>
 		<members>afl_ArticleThumbVoteCtrlTest</members>
+		<members>afl_CustomLabels</members>
+		<members>afl_CustomLabels_Test</members>
 		<members>afl_InsertArticleFeedback_Test</members>
 		<members>afl_InsertLgtnArticleFeedback_Test</members>
 		<members>afl_LightningResponse</members>
