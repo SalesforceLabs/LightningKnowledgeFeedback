@@ -154,7 +154,7 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <label>Article Feedback Values</label>
+    <label>Article Feedback Values (Deprecated)</label>
     <nameField>
         <label>Article Feedback Configuration Name</label>
         <type>Text</type>
