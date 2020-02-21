@@ -4,7 +4,6 @@
 *    started on 11/28/2018
 *    Test class for the afl_ArticleThumbVoteCtrl class
 **/
-
 @isTest
 private class afl_ArticleThumbVoteCtrlTest {
 	@isTest
