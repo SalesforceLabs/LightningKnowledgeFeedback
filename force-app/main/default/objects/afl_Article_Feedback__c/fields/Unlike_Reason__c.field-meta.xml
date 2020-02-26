@@ -77,41 +77,41 @@
             </value>
         </valueSetDefinition>
         <valueSettings>
-            <controllingFieldValue>Thumbs down</controllingFieldValue>
+            <controllingFieldValue>Thumbs_down</controllingFieldValue>
             <valueName>Duplicate</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Thumbs down</controllingFieldValue>
-            <controllingFieldValue>Thumbs up</controllingFieldValue>
+            <controllingFieldValue>Thumbs_down</controllingFieldValue>
+            <controllingFieldValue>Thumbs_up</controllingFieldValue>
             <valueName>Enhancement suggestion</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Thumbs down</controllingFieldValue>
+            <controllingFieldValue>Thumbs_down</controllingFieldValue>
             <valueName>Information inaccurate</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Thumbs down</controllingFieldValue>
+            <controllingFieldValue>Thumbs_down</controllingFieldValue>
             <valueName>Link broken</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Thumbs down</controllingFieldValue>
+            <controllingFieldValue>Thumbs_down</controllingFieldValue>
             <valueName>Need to archive</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Thumbs down</controllingFieldValue>
+            <controllingFieldValue>Thumbs_down</controllingFieldValue>
             <valueName>Outdated  (needs update)</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Thumbs down</controllingFieldValue>
+            <controllingFieldValue>Thumbs_down</controllingFieldValue>
             <valueName>Poorly Written (not clear)</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Thumbs down</controllingFieldValue>
-            <controllingFieldValue>Thumbs up</controllingFieldValue>
+            <controllingFieldValue>Thumbs_down</controllingFieldValue>
+            <controllingFieldValue>Thumbs_up</controllingFieldValue>
             <valueName>Other</valueName>
         </valueSettings>
         <valueSettings>
-            <controllingFieldValue>Thumbs up</controllingFieldValue>
+            <controllingFieldValue>Thumbs_up</controllingFieldValue>
             <valueName>Positive feedback</valueName>
         </valueSettings>
     </valueSet>

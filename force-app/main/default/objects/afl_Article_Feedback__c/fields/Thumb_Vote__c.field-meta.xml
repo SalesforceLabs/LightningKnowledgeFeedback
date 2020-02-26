@@ -12,14 +12,14 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Thumb_Up</fullName>
+                <fullName>Thumbs_up</fullName>
                 <default>false</default>
-                <label>Thumb Up</label>
+                <label>Thumbs up</label>
             </value>
             <value>
-                <fullName>Thumb_Down</fullName>
+                <fullName>Thumbs_down</fullName>
                 <default>false</default>
-                <label>Thumb Down</label>
+                <label>Thumbs down</label>
             </value>
         </valueSetDefinition>
     </valueSet>
