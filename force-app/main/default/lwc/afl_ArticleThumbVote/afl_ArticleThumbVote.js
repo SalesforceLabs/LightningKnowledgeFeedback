@@ -141,11 +141,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         this.getPicklistValuesFromAttribute(this.activePositiveValues);
         this.liked = true;
         this.disliked = false;
-        if(this.alwaysDisplayFeedbackDescription === false) {
-            this.showHideFeedback = 'slds-hide';
-        } else {
-            this.showHideFeedback = 'slds-show';
-        }
+        this.showHideFeedback = 'slds-show';
     }
 
     handleToggleDislike() {
@@ -172,6 +168,8 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 		if (!this.ratingRequired && !this.liked && !this.disliked) {
 			this.hasNoRate = true;
 		}
+
+        this.voteReasonDescription = this.template.querySelector('lightning-textarea').value;
 
         upsertThumbArticleVote({
 			recordId : this.recordId,
