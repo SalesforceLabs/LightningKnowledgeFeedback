@@ -1,4 +1,0 @@
-<design:component label="Article Rating and Feedback">
-    <design:attribute name="alwaysDisplayFeedDescription" label="{!$Label.c.Always_display_feedback_section}"/>
-    <design:attribute name="requireRating" label="{!$Label.c.Make_rating_required}"/>
-</design:component>

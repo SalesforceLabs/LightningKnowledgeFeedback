@@ -64,9 +64,6 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 		afl_ArticleFeedbackSecurityHandler.canUpdate(afl_Article_Feedback__c.SObjectType);
 		afl_ArticleFeedbackSecurityHandler.canAccess(afl_Knowledge_feedback__c.SObjectType);
 
-		// Check if default picklist values need to be inserted
-		afl_ArticleFeedbackSecurityHandler.checkDefaultValues();
-
 		afl_LightningResponse response = new afl_LightningResponse();
 		Map<String,String> result = new Map<String,String>();
 		afl_Knowledge_feedback__c af = afl_Knowledge_feedback__c.getOrgDefaults();

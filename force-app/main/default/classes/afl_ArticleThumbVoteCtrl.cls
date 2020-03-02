@@ -102,44 +102,6 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 
 	/*
 	* @description
-	*   Method that returns the picklist values.
-	* @params
-	*  None
-	* @return
-	*   Object - afl_LightningResponse
-	*/
-	@AuraEnabled
-	public static afl_LightningResponse getPickListValuesIntoList() {
-		afl_LightningResponse response = new afl_LightningResponse();
-		Map<String,String> result = new Map<String,String>();
-
-		try {
-			// Retrieve picklist values
-			Map<String,List<String>> picklistValues = afl_ArticleFeedbackSecurityHandler.getPicklistValues();
-			result.put('allValues', JSON.serialize(picklistValues.get('allPicklistValues')));
-
-			if (picklistValues.get('allPositiveValues').size() == 0) {
-				result.put('activePositiveValues', JSON.serialize(picklistValues.get('allPicklistValues')));
-			} else {
-				result.put('activePositiveValues', JSON.serialize(picklistValues.get('allPositiveValues')));
-			}
-
-			if (picklistValues.get('allNegativeValues').size() == 0) {
-				result.put('activeNegativeValues', JSON.serialize(picklistValues.get('allPicklistValues')));
-			} else {
-				result.put('activeNegativeValues', JSON.serialize(picklistValues.get('allNegativeValues')));
-			}
-			
-			response.jsonResponse = JSON.serialize(result);
-		} catch (Exception e) {
-			return new afl_LightningResponse(e);
-		}
-
-		return response;
-	}
-
-	/*
-	* @description
 	*   Method that gets the vote made by the user most recently associated .
 	* @params
 	*  Id recordId
