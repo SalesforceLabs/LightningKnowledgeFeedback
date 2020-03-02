@@ -123,6 +123,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
             this.liked = false;
             this.disliked = false;
             console.log(error);
+            this.getPicklistValues();
         });
     }
 
@@ -140,7 +141,11 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         this.getPicklistValuesFromAttribute(this.activePositiveValues);
         this.liked = true;
         this.disliked = false;
-        this.showHideFeedback = 'slds-hide';
+        if(this.alwaysDisplayFeedbackDescription === false) {
+            this.showHideFeedback = 'slds-hide';
+        } else {
+            this.showHideFeedback = 'slds-show';
+        }
     }
 
     handleToggleDislike() {
