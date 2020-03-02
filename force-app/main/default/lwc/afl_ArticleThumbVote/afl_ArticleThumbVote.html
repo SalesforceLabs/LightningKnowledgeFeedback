@@ -15,8 +15,13 @@
                     <br></br>
                     <div class={showHideFeedback}>
                         <div class="slds-m-left_medium slds-m-right_medium moveUp">
-                            <lightning-combobox name="comboGroup" label={label.chooseGeneralReason} options={reasonTypeOptions} value={reasonType}></lightning-combobox>
-        
+                            <lightning-combobox 
+                                    label={label.chooseGeneralReason}
+                                    name="comboGroup"
+                                    onchange={handleReasonChange} 
+                                    options={reasonTypeOptions} 
+                                    value={reasonType}
+                                    disabled={isEmpty}></lightning-combobox>
                                 <lightning-textarea class="slds-m-top_medium slds-m-bottom_medium" label={label.description} value={voteReasonDescription} placeholder={label.descriptionPlaceholder} maxlength="29000"></lightning-textarea>
                                 
                                 <center>
