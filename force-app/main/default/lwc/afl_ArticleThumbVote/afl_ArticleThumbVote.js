@@ -127,11 +127,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     handleToggleLike() {
         this.liked = true;
         this.disliked = false;
-        if(this.alwaysDisplayFeedbackDescription === false) {
-            this.showHideFeedback = 'slds-hide';
-        } else {
-            this.showHideFeedback = 'slds-show';
-        }
+        this.showHideFeedback = 'slds-show';
 
         let dependValues = [];
         // filter the total dependent values based on Like value 
@@ -183,6 +179,8 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 		if (!this.ratingRequired && !this.liked && !this.disliked) {
 			this.hasNoRate = true;
 		}
+
+        this.voteReasonDescription = this.template.querySelector('lightning-textarea').value;
 
         upsertThumbArticleVote({
 			recordId : this.recordId,
