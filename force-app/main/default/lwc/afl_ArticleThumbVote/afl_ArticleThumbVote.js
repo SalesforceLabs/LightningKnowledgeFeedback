@@ -141,11 +141,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         this.getPicklistValuesFromAttribute(this.activePositiveValues);
         this.liked = true;
         this.disliked = false;
-        if(this.alwaysDisplayFeedbackDescription === false) {
-            this.showHideFeedback = 'slds-hide';
-        } else {
-            this.showHideFeedback = 'slds-show';
-        }
+        this.showHideFeedback = 'slds-show';
     }
 
     handleToggleDislike() {
