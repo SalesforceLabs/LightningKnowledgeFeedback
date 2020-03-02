@@ -169,6 +169,8 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 			this.hasNoRate = true;
 		}
 
+        this.voteReasonDescription = this.template.querySelector('lightning-textarea').value;
+
         upsertThumbArticleVote({
 			recordId : this.recordId,
 			feedbackReason : this.reasonType,
