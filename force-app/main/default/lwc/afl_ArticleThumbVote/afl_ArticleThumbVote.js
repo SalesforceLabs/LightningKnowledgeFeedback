@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
-import { LightningElement, api, track } from 'lwc';
+import { getPicklistValuesByRecordType } from 'lightning/uiObjectInfoApi';
+import { LightningElement, wire, api, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 import cardTitle from '@salesforce/label/c.Was_this_article_helpful';
@@ -9,8 +10,10 @@ import descriptionPlaceholder from '@salesforce/label/c.Description_placeholder'
 import submit from '@salesforce/label/c.Submit_button';
 
 import getVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.getVote';
-import getPicklistValuesIntoList from '@salesforce/apex/afl_ArticleThumbVoteCtrl.getPickListValuesIntoList';
 import upsertThumbArticleVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.upsertThumbArticleVote';
+
+import FeedbackObject from '@salesforce/schema/afl_Article_Feedback__c';
+import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 
 export default class Afl_ArticleThumbVote extends LightningElement {
 
@@ -23,16 +26,57 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 
     @track liked = false;
     @track disliked = false;
+    @track reasonTypeOptions = [];
+    @track reasonType;
+    @track controlValues;
     savedVote = '';
     activePositiveValues; activeNegativeValues;
     allValues;
     reasonTypeOptions;
-    reasonType;
     voteReasonDescription;
     showHideFeedback;
     hasNoRate = false;
     isSameVote = false;
     showHideSpinner = 'slds-hide';
+
+    totalDependentValues = [];
+    
+     // Account object info
+     @wire(getObjectInfo, { objectApiName: FeedbackObject  })
+     objectInfo;
+ 
+     // Picklist values based on record type
+     @wire(getPicklistValuesByRecordType, { objectApiName: FeedbackObject, recordTypeId: '$objectInfo.data.defaultRecordTypeId'})
+     countryPicklistValues({error, data}) {
+         if(data) {
+             let initialOptions = [];
+
+             this.controlValues = data.picklistFieldValues.Unlike_Reason__c.controllerValues;
+             // Unlike Reason dependent Field Picklist values
+             this.totalDependentValues = data.picklistFieldValues.Unlike_Reason__c.values;
+ 
+            if (this.liked) {
+                this.setLikeValues();
+            } else if (this.disliked) {
+                this.setDislikeValues();
+            } else {
+                this.totalDependentValues.forEach(key => {
+                    initialOptions.push({
+                         label : key.label,
+                         value: key.value
+                     })
+                 });
+     
+                 this.reasonTypeOptions = initialOptions;
+                 this.reasonType = initialOptions[0] ? initialOptions[0].value : '';
+            }
+            
+             
+         }
+         else if(error) {
+             this.error = JSON.stringify(error);
+         }
+     }
 
     label = {
         cardTitle,
@@ -54,51 +98,6 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         this.getUserVote();
     }
 
-    getPicklistValues() {
-        getPicklistValuesIntoList()
-        .then(response => {
-            const parsedResponse = JSON.parse(response.jsonResponse); 
-            if (parsedResponse.activePositiveValues) {
-                this.activePositiveValues = JSON.parse(parsedResponse.activePositiveValues);
-
-				if (this.liked === true) {
-					this.getPicklistValuesFromAttribute(this.activePositiveValues);
-				}
-			}
-
-			if (parsedResponse.activeNegativeValues) {
-                this.activeNegativeValues = JSON.parse(parsedResponse.activeNegativeValues);
-
-				if (this.disliked === true) {
-					this.getPicklistValuesFromAttribute(this.activeNegativeValues);
-				}
-			}
-
-			if (parsedResponse.allValues) {
-                this.allValues = JSON.parse(parsedResponse.allValues);
-
-				if (this.liked === false && this.disliked === false) {
-					this.getPicklistValuesFromAttribute(this.allValues);
-				}
-			}
-        })
-        .catch(error => {
-            console.log(error);
-        });
-    }
-
-    getPicklistValuesFromAttribute(listValues) {
-        let finalList = [];
-
-		for (let i=0; i<listValues.length; i++) {
-			const option = {value: listValues[i], label: listValues[i]};
-			finalList.push(option);
-		}
-
-		this.reasonTypeOptions = finalList;
-		this.reasonType = listValues[0];
-    }
-
     getUserVote() {
         getVote({recordId : this.recordId})
         .then(response => {
@@ -114,13 +113,11 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 
                 this.showHideFeedback = 'slds-show';
             }
-            this.getPicklistValues();
         })
         .catch(error => {
             this.liked = false;
             this.disliked = false;
             console.log(error);
-            this.getPicklistValues();
         });
     }
 
@@ -135,17 +132,47 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     }
 
     handleToggleLike() {
-        this.getPicklistValuesFromAttribute(this.activePositiveValues);
         this.liked = true;
         this.disliked = false;
         this.showHideFeedback = 'slds-show';
+        this.setLikeValues();
+    }
+
+    setLikeValues() {
+        let dependValues = [];
+        // filter the total dependent values based on Like value 
+        this.totalDependentValues.forEach(conValues => {
+            if(conValues.validFor.includes(this.controlValues['Thumbs_up'])) {
+                dependValues.push({
+                    label: conValues.label,
+                    value: conValues.value
+                })
+            }
+        })
+        this.reasonTypeOptions = dependValues;
+        this.reasonType = dependValues[0] ? dependValues[0].value : '';
     }
 
     handleToggleDislike() {
-        this.getPicklistValuesFromAttribute(this.activeNegativeValues);
         this.liked = false;
         this.disliked = true;
         this.showHideFeedback = 'slds-show';
+        this.setDislikeValues();
+    }
+
+    setDislikeValues() {
+        let dependValues = [];
+        // filter the total dependent values based on Dislike value 
+        this.totalDependentValues.forEach(conValues => {
+            if(conValues.validFor.includes(this.controlValues['Thumbs_down'])) {
+                dependValues.push({
+                    label: conValues.label,
+                    value: conValues.value
+                })
+            }
+        })
+        this.reasonTypeOptions = dependValues;
+        this.reasonType = dependValues[0] ? dependValues[0].value : '';
     }
 
     handleClick() {
