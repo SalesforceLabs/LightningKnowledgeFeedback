@@ -61,17 +61,6 @@
         </values>
     </picklistValues>
     <picklistValues>
-        <picklist>Thumbs_value__c</picklist>
-        <values>
-            <fullName>Thumbs down</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Thumbs up</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
         <picklist>Unlike_Reason__c</picklist>
         <values>
             <fullName>Duplicate</fullName>
