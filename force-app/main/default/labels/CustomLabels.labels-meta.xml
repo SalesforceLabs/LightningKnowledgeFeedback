@@ -41,6 +41,14 @@
         <value>Always display feedback section?</value>
     </labels>
     <labels>
+        <fullName>Article_was_not_found_error</fullName>
+        <categories>Article Feedback</categories>
+        <language>es</language>
+        <protected>true</protected>
+        <shortDescription>Article was not found error</shortDescription>
+        <value>The article was not found.</value>
+    </labels>
+    <labels>
         <fullName>Available_values_label</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
@@ -137,6 +145,22 @@
         <value>Hashtag value successfully updated</value>
     </labels>
     <labels>
+        <fullName>Language_Disclaimer</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Language Disclaimer</shortDescription>
+        <value>This Article Feedback was originated from a trigger, the master language of the Knowledge Article will be displayed by default.</value>
+    </labels>
+    <labels>
+        <fullName>Language_Disclaimer_Helptext</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Language Disclaimer Helptext</shortDescription>
+        <value>When you create a Feedback record using the designated hashtag, the language of the article cannot be retrieved in that context. In those cases, the master language will be displayed by default.</value>
+    </labels>
+    <labels>
         <fullName>Make_rating_required</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
@@ -175,6 +199,14 @@
         <protected>true</protected>
         <shortDescription>Picklist with semicolon error</shortDescription>
         <value>The picklist value cannot include a semi-colon.</value>
+    </labels>
+    <labels>
+        <fullName>Related_Article_Title</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Related Article Title</shortDescription>
+        <value>Related Article</value>
     </labels>
     <labels>
         <fullName>Save_button</fullName>
@@ -271,6 +303,14 @@
         <protected>true</protected>
         <shortDescription>Values updated message</shortDescription>
         <value>Values succesfully updated</value>
+    </labels>
+    <labels>
+        <fullName>View_Article_Button</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>View Article Button</shortDescription>
+        <value>View Article</value>
     </labels>
     <labels>
         <fullName>Was_this_article_helpful</fullName>
