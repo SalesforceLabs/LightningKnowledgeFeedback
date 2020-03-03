@@ -29,6 +29,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     @track disliked = false;
     @track reasonTypeOptions = [];
     @track reasonType;
+    @track controlValues;
     savedVote = '';
     activePositiveValues; activeNegativeValues;
     allValues;
@@ -39,7 +40,6 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     isSameVote = false;
     showHideSpinner = 'slds-hide';
 
-    controlValues;
     totalDependentValues = [];
     
      // Account object info
@@ -51,18 +51,28 @@ export default class Afl_ArticleThumbVote extends LightningElement {
      countryPicklistValues({error, data}) {
          if(data) {
              let initialOptions = [];
+
+             this.controlValues = data.picklistFieldValues.Unlike_Reason__c.controllerValues;
              // Unlike Reason dependent Field Picklist values
              this.totalDependentValues = data.picklistFieldValues.Unlike_Reason__c.values;
  
-             this.totalDependentValues.forEach(key => {
-                initialOptions.push({
-                     label : key.label,
-                     value: key.value
-                 })
-             });
- 
-             this.reasonTypeOptions = initialOptions;
-             this.reasonType = initialOptions[0].value;
+            if (this.liked) {
+                this.setLikeValues();
+            } else if (this.disliked) {
+                this.setDislikeValues();
+            } else {
+                this.totalDependentValues.forEach(key => {
+                    initialOptions.push({
+                         label : key.label,
+                         value: key.value
+                     })
+                 });
+     
+                 this.reasonTypeOptions = initialOptions;
+                 this.reasonType = initialOptions[0] ? initialOptions[0].value : '';
+            }
+            
+             
          }
          else if(error) {
              this.error = JSON.stringify(error);
@@ -128,11 +138,14 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         this.liked = true;
         this.disliked = false;
         this.showHideFeedback = 'slds-show';
+        this.setLikeValues();
+    }
 
+    setLikeValues() {
         let dependValues = [];
         // filter the total dependent values based on Like value 
         this.totalDependentValues.forEach(conValues => {
-            if(conValues.validFor[1]) {
+            if(conValues.validFor.includes(this.controlValues['Thumbs_up'])) {
                 dependValues.push({
                     label: conValues.label,
                     value: conValues.value
@@ -140,18 +153,21 @@ export default class Afl_ArticleThumbVote extends LightningElement {
             }
         })
         this.reasonTypeOptions = dependValues;
-        this.reasonType = dependValues[0].value;
-       
+        this.reasonType = dependValues[0] ? dependValues[0].value : '';
     }
 
     handleToggleDislike() {
         this.liked = false;
         this.disliked = true;
         this.showHideFeedback = 'slds-show';
+        this.setDislikeValues();
+    }
+
+    setDislikeValues() {
         let dependValues = [];
         // filter the total dependent values based on Dislike value 
         this.totalDependentValues.forEach(conValues => {
-            if(conValues.validFor[0]) {
+            if(conValues.validFor.includes(this.controlValues['Thumbs_down'])) {
                 dependValues.push({
                     label: conValues.label,
                     value: conValues.value
@@ -159,7 +175,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
             }
         })
         this.reasonTypeOptions = dependValues;
-        this.reasonType = dependValues[0].value;
+        this.reasonType = dependValues[0] ? dependValues[0].value : '';
     }
 
     handleClick() {
