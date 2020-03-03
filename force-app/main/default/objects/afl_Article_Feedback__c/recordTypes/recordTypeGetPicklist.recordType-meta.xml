@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>recordTypeGetPicklist</fullName>
+    <active>true</active>
+    <description>record type needed to use get picklist values for reason picklist</description>
+    <label>recordTypeGetPicklist</label>
+    <picklistValues>
+        <picklist>Action_Taken__c</picklist>
+        <values>
+            <fullName>Article Archived</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Article Updated</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Action Needed</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Feedback_Source__c</picklist>
+        <values>
+            <fullName>Communities</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Internal</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Feedback_Status__c</picklist>
+        <values>
+            <fullName>Assigned</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>In Progress</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Thumb_Vote__c</picklist>
+        <values>
+            <fullName>Thumbs_down</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Thumbs_up</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Thumbs_value__c</picklist>
+        <values>
+            <fullName>Thumbs down</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Thumbs up</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Unlike_Reason__c</picklist>
+        <values>
+            <fullName>Duplicate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Enhancement suggestion</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Information inaccurate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Link broken</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Need to archive</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Outdated  %28needs update%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Poorly Written %28not clear%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Positive feedback</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>
