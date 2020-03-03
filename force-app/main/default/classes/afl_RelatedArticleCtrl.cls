@@ -83,7 +83,16 @@ public with sharing class afl_RelatedArticleCtrl {
     *   Map<String,Object> with the defined fields of the kav with the kavId received
     */
     public static Map<String,Object> getCompactLayoutData(String kavId, Map<String,Object> result) {
-        // KnowledgeArticleVersion article = [ SELECT ArticleNumber,CreatedDate,Id,Language,VersionNumber,PublishStatus FROM KnowledgeArticleVersion WHERE Id =:kavId ];
+        Map<String, Schema.SObjectType> schemaMap = Schema.getGlobalDescribe();
+        Schema.SObjectType leadSchema = schemaMap.get(knowledgeObject);
+        Map<String, Schema.SObjectField> fieldMap = leadSchema.getDescribe().fields.getMap();
+
+        List<String> fieldLabels = new List<String>();
+        result.put('languageLabel', fieldMap.get('Language').getDescribe().getLabel());
+        result.put('articleNumberLabel', fieldMap.get('ArticleNumber').getDescribe().getLabel());
+        result.put('publishStatusLabel', fieldMap.get('PublishStatus').getDescribe().getLabel());
+        result.put('versionNumberLabel', fieldMap.get('VersionNumber').getDescribe().getLabel());
+
         // Find the associated record type
         String queryString = '';
         List<SObject> sObjList = new List<SObject>();
@@ -101,11 +110,12 @@ public with sharing class afl_RelatedArticleCtrl {
             if (afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive) {
                 if (String.isNotEmpty((String) sObjKnowledge.get('RecordTypeId'))) {
                     result.put('articleRecordType', afl_ArticleFeedbackSecurityHandler.getRecordTypeName(sObjKnowledge));
+                    result.put('recordTypeIdLabel', fieldMap.get('RecordTypeId').getDescribe().getLabel());
                 }
             }
 
             result.put('articleVersion', (Decimal) sObjKnowledge.get('VersionNumber'));
-            result.put('articleNumber',(String) sObjKnowledge.get('ArticleNumber'));
+            result.put('articleNumber', (String) sObjKnowledge.get('ArticleNumber'));
             result.put('articlePublishingStatus', (String) sObjKnowledge.get('PublishStatus'));
 
             Schema.DescribeFieldResult fieldResult = User.LanguageLocaleKey.getDescribe();

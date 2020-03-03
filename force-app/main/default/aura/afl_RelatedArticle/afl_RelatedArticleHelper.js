@@ -14,6 +14,13 @@
 		component.set('v.articlePublishingStatus', response.articlePublishingStatus);
 		component.set('v.originatedFromTrigger', response.originatedFromTrigger);
 
+		// Get field labels
+		component.set('v.languageLabel', response.languageLabel);
+		component.set('v.articleNumberLabel', response.articleNumberLabel);
+		component.set('v.publishStatusLabel', response.publishStatusLabel);
+		component.set('v.versionNumberLabel', response.versionNumberLabel);
+		component.set('v.recordTypeIdLabel', response.recordTypeIdLabel);
+
 		if (response.isArchived) {
 			component.set('v.articleVersion', response.articleVersion + ' (deprecated)');
 
