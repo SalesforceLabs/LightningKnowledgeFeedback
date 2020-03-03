@@ -8,8 +8,6 @@ import chooseGeneralReason from '@salesforce/label/c.Choose_a_general_reason';
 import description from '@salesforce/label/c.Description';
 import descriptionPlaceholder from '@salesforce/label/c.Description_placeholder';
 import submit from '@salesforce/label/c.Submit_button';
-import alwaysDisplayFeedbackSection from '@salesforce/label/c.Always_display_feedback_section';
-import makeRatingRequired from '@salesforce/label/c.Make_rating_required';
 
 import getVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.getVote';
 import upsertThumbArticleVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.upsertThumbArticleVote';
@@ -24,6 +22,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     @api recordId;
     @api alwaysDisplayFeedbackDescription;
     @api ratingRequired;
+    @api descriptionRequired;
 
     @track liked = false;
     @track disliked = false;
@@ -84,9 +83,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         chooseGeneralReason,
         description,
         descriptionPlaceholder,
-        submit,
-        alwaysDisplayFeedbackSection,
-        makeRatingRequired
+        submit
     };
 
     connectedCallback() {
@@ -185,7 +182,17 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 				this.showToast('ERROR', 'ERROR', 'Please, rate the article before leaving any comments', 'pester');
 				return;
 			}
-		}
+        }
+        
+        this.voteReasonDescription = this.template.querySelector('lightning-textarea').value;
+
+        if (this.descriptionRequired === true) {
+            if ((this.voteReasonDescription === undefined || this.voteReasonDescription === '') && this.disliked === true) {
+                this.showToast('ERROR', 'ERROR', 'Please, provide a description before submiting your vote', 'pester');
+                return;
+            }
+        }
+
 		// Prevent user from voting the same again
 		if ((this.savedVote === '5' && this.liked === true) || (this.savedVote === '1' && this.disliked === true)) {
 			this.isSameVote = true;
@@ -195,8 +202,6 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 		if (!this.ratingRequired && !this.liked && !this.disliked) {
 			this.hasNoRate = true;
 		}
-
-        this.voteReasonDescription = this.template.querySelector('lightning-textarea').value;
 
         upsertThumbArticleVote({
 			recordId : this.recordId,
@@ -220,7 +225,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         const event = new ShowToastEvent({
             title: title,
             message: message,
-            type: type,
+            variant: type,
             mode: mode,
             duration: 5000
         });

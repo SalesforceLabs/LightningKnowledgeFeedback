@@ -9,6 +9,7 @@
         <targetConfig targets="lightning__RecordPage">
             <property name="alwaysDisplayFeedbackDescription" type="Boolean" label="Always display feedback section?" default="true"/>
             <property name="ratingRequired" type="Boolean" label="Make rating required?" default="true"/>
+            <property name="descriptionRequired" type="Boolean" label="Make description required?" default="true"/>
         </targetConfig>
       </targetConfigs>
 </LightningComponentBundle>
