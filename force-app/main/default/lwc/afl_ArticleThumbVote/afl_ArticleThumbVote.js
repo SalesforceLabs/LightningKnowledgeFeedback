@@ -47,7 +47,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
  
      // Picklist values based on record type
      @wire(getPicklistValuesByRecordType, { objectApiName: FeedbackObject, recordTypeId: '$objectInfo.data.defaultRecordTypeId'})
-     countryPicklistValues({error, data}) {
+     reasonPicklistValues({error, data}) {
          if(data) {
              let initialOptions = [];
 
@@ -151,6 +151,11 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         })
         this.reasonTypeOptions = dependValues;
         this.reasonType = dependValues[0] ? dependValues[0].value : '';
+    }
+
+    handleReasonChange(event) {
+        const selectedOption = event.detail.value;
+        this.reasonType = selectedOption;
     }
 
     handleToggleDislike() {
