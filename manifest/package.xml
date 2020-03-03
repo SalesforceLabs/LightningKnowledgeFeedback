@@ -38,7 +38,6 @@
 	<types>
 		<members>afl_ArticleFeedbackConfigContainer</members>
 		<members>afl_ArticleFeedbackConfiguration</members>
-		<members>afl_Article_Thumb_Vote</members>
 		<members>afl_RelatedArticle</members>
 		<members>afl_abstract</members>
 		<members>afl_toast</members>
