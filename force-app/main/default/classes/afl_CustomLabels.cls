@@ -44,10 +44,16 @@ public with sharing class afl_CustomLabels {
             String select_a_value_to_delete_error = Label.Select_a_value_to_delete_error;
             String values_deleted_message = Label.Values_deleted_message;
             String deleting_values_error = Label.Deleting_values_error;
-            
-            // Article vote component
-            String always_display_feedback_section = Label.Always_display_feedback_section;
-            String make_rating_required = Label.Make_rating_required;
+
+            // Related article component
+            String language_Disclaimer = Label.Language_Disclaimer;
+            String language_Disclaimer_Helptext = Label.Language_Disclaimer_Helptext;
+            String related_Article_Title = Label.Related_Article_Title;
+            String view_Article_Button = Label.View_Article_Button;
+            String article_was_not_found_error = Label.Article_was_not_found_error;
+            String related_article_not_found_error = Label.Related_article_not_found_error;
+            String article_Feedback_id_not_found_on_Related_Article_error = Label.Article_Feedback_id_not_found_on_Related_Article_error;
+            String related_article_information_retrieval_error = Label.Related_article_information_retrieval_error;
         } catch (Exception e) {
             success = false;
         }
