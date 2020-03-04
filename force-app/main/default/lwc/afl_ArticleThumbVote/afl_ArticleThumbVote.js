@@ -223,6 +223,10 @@ export default class Afl_ArticleThumbVote extends LightningElement {
                 this.showHideSpinner = 'slds-hide';
                 this.showToast('SUCCESS', 'Success', 'Feedback saved successfully', 'pester');
             }
+            if(response.state === 'ERROR') {
+                this.showToast('ERROR', 'ERROR', response.error, 'pester');
+                this.showHideSpinner = 'slds-hide';
+            }
         })
     }
 
