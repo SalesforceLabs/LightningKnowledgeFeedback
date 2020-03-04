@@ -29,6 +29,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     @track reasonTypeOptions = [];
     @track reasonType;
     @track controlValues;
+    @track selectedValue;
     savedVote = '';
     activePositiveValues; activeNegativeValues;
     allValues;
@@ -97,6 +98,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 
                 this.showHideFeedback = 'slds-show';
             }
+            this.selectedValue = parsedVote.feedbackReason;
             this.refreshValuesByLikeOrDislike();
         })
         .catch(error => {
@@ -108,10 +110,9 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 
     refreshValuesByLikeOrDislike() {
         let initialOptions = [];
-        
         if (this.liked) {
             this.setLikeValues();
-        } else { 
+        } else {
             if (this.disliked) {
              this.setDislikeValues();
             } else {
@@ -121,10 +122,12 @@ export default class Afl_ArticleThumbVote extends LightningElement {
                         value: key.value
                     })
                 });
-    
                 this.reasonTypeOptions = initialOptions;
                 this.reasonType = initialOptions[0] ? initialOptions[0].value : '';
             }
+        }
+        if (this.selectedValue !== '') {
+            this.reasonType = this.selectedValue;
         }
     }
 
