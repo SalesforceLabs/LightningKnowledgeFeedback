@@ -44,34 +44,18 @@ export default class Afl_ArticleThumbVote extends LightningElement {
      // Account object info
      @wire(getObjectInfo, { objectApiName: FeedbackObject  })
      objectInfo;
- 
+
      // Picklist values based on record type
      @wire(getPicklistValuesByRecordType, { objectApiName: FeedbackObject, recordTypeId: '$objectInfo.data.defaultRecordTypeId'})
      reasonPicklistValues({error, data}) {
+        
          if(data) {
-             let initialOptions = [];
 
-             this.controlValues = data.picklistFieldValues.Unlike_Reason__c.controllerValues;
-             // Unlike Reason dependent Field Picklist values
-             this.totalDependentValues = data.picklistFieldValues.Unlike_Reason__c.values;
- 
-            if (this.liked) {
-                this.setLikeValues();
-            } else if (this.disliked) {
-                this.setDislikeValues();
-            } else {
-                this.totalDependentValues.forEach(key => {
-                    initialOptions.push({
-                         label : key.label,
-                         value: key.value
-                     })
-                 });
-     
-                 this.reasonTypeOptions = initialOptions;
-                 this.reasonType = initialOptions[0] ? initialOptions[0].value : '';
-            }
-            
-             
+            this.controlValues = data.picklistFieldValues.Unlike_Reason__c.controllerValues;
+            // Unlike Reason dependent Field Picklist values
+            this.totalDependentValues = data.picklistFieldValues.Unlike_Reason__c.values;
+
+            this.refreshValuesByLikeOrDislike();
          }
          else if(error) {
              this.error = JSON.stringify(error);
@@ -113,12 +97,35 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 
                 this.showHideFeedback = 'slds-show';
             }
+            this.refreshValuesByLikeOrDislike();
         })
         .catch(error => {
             this.liked = false;
             this.disliked = false;
             console.log(error);
         });
+    }
+
+    refreshValuesByLikeOrDislike() {
+        let initialOptions = [];
+        
+        if (this.liked) {
+            this.setLikeValues();
+        } else { 
+            if (this.disliked) {
+             this.setDislikeValues();
+            } else {
+                this.totalDependentValues.forEach(key => {
+                    initialOptions.push({
+                        label : key.label,
+                        value: key.value
+                    })
+                });
+    
+                this.reasonTypeOptions = initialOptions;
+                this.reasonType = initialOptions[0] ? initialOptions[0].value : '';
+            }
+        }
     }
 
     validateRecordId() {
