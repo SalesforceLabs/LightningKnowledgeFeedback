@@ -4,7 +4,7 @@
     <description>Reason provided for feedback</description>
     <externalId>false</externalId>
     <label>Feedback Reason</label>
-    <length>250</length>
+    <length>255</length>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
     <trackTrending>false</trackTrending>
