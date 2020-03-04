@@ -165,6 +165,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Article Feedback</pluralLabel>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
     <searchLayouts>
         <searchFilterFields>OBJECT_ID</searchFilterFields>
         <searchFilterFields>NAME</searchFilterFields>
