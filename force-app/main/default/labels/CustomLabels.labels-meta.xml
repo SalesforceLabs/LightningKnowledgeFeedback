@@ -33,12 +33,12 @@
         <value>An error ocurred while adding the value.</value>
     </labels>
     <labels>
-        <fullName>Always_display_feedback_section</fullName>
+        <fullName>Article_Feedback_id_not_found_on_Related_Article_error</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
         <protected>true</protected>
-        <shortDescription>Always display feedback section</shortDescription>
-        <value>Always display feedback section?</value>
+        <shortDescription>Article Feedback id not found on Related Article error</shortDescription>
+        <value>An error occurred getting the Id of the article feedback, please check that the component is in the correct record page.</value>
     </labels>
     <labels>
         <fullName>Article_was_not_found_error</fullName>
@@ -150,7 +150,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Language Disclaimer</shortDescription>
-        <value>This Article Feedback was originated from a trigger, the master language of the Knowledge Article will be displayed by default.</value>
+        <value>This Article Feedback originated from a trigger, the master language of the Knowledge Article will be displayed by default.</value>
     </labels>
     <labels>
         <fullName>Language_Disclaimer_Helptext</fullName>
@@ -159,14 +159,6 @@
         <protected>true</protected>
         <shortDescription>Language Disclaimer Helptext</shortDescription>
         <value>When you create a Feedback record using the designated hashtag, the language of the article cannot be retrieved in that context. In those cases, the master language will be displayed by default.</value>
-    </labels>
-    <labels>
-        <fullName>Make_rating_required</fullName>
-        <categories>Article Feedback</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Make rating required</shortDescription>
-        <value>Make rating required?</value>
     </labels>
     <labels>
         <fullName>No_hashtag_error</fullName>
@@ -207,6 +199,22 @@
         <protected>true</protected>
         <shortDescription>Related Article Title</shortDescription>
         <value>Related Article</value>
+    </labels>
+    <labels>
+        <fullName>Related_article_information_retrieval_error</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Related article information retrieval error</shortDescription>
+        <value>An error occurred while retrieving the information, the related article was not found.</value>
+    </labels>
+    <labels>
+        <fullName>Related_article_not_found_error</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Related article not found error</shortDescription>
+        <value>The related article could not be found. It might have changed or no longer exists.</value>
     </labels>
     <labels>
         <fullName>Save_button</fullName>

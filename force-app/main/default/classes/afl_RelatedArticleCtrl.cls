@@ -52,17 +52,17 @@ public with sharing class afl_RelatedArticleCtrl {
                     result.put('isArchived', isArchived);
                 } else {
                     response.state = 'ERROR';
-                    response.error = 'The related article could not be found. It might have changed or no longer exists.';
+                    response.error = Label.Related_article_not_found_error;
                 }
             } else {
                 response.state = 'ERROR';
-                response.error = 'An error occurred getting the Id of the article feedback, please check that the component is in the correct record page.';
+                response.error = Label.Article_Feedback_id_not_found_on_Related_Article_error;
             }
 
             response.jsonResponse = JSON.serialize(result);
         } catch(QueryException ex) {
             response.state = 'ERROR';
-            response.error = 'An error ocurred while retrieving the information, the related article was not found.';
+            response.error = Label.Related_article_information_retrieval_error;
         } catch(Exception e) {
             response = new afl_LightningResponse(e);
         }
