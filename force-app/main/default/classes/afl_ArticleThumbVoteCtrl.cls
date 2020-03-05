@@ -113,11 +113,11 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 		try {
 			// Check FLS
 			afl_ArticleFeedbackSecurityHandler.canAccess(Vote.SObjectType);
-
+			system.debug('recordId: ' +recordId);
 			String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
 			afl_LightningResponse response = new afl_LightningResponse();
 			Map<String,Object> result = new Map<String,Object>();
-			String query = 'SELECT KnowledgeArticleId FROM '+knowledgeObject+' WHERE Id = \''+recordId+'\' LIMIT 1';
+			String query = 'SELECT KnowledgeArticleId, CreatedDate FROM '+knowledgeObject+' WHERE Id = \''+recordId+'\' LIMIT 1';
 			List<SObject> knowledgeObjList = Database.query(query);
 			String kavId = (String)recordId;
 			List<afl_Article_Feedback__c> listOfArticleF = [SELECT Feedback_Reason__c FROM afl_Article_Feedback__c WHERE Knowledge_Article_Version_Id__c =: kavId ORDER BY CreatedDate DESC NULLS FIRST LIMIT 1];
@@ -127,12 +127,19 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			}
 			if (!knowledgeObjList.isEmpty()) {
 				SObject knowledgeObj = knowledgeObjList[0];
+				DateTime kavCreatedDate = (DateTime)knowledgeObj.get('CreatedDate');
 				String parentId = (String)knowledgeObj.get('KnowledgeArticleId');
-				Vote[] sVote = [SELECT ParentId, Type FROM Vote WHERE ParentId=:parentId AND LastModifiedById=: UserInfo.getUserId() LIMIT 1];
+				Vote[] sVote = [SELECT ParentId, Type, LastModifiedDate FROM Vote WHERE ParentId=:parentId AND LastModifiedById=: UserInfo.getUserId() LIMIT 1];
+				
+				Boolean voteCreatedAfterCurrentKav = sVote.get(0).LastModifiedDate > kavCreatedDate;
+				system.debug('voteCreatedAfterCurrentKav: ' + voteCreatedAfterCurrentKav);
+				system.debug('sVote.get(0).LastModifiedDate: ' + sVote.get(0).LastModifiedDate + ' kavCreatedDate: ' + kavCreatedDate );
 				if (!Test.isRunningTest()) {
-					if (!sVote.isEmpty()) {
-						Boolean voteUp = sVote.get(0).Type == '5' || sVote.get(0).Type == 'UP';
-						result.put('vote', JSON.serialize(voteUp));
+					if(voteCreatedAfterCurrentKav) {
+						if (voteCreatedAfterCurrentKav && !sVote.isEmpty()) {
+							Boolean voteUp = sVote.get(0).Type == '5' || sVote.get(0).Type == 'UP';
+							result.put('vote', JSON.serialize(voteUp));
+						}
 					}
 				} else {
 					result.put('vote', 'true');
