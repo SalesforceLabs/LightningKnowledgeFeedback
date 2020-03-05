@@ -5,7 +5,9 @@
     <masterLabel>Article Rating and Feedback</masterLabel>
     <description>Lets you rate and leave feedback for a Knowledge Article.</description>
     <targets>
-      <target>lightning__RecordPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
   </targets>
   <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
