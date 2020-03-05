@@ -113,7 +113,6 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 		try {
 			// Check FLS
 			afl_ArticleFeedbackSecurityHandler.canAccess(Vote.SObjectType);
-			system.debug('recordId: ' +recordId);
 			String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
 			afl_LightningResponse response = new afl_LightningResponse();
 			Map<String,Object> result = new Map<String,Object>();
@@ -132,8 +131,6 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				Vote[] sVote = [SELECT ParentId, Type, LastModifiedDate FROM Vote WHERE ParentId=:parentId AND LastModifiedById=: UserInfo.getUserId() LIMIT 1];
 				
 				Boolean voteCreatedAfterCurrentKav = sVote.get(0).LastModifiedDate > kavCreatedDate;
-				system.debug('voteCreatedAfterCurrentKav: ' + voteCreatedAfterCurrentKav);
-				system.debug('sVote.get(0).LastModifiedDate: ' + sVote.get(0).LastModifiedDate + ' kavCreatedDate: ' + kavCreatedDate );
 				if (!Test.isRunningTest()) {
 					if(voteCreatedAfterCurrentKav) {
 						if (voteCreatedAfterCurrentKav && !sVote.isEmpty()) {
