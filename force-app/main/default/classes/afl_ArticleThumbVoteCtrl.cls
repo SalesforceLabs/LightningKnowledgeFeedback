@@ -113,11 +113,10 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 		try {
 			// Check FLS
 			afl_ArticleFeedbackSecurityHandler.canAccess(Vote.SObjectType);
-
 			String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
 			afl_LightningResponse response = new afl_LightningResponse();
 			Map<String,Object> result = new Map<String,Object>();
-			String query = 'SELECT KnowledgeArticleId, CreatedDate FROM ' + knowledgeObject + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
+			String query = 'SELECT KnowledgeArticleId, CreatedDate FROM ' + knowledgeObject+' WHERE Id = \'' + recordId + '\' LIMIT 1';
 			List<SObject> knowledgeObjList = Database.query(query);
 			String kavId = (String) recordId;
 			List<afl_Article_Feedback__c> listOfArticleF = [SELECT Feedback_Reason__c FROM afl_Article_Feedback__c WHERE Knowledge_Article_Version_Id__c =: kavId ORDER BY CreatedDate DESC NULLS FIRST LIMIT 1];
