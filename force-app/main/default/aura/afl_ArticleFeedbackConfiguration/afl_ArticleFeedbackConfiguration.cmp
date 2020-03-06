@@ -1,15 +1,6 @@
 <aura:component controller="afl_ArticleFeedbackLgnConfigCtrl" extends="c:afl_abstract">
     <!-- Attributes -->
     <aura:attribute name="hashtagValue" type="String" description="Knowledge Configuration object hashtag value"/>
-    <aura:attribute name="allValues" type="List" default="[]"/>
-    <aura:attribute name="allPositiveValues" type="List" default="[]"/>
-    <aura:attribute name="allNegativeValues" type="List" default="[]"/>
-    <aura:attribute name="feedbackTypeOptions" type="List" default="[
-        {'label': 'Positive', 'value': 'positiveOption'},
-        {'label': 'Negative', 'value': 'negativeOption'}]"
-    />
-    <aura:attribute name="feedbackTypeValue" type="List" default="positiveOption"/>
-
 
     <!-- Handlers -->
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
@@ -51,6 +42,7 @@
                             <div class="slds-form-element">
                                 <ui:outputText value="Hashtag" class="labelSLDS"/>
                                 <p class="required">*</p>
+                                <lightning:helptext class="displayInline" content="{!$Label.c.Hashtag_helptext}"/>
                                 <lightning:input aura:id="inputHashtag" placeholder="#ArticleFeedback" value="{!v.hashtagValue}" required="true" maxlength="99"></lightning:input>
                             </div>
                         </div>
