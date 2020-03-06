@@ -73,7 +73,8 @@ public class afl_TestDataFactory {
 			FROM Profile 
 			WHERE UserType = 'Standard' 
 			AND PermissionsCustomizeApplication =: isAdmin 
-			AND PermissionsModifyAllData =: isAdmin 
+			AND PermissionsModifyAllData =: isAdmin
+			ORDER BY CreatedDate ASC 
 			LIMIT 1
 		];
 
