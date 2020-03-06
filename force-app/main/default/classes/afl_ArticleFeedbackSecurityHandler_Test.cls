@@ -7,11 +7,10 @@
 @isTest
 private class afl_ArticleFeedbackSecurityHandler_Test {
 	@isTest
-    static void testSecurityEnabled() {
+    static void securityEnabledTest() {
 		List<User> users = new List<User> {
-			afl_TestDataFactory.createUser('System Administrator'),
-			afl_TestDataFactory.createUser('Standard User'),
-			afl_TestDataFactory.createUser('Read Only')
+			afl_TestDataFactory.createUser(true),
+			afl_TestDataFactory.createUser(false)
 		};
 
 		System.Test.startTest();
@@ -134,13 +133,12 @@ private class afl_ArticleFeedbackSecurityHandler_Test {
 	}
 
 	@isTest
-    static void testSecurityDisabled() {
+    static void securityDisabled_test() {
 		afl_ArticleFeedbackSecurityHandler.securityEnabled = false;
 
 		List<User> users = new List<User> {
-			afl_TestDataFactory.createUSer('System Administrator'),
-			afl_TestDataFactory.createUSer('Standard User'),
-			afl_TestDataFactory.createUSer('Read Only')
+			afl_TestDataFactory.createUser(true),
+			afl_TestDataFactory.createUser(false)
 		};
 
 		System.Test.startTest();
@@ -175,7 +173,7 @@ private class afl_ArticleFeedbackSecurityHandler_Test {
 	}
 
 	@isTest
-    static void testGetKAVPermissions() {
+    static void getKAVPermissions_test() {
 		// Create the Knowledge Article
 		SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
 
@@ -189,9 +187,9 @@ private class afl_ArticleFeedbackSecurityHandler_Test {
 	}
 
 	@isTest
-    static void testIsGuestUser() {
+    static void isGuestUser_test() {
 		SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
-		User testUser = afl_TestDataFactory.createUser('Standard User');
+		User testUser = afl_TestDataFactory.createUser(false);
 
 		System.runAs(testUser) {
 			System.Test.startTest();
@@ -202,7 +200,7 @@ private class afl_ArticleFeedbackSecurityHandler_Test {
 	}
 
 	@isTest
-    static void testFormatReplace() {
+    static void formatReplace_test() {
 		String value = '{0}';
 		List<String> lstStr = new List<String>{'value1'};
 		System.Test.startTest();
@@ -213,12 +211,13 @@ private class afl_ArticleFeedbackSecurityHandler_Test {
 	}
 
 	@isTest
-	static void testGetRecordTypeName() {
+	static void getRecordTypeName_test() {
 		SObject kavObj = afl_TestDataFactory.createKnowledgeArticle();
 		Test.startTest();
 		String recordTypeName = afl_ArticleFeedbackSecurityHandler.getRecordTypeName(kavObj);
 		Test.stopTest();
-		if(afl_ArticleFeedbackSecurityHandler.allRecordTypes != null && afl_ArticleFeedbackSecurityHandler.allRecordTypes.size() > 0){
+		
+		if (afl_ArticleFeedbackSecurityHandler.allRecordTypes != null && afl_ArticleFeedbackSecurityHandler.allRecordTypes.size() > 0){
 			System.assertEquals(afl_ArticleFeedbackSecurityHandler.allRecordTypes[0].DeveloperName, recordTypeName, 'The names should match');
 		} else {
 			System.assertEquals(null, recordTypeName, 'The method should return null');
