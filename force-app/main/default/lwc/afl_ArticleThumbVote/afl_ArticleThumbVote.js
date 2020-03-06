@@ -51,7 +51,6 @@ export default class Afl_ArticleThumbVote extends LightningElement {
      reasonPicklistValues({error, data}) {
         
          if(data) {
-
             this.controlValues = data.picklistFieldValues.Unlike_Reason__c.controllerValues;
             // Unlike Reason dependent Field Picklist values
             this.totalDependentValues = data.picklistFieldValues.Unlike_Reason__c.values;
@@ -91,7 +90,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
                 this.liked = true;
                 this.disliked = false;
                 this.savedVote = '5';
-            } else {
+            } else if (parsedVote.vote === 'false') {
                 this.liked = false;
                 this.disliked = true;
                 this.savedVote = '1';
