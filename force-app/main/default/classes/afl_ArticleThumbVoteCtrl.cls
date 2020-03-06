@@ -117,22 +117,32 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
 			afl_LightningResponse response = new afl_LightningResponse();
 			Map<String,Object> result = new Map<String,Object>();
-			String query = 'SELECT KnowledgeArticleId FROM '+knowledgeObject+' WHERE Id = \''+recordId+'\' LIMIT 1';
+			String query = 'SELECT KnowledgeArticleId, CreatedDate FROM ' + knowledgeObject + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
 			List<SObject> knowledgeObjList = Database.query(query);
-			String kavId = (String)recordId;
+			String kavId = (String) recordId;
 			List<afl_Article_Feedback__c> listOfArticleF = [SELECT Feedback_Reason__c FROM afl_Article_Feedback__c WHERE Knowledge_Article_Version_Id__c =: kavId ORDER BY CreatedDate DESC NULLS FIRST LIMIT 1];
 			String feedbackReason = '';
 			if (!listOfArticleF.isEmpty()) {
 				feedbackReason = listOfArticleF[0].Feedback_Reason__c;
 			}
+
 			if (!knowledgeObjList.isEmpty()) {
 				SObject knowledgeObj = knowledgeObjList[0];
-				String parentId = (String)knowledgeObj.get('KnowledgeArticleId');
-				Vote[] sVote = [SELECT ParentId, Type FROM Vote WHERE ParentId=:parentId AND LastModifiedById=: UserInfo.getUserId() LIMIT 1];
+				DateTime kavCreatedDate = (DateTime) knowledgeObj.get('CreatedDate');
+				String parentId = (String) knowledgeObj.get('KnowledgeArticleId');
+				Vote[] sVote = [SELECT ParentId, Type, LastModifiedDate FROM Vote WHERE ParentId=:parentId AND LastModifiedById=: UserInfo.getUserId() LIMIT 1];
+				
+				Boolean voteCreatedAfterCurrentKav = false;
+				if (sVote.size() > 0) {
+					voteCreatedAfterCurrentKav = sVote.get(0).LastModifiedDate > kavCreatedDate;
+				}
+
 				if (!Test.isRunningTest()) {
-					if (!sVote.isEmpty()) {
-						Boolean voteUp = sVote.get(0).Type == '5' || sVote.get(0).Type == 'UP';
-						result.put('vote', JSON.serialize(voteUp));
+					if (voteCreatedAfterCurrentKav) {
+						if (voteCreatedAfterCurrentKav && !sVote.isEmpty()) {
+							Boolean voteUp = sVote.get(0).Type == '5' || sVote.get(0).Type == 'UP';
+							result.put('vote', JSON.serialize(voteUp));
+						}
 					}
 				} else {
 					result.put('vote', 'true');
@@ -140,6 +150,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			}
 			result.put('feedbackReason', feedbackReason);
 			response.jsonResponse = JSON.serialize(result);
+			
 			return response;
 		} catch (Exception e) {
 			return new afl_LightningResponse(e);
