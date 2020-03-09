@@ -68,12 +68,13 @@ public class afl_TestDataFactory {
 	*/
 	public static User createUser(Boolean isAdmin) {
 		// Create user for test
-		Profile p = [
+		Profile prof = [
 			SELECT Id 
 			FROM Profile 
 			WHERE UserType = 'Standard' 
 			AND PermissionsCustomizeApplication =: isAdmin 
 			AND PermissionsModifyAllData =: isAdmin
+			AND PermissionsManageCases = true
 			ORDER BY CreatedDate ASC 
 			LIMIT 1
 		];
@@ -85,7 +86,7 @@ public class afl_TestDataFactory {
 			LastName='Testing',
 			LanguageLocaleKey='en_US',
 			LocaleSidKey='en_US',
-			ProfileId = p.Id,
+			ProfileId = prof.Id,
 			TimeZoneSidKey='America/Los_Angeles',
 			UserName = String.valueOf(Crypto.getRandomInteger()) + 'myusername@testorg.com');
 
