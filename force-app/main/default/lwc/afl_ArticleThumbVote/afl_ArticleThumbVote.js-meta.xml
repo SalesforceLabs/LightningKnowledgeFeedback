@@ -10,10 +10,10 @@
         <target>lightningCommunity__Default</target>
   </targets>
   <targetConfigs>
-        <targetConfig targets="lightning__RecordPage">
+        <targetConfig targets="lightning__RecordPage, lightningCommunity__Default">
             <property name="alwaysDisplayFeedbackDescription" type="Boolean" label="Always display feedback section" default="true"/>
             <property name="ratingRequired" type="Boolean" label="Make rating required" default="true"/>
             <property name="descriptionRequired" type="Boolean" label="Require written feedback with negative rating" default="true"/>
         </targetConfig>
-      </targetConfigs>
+    </targetConfigs>
 </LightningComponentBundle>

@@ -39,10 +39,10 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				SObject ntw = Database.query(query);
 				artFeed.Community_Name__c = communityName;
 				artFeed.Feedback_Source__c = 'Communities';
-				artFeed.Article_Link__c = baseUrl+'/' + (String)ntw.get('UrlPathPrefix') + '/s/article/'+recordId;
+				artFeed.Article_Link__c = baseUrl + '/' + (String) ntw.get('UrlPathPrefix') + '/s/article/' + recordId;
 			} else {
 				artFeed.Feedback_Source__c = 'Internal';
-				artFeed.Article_Link__c = baseUrl+'/'+recordId;
+				artFeed.Article_Link__c = baseUrl + '/' + recordId;
 			}
 
 			artFeed.Knowledge_Article_Version_Id__c = recordId;
@@ -50,18 +50,18 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			Boolean hasRecordType = afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive;
 			String recordTypeField = '';
 			if (hasRecordType) {
-				recordTypeField = ',RecordTypeId';
+				recordTypeField = ', RecordTypeId';
 			}
 
-			String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate, KnowledgeArticleId' + recordTypeField + ' FROM '+knowledgeObject+' WHERE Id = \''+recordId+'\' LIMIT 1';
+			String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate, KnowledgeArticleId' + recordTypeField + ' FROM ' + knowledgeObject + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
 			List<SObject> sObjList = Database.query(query);
 			if (!sObjList.isEmpty()) {
 				SObject sObj = sObjList[0];
-				artFeed.Knowledge_kav_article_Id__c = (String)sObj.get('KnowledgeArticleId');
-				artFeed.Article_Title__c = (String)sObj.get('Title');
-				artFeed.Article_Version__c = (Decimal)sObj.get('VersionNumber');
-				artFeed.Article_Number__c = (String)sObj.get('ArticleNumber');
-				artFeed.Article_Created_Date__c = (Datetime)sObj.get('ArticleCreatedDate');
+				artFeed.Knowledge_kav_article_Id__c = (String) sObj.get('KnowledgeArticleId');
+				artFeed.Article_Title__c = (String) sObj.get('Title');
+				artFeed.Article_Version__c = (Decimal) sObj.get('VersionNumber');
+				artFeed.Article_Number__c = (String) sObj.get('ArticleNumber');
+				artFeed.Article_Created_Date__c = (Datetime) sObj.get('ArticleCreatedDate');
 
 				// Get record type name
 				if (hasRecordType) {
@@ -77,7 +77,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 						ParentId = artFeed.Knowledge_kav_article_Id__c,
 						Type = isLiked ? '5' : '1'
 					);
-					Vote[] sVote = [SELECT Id, ParentId FROM Vote WHERE ParentId=:artFeed.Knowledge_kav_article_Id__c AND LastModifiedById=: UserInfo.getUserId() LIMIT 1];
+					Vote[] sVote = [SELECT Id, ParentId FROM Vote WHERE ParentId =: artFeed.Knowledge_kav_article_Id__c AND CreatedById =: UserInfo.getUserId() LIMIT 1];
 					
 					if (!sVote.isEmpty()) {
 						vote.Id = sVote.get(0).Id;
@@ -91,7 +91,6 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 					}
 				}
 			}
-
 			INSERT artFeed;
 
 			return new afl_LightningResponse();
@@ -116,10 +115,18 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
 			afl_LightningResponse response = new afl_LightningResponse();
 			Map<String,Object> result = new Map<String,Object>();
-			String query = 'SELECT KnowledgeArticleId, CreatedDate FROM ' + knowledgeObject+' WHERE Id = \'' + recordId + '\' LIMIT 1';
+			String query = 'SELECT KnowledgeArticleId, CreatedDate FROM ' + knowledgeObject + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
 			List<SObject> knowledgeObjList = Database.query(query);
 			String kavId = (String) recordId;
-			List<afl_Article_Feedback__c> listOfArticleF = [SELECT Feedback_Reason__c FROM afl_Article_Feedback__c WHERE Knowledge_Article_Version_Id__c =: kavId ORDER BY CreatedDate DESC NULLS FIRST LIMIT 1];
+			List<afl_Article_Feedback__c> listOfArticleF = [
+				SELECT Feedback_Reason__c 
+				FROM afl_Article_Feedback__c 
+				WHERE Knowledge_Article_Version_Id__c =: kavId 
+				AND OwnerId =: UserInfo.getUserId()
+				ORDER BY CreatedDate DESC NULLS FIRST 
+				LIMIT 1
+			];
+
 			String feedbackReason = '';
 			if (!listOfArticleF.isEmpty()) {
 				feedbackReason = listOfArticleF[0].Feedback_Reason__c;
@@ -129,7 +136,13 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				SObject knowledgeObj = knowledgeObjList[0];
 				DateTime kavCreatedDate = (DateTime) knowledgeObj.get('CreatedDate');
 				String parentId = (String) knowledgeObj.get('KnowledgeArticleId');
-				Vote[] sVote = [SELECT ParentId, Type, LastModifiedDate FROM Vote WHERE ParentId=:parentId AND LastModifiedById=: UserInfo.getUserId() LIMIT 1];
+				Vote[] sVote = [
+					SELECT ParentId, Type, LastModifiedDate 
+					FROM Vote 
+					WHERE ParentId =: parentId 
+					AND CreatedById=: UserInfo.getUserId() 
+					LIMIT 1
+				];
 				
 				Boolean voteCreatedAfterCurrentKav = false;
 				if (sVote.size() > 0) {
