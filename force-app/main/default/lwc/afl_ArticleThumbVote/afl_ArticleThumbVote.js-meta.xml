@@ -14,6 +14,7 @@
             <property name="alwaysDisplayFeedbackDescription" type="Boolean" label="Always display feedback section" default="true"/>
             <property name="ratingRequired" type="Boolean" label="Make rating required" default="true"/>
             <property name="descriptionRequired" type="Boolean" label="Require written feedback with negative rating" default="true"/>
+            <property name="recordId" type="String" label="Record Id" default="{!recordId}" />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>
