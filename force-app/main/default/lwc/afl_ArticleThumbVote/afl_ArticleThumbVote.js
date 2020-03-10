@@ -8,6 +8,8 @@ import chooseGeneralReason from '@salesforce/label/c.Choose_a_general_reason';
 import description from '@salesforce/label/c.Description';
 import descriptionPlaceholder from '@salesforce/label/c.Description_placeholder';
 import submit from '@salesforce/label/c.Submit_button';
+import noInfoTitle from '@salesforce/label/c.No_information_title';
+import appropriateRecPage from '@salesforce/label/c.Appropriate_record_page_message';
 
 import getVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.getVote';
 import upsertThumbArticleVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.upsertThumbArticleVote';
@@ -67,12 +69,15 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         chooseGeneralReason,
         description,
         descriptionPlaceholder,
-        submit
+        submit,
+        noInfoTitle,
+        appropriateRecPage
     };
 
     connectedCallback() {
         if (!this.validateRecordId()) {
-			this.invalidRecordId =true;
+            this.invalidRecordId =true;
+            return;
         }
         
         if(this.alwaysDisplayFeedbackDescription === false) {
