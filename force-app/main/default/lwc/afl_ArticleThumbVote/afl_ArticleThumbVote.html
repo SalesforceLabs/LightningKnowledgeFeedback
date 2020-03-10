@@ -32,8 +32,14 @@
                         </div>    
                         
                     </div>
-                </div>
-                    
+                </div>  
+            </lightning-card>
+        </template>
+        <template if:true={invalidRecordId}>
+            <lightning-card title={label.noInfoTitle}>
+                <p class="slds-p-horizontal_medium">
+                    {label.appropriateRecPage}
+                </p>
             </lightning-card>
         </template>
     </div>

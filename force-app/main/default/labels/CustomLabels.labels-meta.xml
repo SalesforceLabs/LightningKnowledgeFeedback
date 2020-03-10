@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>Appropriate_record_page_message</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Appropriate record page message</shortDescription>
+        <value>Please make sure the component is placed in the appropriate Record Page.</value>
+    </labels>
+    <labels>
         <fullName>Article_Feedback_id_not_found_on_Related_Article_error</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
@@ -95,6 +103,14 @@
         <protected>true</protected>
         <shortDescription>No hashtag or square bracket error</shortDescription>
         <value>This field cannot be empty or include a closing square bracket (])</value>
+    </labels>
+    <labels>
+        <fullName>No_information_title</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>No information title</shortDescription>
+        <value>There&#39;s no information to show.</value>
     </labels>
     <labels>
         <fullName>Related_Article_Title</fullName>
