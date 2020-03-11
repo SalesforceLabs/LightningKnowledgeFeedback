@@ -123,6 +123,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				FROM afl_Article_Feedback__c 
 				WHERE Knowledge_Article_Version_Id__c =: kavId 
 				AND OwnerId =: UserInfo.getUserId()
+				AND Originated_From_Trigger__c = false
 				ORDER BY CreatedDate DESC NULLS FIRST 
 				LIMIT 1
 			];
