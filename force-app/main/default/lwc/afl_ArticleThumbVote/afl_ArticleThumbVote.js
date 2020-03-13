@@ -45,25 +45,23 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 
     totalDependentValues = [];
     
-     // Account object info
-     @wire(getObjectInfo, { objectApiName: FeedbackObject  })
-     objectInfo;
+    // Account object info
+    @wire(getObjectInfo, { objectApiName: FeedbackObject  })
+    objectInfo;
 
-     // Picklist values based on record type
-     @wire(getPicklistValuesByRecordType, { objectApiName: FeedbackObject, recordTypeId: '$objectInfo.data.defaultRecordTypeId'})
-     reasonPicklistValues({error, data}) {
-        
-         if (data) {
+    // Picklist values based on record type
+    @wire(getPicklistValuesByRecordType, { objectApiName: FeedbackObject, recordTypeId: '$objectInfo.data.defaultRecordTypeId'})
+    reasonPicklistValues({error, data}) {
+        if (data) {
             this.controlValues = data.picklistFieldValues.Unlike_Reason__c.controllerValues;
             // Unlike Reason dependent Field Picklist values
             this.totalDependentValues = data.picklistFieldValues.Unlike_Reason__c.values;
 
             this.refreshValuesByLikeOrDislike();
-         }
-         else if (error) {
-             this.error = JSON.stringify(error);
-         }
-     }
+        } else if (error) {
+            this.error = JSON.stringify(error);
+        }
+    }
 
     label = {
         cardTitle,
@@ -106,7 +104,12 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 
                 this.showHideFeedback = 'slds-show';
             }
-            this.selectedValue = parsedVote.feedbackReason;
+
+            if (parsedVote.feedbackReason) {
+                this.selectedValue = parsedVote.feedbackReason;
+            } else {
+                this.selectedValue = 'None';
+            }
             this.refreshValuesByLikeOrDislike();
         })
         .catch(error => {
@@ -124,12 +127,19 @@ export default class Afl_ArticleThumbVote extends LightningElement {
             if (this.disliked) {
                 this.setDislikeValues();
             } else {
+                // Set default value
+                initialOptions.push({
+                    label: '-- ' + chooseGeneralReason + ' --',
+                    value: 'None'
+                });
+
                 this.totalDependentValues.forEach(key => {
                     initialOptions.push({
                         label : key.label,
                         value: key.value
                     })
                 });
+                
                 this.reasonTypeOptions = initialOptions;
                 this.reasonType = initialOptions[0] ? initialOptions[0].value : '';
             }
@@ -159,6 +169,12 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 
     setLikeValues() {
         let dependValues = [];
+        // Set default value
+        dependValues.push({
+            label: '-- ' + chooseGeneralReason + ' --',
+            value: 'None'
+        });
+
         // filter the total dependent values based on Like value 
         this.totalDependentValues.forEach(conValues => {
             if (conValues.validFor.includes(this.controlValues['Thumbs_up'])) {
@@ -168,6 +184,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
                 })
             }
         })
+        
         this.reasonTypeOptions = dependValues;
         this.reasonType = dependValues[0] ? dependValues[0].value : '';
     }
@@ -186,6 +203,12 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 
     setDislikeValues() {
         let dependValues = [];
+        // Set default value
+        dependValues.push({
+            label: '-- ' + chooseGeneralReason + ' --',
+            value: 'None'
+        });
+
         // filter the total dependent values based on Dislike value 
         this.totalDependentValues.forEach(conValues => {
             if (conValues.validFor.includes(this.controlValues['Thumbs_down'])) {
@@ -195,6 +218,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
                 })
             }
         })
+
         this.reasonTypeOptions = dependValues;
         this.reasonType = dependValues[0] ? dependValues[0].value : '';
     }
@@ -225,11 +249,18 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 
 		if (!this.ratingRequired && !this.liked && !this.disliked) {
 			this.hasNoRate = true;
-		}
+        }
+        
+        let reasonSelected; 
+        if (this.reasonType === 'None') {
+            reasonSelected = '';
+        } else {
+            reasonSelected = this.reasonType;
+        }
 
         upsertThumbArticleVote({
 			recordId : this.recordId,
-			feedbackReason : this.reasonType,
+			feedbackReason : reasonSelected,
 			voteDescription : this.voteReasonDescription,
 			isLiked : this.liked,
 			isSameVote : this.isSameVote,
