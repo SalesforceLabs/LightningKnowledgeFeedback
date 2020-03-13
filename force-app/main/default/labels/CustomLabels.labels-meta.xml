@@ -9,6 +9,14 @@
         <value>Please make sure the component is placed in the appropriate Record Page.</value>
     </labels>
     <labels>
+        <fullName>Article_Feedback_creation_alert</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Article Feedback creation alert</shortDescription>
+        <value>Users can only create Article Feedback records from knowledge articles.</value>
+    </labels>
+    <labels>
         <fullName>Article_Feedback_id_not_found_on_Related_Article_error</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
@@ -47,6 +55,14 @@
         <protected>true</protected>
         <shortDescription>Description placeholder</shortDescription>
         <value>Please, leave us some feedback...</value>
+    </labels>
+    <labels>
+        <fullName>Feedback_saved_toast</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Feedback saved toast</shortDescription>
+        <value>Feedback saved successfully.</value>
     </labels>
     <labels>
         <fullName>Hashtag_helptext</fullName>
@@ -113,6 +129,22 @@
         <value>There&#39;s no information to show.</value>
     </labels>
     <labels>
+        <fullName>Provide_a_description_toast</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Provide a description toast</shortDescription>
+        <value>Please, provide a description before submitting your vote</value>
+    </labels>
+    <labels>
+        <fullName>Rate_the_article_toast</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Rate the article toast</shortDescription>
+        <value>Please, rate the article before leaving any comments.</value>
+    </labels>
+    <labels>
         <fullName>Related_Article_Title</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
@@ -166,7 +198,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Update hashtag error</shortDescription>
-        <value>An error ocurred while updating the hashtag value</value>
+        <value>An error occurred while updating the hashtag value</value>
     </labels>
     <labels>
         <fullName>View_Article_Button</fullName>

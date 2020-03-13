@@ -28,13 +28,12 @@
                                 <center>
                                     <lightning-button variant="brand" label={label.submit} onclick={handleClick}></lightning-button>
                                 </center>
-        
                         </div>    
-                        
                     </div>
                 </div>  
             </lightning-card>
         </template>
+
         <template if:true={invalidRecordId}>
             <lightning-card title={label.noInfoTitle}>
                 <p class="slds-p-horizontal_medium">
@@ -43,5 +42,4 @@
             </lightning-card>
         </template>
     </div>
-    
 </template>
