@@ -37,6 +37,8 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     activePositiveValues; activeNegativeValues;
     allValues;
     reasonTypeOptions;
+    optionsValueToLabelMap;
+    optionsLabelToValueMap;
     voteReasonDescription;
     showHideFeedback;
     hasNoRate = false;
@@ -133,7 +135,17 @@ export default class Afl_ArticleThumbVote extends LightningElement {
                     value: 'None'
                 });
 
+                // Set values in map for later use
+                this.optionsValueToLabelMap = new Map();
+                this.optionsLabelToValueMap = new Map();
+                
+                this.optionsValueToLabelMap.set('-- ' + chooseGeneralReason + ' --', 'None');
+                this.optionsLabelToValueMap.set('None', '-- ' + chooseGeneralReason + ' --');
+
                 this.totalDependentValues.forEach(key => {
+                    this.optionsValueToLabelMap.set(key.value, key.label);
+                    this.optionsLabelToValueMap.set(key.label, key.value);
+
                     initialOptions.push({
                         label : key.label,
                         value: key.value
@@ -146,7 +158,11 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         }
         
         if (this.selectedValue !== '') {
-            this.reasonType = this.selectedValue;
+            if (this.optionsLabelToValueMap.get(this.selectedValue)) {
+                this.reasonType = this.optionsLabelToValueMap.get(this.selectedValue);
+            } else {
+                this.reasonType = this.selectedValue;
+            }
         }
     }
 
@@ -251,16 +267,19 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 			this.hasNoRate = true;
         }
         
-        let reasonSelected; 
+        let reasonSelected, reasonSelectedDeveloperValue; 
         if (this.reasonType === 'None') {
             reasonSelected = '';
+            reasonSelectedDeveloperValue = '';
         } else {
-            reasonSelected = this.reasonType;
+            reasonSelected = this.optionsValueToLabelMap.get(this.reasonType);
+            reasonSelectedDeveloperValue = this.reasonType;
         }
 
         upsertThumbArticleVote({
 			recordId : this.recordId,
 			feedbackReason : reasonSelected,
+			feedbackReasonDeveloperValue : reasonSelectedDeveloperValue,
 			voteDescription : this.voteReasonDescription,
 			isLiked : this.liked,
 			isSameVote : this.isSameVote,

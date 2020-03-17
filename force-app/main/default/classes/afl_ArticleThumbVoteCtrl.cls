@@ -14,7 +14,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 	*  Object - afl_LightningResponse
 	*/
 	@AuraEnabled
-	public static afl_LightningResponse upsertThumbArticleVote(Id recordId, String feedbackReason, String voteDescription, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate) {
+	public static afl_LightningResponse upsertThumbArticleVote(Id recordId, String feedbackReason, String feedbackReasonDeveloperValue, String voteDescription, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate) {
 		try {
 			// Check FLS and CRUD
 			afl_ArticleFeedbackSecurityHandler.canCreate(afl_Article_Feedback__c.SObjectType);
@@ -29,6 +29,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				artFeed.Like__c = isLiked;
 			}
 			artFeed.Feedback_Reason__c = feedbackReason;
+			artFeed.Feedback_Reason_Developer_Value__c = feedbackReasonDeveloperValue;
 
 			String baseUrl = System.URL.getSalesforceBaseUrl().toExternalForm();
 			String communityName = afl_ArticleFeedbackSecurityHandler.getCommunityName();
@@ -119,7 +120,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			List<SObject> knowledgeObjList = Database.query(query);
 			String kavId = (String) recordId;
 			List<afl_Article_Feedback__c> listOfArticleF = [
-				SELECT Feedback_Reason__c 
+				SELECT Feedback_Reason_Developer_Value__c, Feedback_Reason__c
 				FROM afl_Article_Feedback__c 
 				WHERE Knowledge_Article_Version_Id__c =: kavId 
 				AND OwnerId =: UserInfo.getUserId()
@@ -130,7 +131,11 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 
 			String feedbackReason = '';
 			if (!listOfArticleF.isEmpty()) {
-				feedbackReason = listOfArticleF[0].Feedback_Reason__c;
+				if (listOfArticleF[0].Feedback_Reason_Developer_Value__c != null) {
+					feedbackReason = listOfArticleF[0].Feedback_Reason_Developer_Value__c;
+				} else {
+					feedbackReason = listOfArticleF[0].Feedback_Reason__c;
+				}
 			}
 
 			if (!knowledgeObjList.isEmpty()) {
@@ -162,6 +167,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				}
 			}
 			result.put('feedbackReason', feedbackReason);
+
 			response.jsonResponse = JSON.serialize(result);
 			
 			return response;

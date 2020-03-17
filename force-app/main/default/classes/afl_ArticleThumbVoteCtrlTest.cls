@@ -10,7 +10,7 @@ private class afl_ArticleThumbVoteCtrlTest {
     static void upsertThumbArticleVoteTest() {
 		SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
 		Test.startTest();
-		afl_LightningResponse response = afl_ArticleThumbVoteCtrl.upsertThumbArticleVote(knowledgeObject.Id, '', 'Test Description', true, false, false);
+		afl_LightningResponse response = afl_ArticleThumbVoteCtrl.upsertThumbArticleVote(knowledgeObject.Id, '', '', 'Test Description', true, false, false);
 		Test.stopTest();
 		
 		afl_Article_Feedback__c[] afl = [SELECT Name FROM afl_Article_Feedback__c WHERE Knowledge_Article_Version_Id__c =: knowledgeObject.Id LIMIT 1];
