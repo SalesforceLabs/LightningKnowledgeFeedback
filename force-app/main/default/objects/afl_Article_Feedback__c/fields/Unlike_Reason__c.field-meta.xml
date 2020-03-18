@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Unlike_Reason__c</fullName>
+    <deprecated>false</deprecated>
     <externalId>false</externalId>
-    <label>Feedback Reason Picklist</label>
+    <label>Feedback Reason Picklist Values</label>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
     <trackTrending>false</trackTrending>
