@@ -55,7 +55,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     @wire(getPicklistValuesByRecordType, { objectApiName: FeedbackObject, recordTypeId: '$objectInfo.data.defaultRecordTypeId'})
     reasonPicklistValues({error, data}) {
         if (data) {
-            this.controlValuxes = data.picklistFieldValues.Unlike_Reason__c.controllerValues;
+            this.controlValues = data.picklistFieldValues.Unlike_Reason__c.controllerValues;
             // Unlike Reason dependent Field Picklist values
             this.totalDependentValues = data.picklistFieldValues.Unlike_Reason__c.values;
 
