@@ -55,7 +55,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     @wire(getPicklistValuesByRecordType, { objectApiName: FeedbackObject, recordTypeId: '$objectInfo.data.defaultRecordTypeId'})
     reasonPicklistValues({error, data}) {
         if (data) {
-            this.controlValues = data.picklistFieldValues.Unlike_Reason__c.controllerValues;
+            this.controlValuxes = data.picklistFieldValues.Unlike_Reason__c.controllerValues;
             // Unlike Reason dependent Field Picklist values
             this.totalDependentValues = data.picklistFieldValues.Unlike_Reason__c.values;
 
@@ -112,6 +112,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
             } else {
                 this.selectedValue = 'None';
             }
+
             this.refreshValuesByLikeOrDislike();
         })
         .catch(error => {
@@ -139,8 +140,8 @@ export default class Afl_ArticleThumbVote extends LightningElement {
                 this.optionsValueToLabelMap = new Map();
                 this.optionsLabelToValueMap = new Map();
                 
-                this.optionsValueToLabelMap.set('-- ' + chooseGeneralReason + ' --', 'None');
-                this.optionsLabelToValueMap.set('None', '-- ' + chooseGeneralReason + ' --');
+                this.optionsLabelToValueMap.set('-- ' + chooseGeneralReason + ' --', 'None');
+                this.optionsValueToLabelMap.set('None', '-- ' + chooseGeneralReason + ' --');
 
                 this.totalDependentValues.forEach(key => {
                     this.optionsValueToLabelMap.set(key.value, key.label);
