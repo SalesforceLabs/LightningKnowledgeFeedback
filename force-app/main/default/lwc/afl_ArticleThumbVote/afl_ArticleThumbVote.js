@@ -55,10 +55,17 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     @wire(getPicklistValuesByRecordType, { objectApiName: FeedbackObject, recordTypeId: '$objectInfo.data.defaultRecordTypeId'})
     reasonPicklistValues({error, data}) {
         if (data) {
-            this.controlValues = data.picklistFieldValues.Unlike_Reason__c.controllerValues;
-            // Unlike Reason dependent Field Picklist values
-            this.totalDependentValues = data.picklistFieldValues.Unlike_Reason__c.values;
-
+            // Check if there's a namespace
+            if (data.picklistFieldValues.afl__Unlike_Reason__c) {
+                this.controlValues = data.picklistFieldValues.afl__Unlike_Reason__c.controllerValues;
+                // Unlike Reason dependent Field Picklist values
+                this.totalDependentValues = data.picklistFieldValues.afl__Unlike_Reason__c.values;
+            } else {
+                this.controlValues = data.picklistFieldValues.Unlike_Reason__c.controllerValues;
+                // Unlike Reason dependent Field Picklist values
+                this.totalDependentValues = data.picklistFieldValues.Unlike_Reason__c.values;
+            }
+            
             this.refreshValuesByLikeOrDislike();
         } else if (error) {
             this.error = JSON.stringify(error);
@@ -174,6 +181,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
                 return true;
             }
         }
+
         return false;
     }
 
