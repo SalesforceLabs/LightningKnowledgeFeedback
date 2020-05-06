@@ -34,7 +34,7 @@
 
 				var returnValue = undefined;
 				if (result.state == 'ERRORNOTFOUND') {
-					//handle when article is not found
+					// remove the modal that reads "The related article could not be found
 					Response.error();
 				}
 				if (!$A.util.isEmpty(result.jsonResponse)) {
