@@ -35,7 +35,7 @@ public class afl_TestDataFactory {
 	    kavObj.put('Summary', 'testSummary');
 	    kavObj.put('Language', afl_ArticleFeedbackSecurityHandler.getValidLanguagePicklistValue(objType));
 		List<RecordType> allRecordTypes = afl_ArticleFeedbackSecurityHandler.allRecordTypes;
-		if (allRecordTypes != null && allRecordTypes.size() > 0){
+		if (allRecordTypes != null && !allRecordTypes.isEmpty()){
 			kavObj.put('RecordTypeId', allRecordTypes[0].Id);
 		}
 	    INSERT kavObj;
