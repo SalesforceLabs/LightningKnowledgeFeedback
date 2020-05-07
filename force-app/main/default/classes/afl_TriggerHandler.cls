@@ -171,7 +171,7 @@ public with sharing class afl_TriggerHandler {
 							}
 	                    }
 
-	                if (lstAfd.size() > 0) {
+	                if (!lstAfd.isEmpty()) {
 	                    INSERT lstAfd;
 	                }
 				}

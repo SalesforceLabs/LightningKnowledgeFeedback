@@ -83,7 +83,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 					if (!sVote.isEmpty()) {
 						vote.Id = sVote.get(0).Id;
 					}
-					
+
 					try {
 						UPSERT vote;
 					} catch(DmlException e) {
@@ -149,9 +149,9 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 					AND CreatedById=: UserInfo.getUserId() 
 					LIMIT 1
 				];
-				
+
 				Boolean voteCreatedAfterCurrentKav = false;
-				if (sVote.size() > 0) {
+				if (!sVote.isEmpty()) {
 					voteCreatedAfterCurrentKav = sVote.get(0).LastModifiedDate > kavCreatedDate;
 				}
 
