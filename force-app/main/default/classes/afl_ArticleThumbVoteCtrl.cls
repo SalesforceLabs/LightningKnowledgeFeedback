@@ -14,7 +14,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 	*  Object - afl_LightningResponse
 	*/
 	@AuraEnabled
-	public static afl_LightningResponse upsertThumbArticleVote(Id recordId, String feedbackReason, String voteDescription, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate) {
+	public static afl_LightningResponse upsertThumbArticleVote(Id recordId, String feedbackReason, String feedbackReasonDeveloperValue, String voteDescription, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate) {
 		try {
 			// Check FLS and CRUD
 			afl_ArticleFeedbackSecurityHandler.canCreate(afl_Article_Feedback__c.SObjectType);
@@ -29,6 +29,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				artFeed.Like__c = isLiked;
 			}
 			artFeed.Feedback_Reason__c = feedbackReason;
+			artFeed.Feedback_Reason_Developer_Value__c = feedbackReasonDeveloperValue;
 
 			String baseUrl = System.URL.getSalesforceBaseUrl().toExternalForm();
 			String communityName = afl_ArticleFeedbackSecurityHandler.getCommunityName();
@@ -39,10 +40,10 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				SObject ntw = Database.query(query);
 				artFeed.Community_Name__c = communityName;
 				artFeed.Feedback_Source__c = 'Communities';
-				artFeed.Article_Link__c = baseUrl+'/' + (String)ntw.get('UrlPathPrefix') + '/s/article/'+recordId;
+				artFeed.Article_Link__c = baseUrl + '/' + (String) ntw.get('UrlPathPrefix') + '/s/article/' + recordId;
 			} else {
 				artFeed.Feedback_Source__c = 'Internal';
-				artFeed.Article_Link__c = baseUrl+'/'+recordId;
+				artFeed.Article_Link__c = baseUrl + '/' + recordId;
 			}
 
 			artFeed.Knowledge_Article_Version_Id__c = recordId;
@@ -50,18 +51,18 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			Boolean hasRecordType = afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive;
 			String recordTypeField = '';
 			if (hasRecordType) {
-				recordTypeField = ',RecordTypeId';
+				recordTypeField = ', RecordTypeId';
 			}
 
-			String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate, KnowledgeArticleId' + recordTypeField + ' FROM '+knowledgeObject+' WHERE Id = \''+recordId+'\' LIMIT 1';
+			String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate, KnowledgeArticleId' + recordTypeField + ' FROM ' + knowledgeObject + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
 			List<SObject> sObjList = Database.query(query);
 			if (!sObjList.isEmpty()) {
 				SObject sObj = sObjList[0];
-				artFeed.Knowledge_kav_article_Id__c = (String)sObj.get('KnowledgeArticleId');
-				artFeed.Article_Title__c = (String)sObj.get('Title');
-				artFeed.Article_Version__c = (Decimal)sObj.get('VersionNumber');
-				artFeed.Article_Number__c = (String)sObj.get('ArticleNumber');
-				artFeed.Article_Created_Date__c = (Datetime)sObj.get('ArticleCreatedDate');
+				artFeed.Knowledge_kav_article_Id__c = (String) sObj.get('KnowledgeArticleId');
+				artFeed.Article_Title__c = (String) sObj.get('Title');
+				artFeed.Article_Version__c = (Decimal) sObj.get('VersionNumber');
+				artFeed.Article_Number__c = (String) sObj.get('ArticleNumber');
+				artFeed.Article_Created_Date__c = (Datetime) sObj.get('ArticleCreatedDate');
 
 				// Get record type name
 				if (hasRecordType) {
@@ -77,7 +78,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 						ParentId = artFeed.Knowledge_kav_article_Id__c,
 						Type = isLiked ? '5' : '1'
 					);
-					Vote[] sVote = [SELECT Id, ParentId FROM Vote WHERE ParentId=:artFeed.Knowledge_kav_article_Id__c AND LastModifiedById=: UserInfo.getUserId() LIMIT 1];
+					Vote[] sVote = [SELECT Id, ParentId FROM Vote WHERE ParentId =: artFeed.Knowledge_kav_article_Id__c AND CreatedById =: UserInfo.getUserId() LIMIT 1];
 					
 					if (!sVote.isEmpty()) {
 						vote.Id = sVote.get(0).Id;
@@ -91,7 +92,6 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 					}
 				}
 			}
-
 			INSERT artFeed;
 
 			return new afl_LightningResponse();
@@ -116,34 +116,63 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
 			afl_LightningResponse response = new afl_LightningResponse();
 			Map<String,Object> result = new Map<String,Object>();
-			String query = 'SELECT KnowledgeArticleId, CreatedDate FROM '+knowledgeObject+' WHERE Id = \''+recordId+'\' LIMIT 1';
+			String query = 'SELECT KnowledgeArticleId, CreatedDate FROM ' + knowledgeObject + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
 			List<SObject> knowledgeObjList = Database.query(query);
-			String kavId = (String)recordId;
-			List<afl_Article_Feedback__c> listOfArticleF = [SELECT Feedback_Reason__c FROM afl_Article_Feedback__c WHERE Knowledge_Article_Version_Id__c =: kavId ORDER BY CreatedDate DESC NULLS FIRST LIMIT 1];
-			String feedbackReason = '';
-			if (!listOfArticleF.isEmpty()) {
-				feedbackReason = listOfArticleF[0].Feedback_Reason__c;
-			}
+			String kavId = (String) recordId;
+			
+            Vote[] sVote = new Vote[]{};
+            String parentId = '';
 			if (!knowledgeObjList.isEmpty()) {
 				SObject knowledgeObj = knowledgeObjList[0];
-				DateTime kavCreatedDate = (DateTime)knowledgeObj.get('CreatedDate');
-				String parentId = (String)knowledgeObj.get('KnowledgeArticleId');
-				Vote[] sVote = [SELECT ParentId, Type, LastModifiedDate FROM Vote WHERE ParentId=:parentId AND LastModifiedById=: UserInfo.getUserId() LIMIT 1];
+				DateTime kavCreatedDate = (DateTime) knowledgeObj.get('CreatedDate');
+				parentId = (String) knowledgeObj.get('KnowledgeArticleId');
+				sVote = [
+					SELECT ParentId, Type, CreatedDate, LastModifiedDate 
+					FROM Vote 
+					WHERE ParentId =: parentId 
+					AND CreatedById=: UserInfo.getUserId() 
+					LIMIT 1
+				];
 				
-				Boolean voteCreatedAfterCurrentKav = sVote.get(0).LastModifiedDate > kavCreatedDate;
+				Boolean voteCreatedAfterCurrentKav = false;
+				if (sVote.size() > 0) {
+					voteCreatedAfterCurrentKav = sVote.get(0).LastModifiedDate > kavCreatedDate;
+				}
+
 				if (!Test.isRunningTest()) {
-					if(voteCreatedAfterCurrentKav) {
-						if (voteCreatedAfterCurrentKav && !sVote.isEmpty()) {
+						if (!sVote.isEmpty()) {
 							Boolean voteUp = sVote.get(0).Type == '5' || sVote.get(0).Type == 'UP';
 							result.put('vote', JSON.serialize(voteUp));
 						}
-					}
 				} else {
 					result.put('vote', 'true');
 				}
 			}
+            
+            DateTime createdDateVote = sVote.get(0).CreatedDate;
+            List<afl_Article_Feedback__c> listOfArticleF = [
+				SELECT Feedback_Reason_Developer_Value__c, Feedback_Reason__c
+				FROM afl_Article_Feedback__c 
+				WHERE CreatedDate =: createdDateVote
+                AND Knowledge_kav_article_Id__c =: parentId
+                AND OwnerId =: UserInfo.getUserId()
+				AND Originated_From_Trigger__c = false
+				ORDER BY CreatedDate DESC NULLS FIRST 
+				LIMIT 1
+			];
+
+			String feedbackReason = '';
+			if (!listOfArticleF.isEmpty()) {
+				if (listOfArticleF[0].Feedback_Reason_Developer_Value__c != null) {
+					feedbackReason = listOfArticleF[0].Feedback_Reason_Developer_Value__c;
+				} else {
+					feedbackReason = listOfArticleF[0].Feedback_Reason__c;
+				}
+			}
 			result.put('feedbackReason', feedbackReason);
+
 			response.jsonResponse = JSON.serialize(result);
+			
 			return response;
 		} catch (Exception e) {
 			return new afl_LightningResponse(e);
