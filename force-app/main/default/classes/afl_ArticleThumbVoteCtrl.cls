@@ -83,7 +83,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 					if (!sVote.isEmpty()) {
 						vote.Id = sVote.get(0).Id;
 					}
-					
+
 					try {
 						UPSERT vote;
 					} catch(DmlException e) {
@@ -122,6 +122,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			
             Vote[] sVote = new Vote[]{};
             String parentId = '';
+
 			if (!knowledgeObjList.isEmpty()) {
 				SObject knowledgeObj = knowledgeObjList[0];
 				DateTime kavCreatedDate = (DateTime) knowledgeObj.get('CreatedDate');

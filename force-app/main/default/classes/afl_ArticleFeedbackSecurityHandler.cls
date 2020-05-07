@@ -349,7 +349,7 @@ public class afl_ArticleFeedbackSecurityHandler {
             res.put(rt.Id, rt.Name);
         }
 
-        if (res.size() == 0)
+        if (res.isEmpty())
         res = null;
         return res;
     }
@@ -369,7 +369,7 @@ public class afl_ArticleFeedbackSecurityHandler {
             res.put(rt.Name, rt.Id);
         }
 
-        if (res.size() == 0) {
+        if (res.isEmpty()) {
             res = null;
         }
 
@@ -453,7 +453,7 @@ public class afl_ArticleFeedbackSecurityHandler {
     */
     public static String getRecordTypeName(SObject sObj) {
         Map<Id,String> recordTypeDetails = getAllowedRecordTypesMap();
-        if(allRecordTypes != null && allRecordTypes.size() > 0){
+        if(allRecordTypes != null && !allRecordTypes.isEmpty()){
             String rTypeId = (String)sObj.get('RecordTypeId');
             if (recordTypeDetails.containsKey(rTypeId)) { 
                 return recordTypeDetails.get(rTypeId);

@@ -35,7 +35,7 @@ public class afl_TestDataFactory {
 	    kavObj.put('Summary', 'testSummary');
 	    kavObj.put('Language', afl_ArticleFeedbackSecurityHandler.getValidLanguagePicklistValue(objType));
 		List<RecordType> allRecordTypes = afl_ArticleFeedbackSecurityHandler.allRecordTypes;
-		if(allRecordTypes != null && allRecordTypes.size() > 0){
+		if (allRecordTypes != null && !allRecordTypes.isEmpty()){
 			kavObj.put('RecordTypeId', allRecordTypes[0].Id);
 		}
 	    INSERT kavObj;
@@ -66,9 +66,19 @@ public class afl_TestDataFactory {
 	* @return
 	*	User
 	*/
-	public static User createUser(String profileName) {
+	public static User createUser(Boolean isAdmin) {
 		// Create user for test
-		Profile p = [SELECT Id FROM Profile WHERE Name =:profileName];
+		Profile prof = [
+			SELECT Id 
+			FROM Profile 
+			WHERE UserType = 'Standard' 
+			AND PermissionsCustomizeApplication =: isAdmin 
+			AND PermissionsModifyAllData =: isAdmin
+			AND PermissionsManageCases = true
+			ORDER BY CreatedDate ASC 
+			LIMIT 1
+		];
+
 		User testUser = new User(
 			Alias = 'newUser',
 			Email='newuser@testorg.com',
@@ -76,7 +86,7 @@ public class afl_TestDataFactory {
 			LastName='Testing',
 			LanguageLocaleKey='en_US',
 			LocaleSidKey='en_US',
-			ProfileId = p.Id,
+			ProfileId = prof.Id,
 			TimeZoneSidKey='America/Los_Angeles',
 			UserName = String.valueOf(Crypto.getRandomInteger()) + 'myusername@testorg.com');
 

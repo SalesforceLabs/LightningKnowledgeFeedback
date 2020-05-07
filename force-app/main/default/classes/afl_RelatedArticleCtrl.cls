@@ -23,7 +23,7 @@ public with sharing class afl_RelatedArticleCtrl {
                 LIMIT 1
             ];
 
-            if (lstAF.size() > 0) {
+            if (!lstAF.isEmpty()) {
                 afl_Article_Feedback__c af = lstAF.get(0);
                 kavId = af.Knowledge_Article_Version_Id__c;
 
@@ -38,7 +38,7 @@ public with sharing class afl_RelatedArticleCtrl {
                 ' LIMIT 1';
                 List<SObject> actualKavs = Database.query(query);
 
-                if (actualKavs.size() > 0) {
+                if (!actualKavs.isEmpty()) {
                     SObject actualKav = actualKavs.get(0);
                     result.put('kavId', kavId);
 

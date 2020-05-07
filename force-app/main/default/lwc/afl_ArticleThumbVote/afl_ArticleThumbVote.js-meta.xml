@@ -5,13 +5,21 @@
     <masterLabel>Article Rating and Feedback</masterLabel>
     <description>Lets you rate and leave feedback for a Knowledge Article.</description>
     <targets>
-      <target>lightning__RecordPage</target>
-  </targets>
-  <targetConfigs>
+        <target>lightning__RecordPage</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
             <property name="alwaysDisplayFeedbackDescription" type="Boolean" label="Always display feedback section" default="true"/>
             <property name="ratingRequired" type="Boolean" label="Make rating required" default="true"/>
             <property name="descriptionRequired" type="Boolean" label="Require written feedback with negative rating" default="true"/>
         </targetConfig>
-      </targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="alwaysDisplayFeedbackDescription" type="Boolean" label="Always display feedback section" default="true"/>
+            <property name="ratingRequired" type="Boolean" label="Make rating required" default="true"/>
+            <property name="descriptionRequired" type="Boolean" label="Require written feedback with negative rating" default="true"/>
+            <property name="recordId" type="String" label="Record Id" description="This field needs to remain with the following value: {!recordId}. It is needed to automatically detect record Ids in communities." default="{!recordId}" />
+        </targetConfig> 
+    </targetConfigs>
 </LightningComponentBundle>

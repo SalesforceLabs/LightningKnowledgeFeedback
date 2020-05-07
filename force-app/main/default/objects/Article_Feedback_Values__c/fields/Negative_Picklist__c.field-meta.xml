@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Negative_Picklist__c</fullName>
+    <description>Stores negative picklist values for Article Feedback configuration page</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Stores negative picklist values for Article Feedback configuration page</inlineHelpText>
+    <label>Negative Picklist</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Duplicate</fullName>
+                <default>false</default>
+                <label>Duplicate</label>
+            </value>
+            <value>
+                <fullName>Enhancement suggestion</fullName>
+                <default>false</default>
+                <label>Enhancement suggestion</label>
+            </value>
+            <value>
+                <fullName>Information inaccurate</fullName>
+                <default>false</default>
+                <label>Information inaccurate</label>
+            </value>
+            <value>
+                <fullName>Link broken</fullName>
+                <default>false</default>
+                <label>Link broken</label>
+            </value>
+            <value>
+                <fullName>Need to archive</fullName>
+                <default>false</default>
+                <label>Need to archive</label>
+            </value>
+            <value>
+                <fullName>Outdated (needs update)</fullName>
+                <default>false</default>
+                <label>Outdated (needs update)</label>
+            </value>
+            <value>
+                <fullName>Poorly written (not clear)</fullName>
+                <default>false</default>
+                <label>Poorly written (not clear)</label>
+            </value>
+            <value>
+                <fullName>Positive feedback</fullName>
+                <default>false</default>
+                <label>Positive feedback</label>
+            </value>
+            <value>
+                <fullName>Default</fullName>
+                <default>false</default>
+                <label>Default</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

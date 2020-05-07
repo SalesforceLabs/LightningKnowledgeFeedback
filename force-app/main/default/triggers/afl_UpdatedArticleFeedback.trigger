@@ -19,7 +19,7 @@ trigger afl_UpdatedArticleFeedback on afl_Article_Feedback__c (after update) {
     }
 
     // Check with SOQL
-    if (parentItemsIds.size() > 0) {
+    if (!parentItemsIds.isEmpty()) {
         List<FeedItem> parentFeedList = [
             SELECT Id
             FROM FeedItem

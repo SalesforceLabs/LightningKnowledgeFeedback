@@ -16,8 +16,7 @@ private with sharing class afl_RelatedArticleCtrl_Test {
         Map<String,Object> result = afl_RelatedArticleCtrl.getCompactLayoutData(kavObj.Id, new Map<String,Object>());
         System.Test.StopTest();
 
-        System.assertEquals('English',result.get('articleLanguage'), 'The language returned by CompactLayoutData is not the same as at the beginning');
-        System.assertEquals(0,result.get('articleVersion'), 'The article version is not the expected');
+        System.assertEquals(0, result.get('articleVersion'), 'The article version is not the expected');
     }
 
     /*
@@ -122,7 +121,7 @@ private with sharing class afl_RelatedArticleCtrl_Test {
     @isTest
     static void testloadKAVId_noFLS() {
         afl_LightningResponse response = new afl_LightningResponse();
-        User testUser = afl_TestDataFactory.createUser('Standard User');
+        User testUser = afl_TestDataFactory.createUser(false);
 
         System.runAs(testUser) {
             System.Test.StartTest();

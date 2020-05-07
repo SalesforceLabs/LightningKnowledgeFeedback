@@ -1,36 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
-        <fullName>Add_button</fullName>
+        <fullName>Appropriate_record_page_message</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
         <protected>true</protected>
-        <shortDescription>Add button</shortDescription>
-        <value>Add</value>
+        <shortDescription>Appropriate record page message</shortDescription>
+        <value>Please make sure the component is placed in the appropriate Record Page.</value>
     </labels>
     <labels>
-        <fullName>Add_value_to_Feedback_picklist</fullName>
+        <fullName>Article_Feedback_creation_alert</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
         <protected>true</protected>
-        <shortDescription>Add value to Feedback picklist</shortDescription>
-        <value>Add value to Feedback Reason picklist</value>
-    </labels>
-    <labels>
-        <fullName>Add_value_to_Feedback_picklist_placeholder</fullName>
-        <categories>Article Feedback</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Add value to Feedback picklist placeholder</shortDescription>
-        <value>Picklist value</value>
-    </labels>
-    <labels>
-        <fullName>Adding_value_error</fullName>
-        <categories>Article Feedback</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Adding value error</shortDescription>
-        <value>An error ocurred while adding the value.</value>
+        <shortDescription>Article Feedback creation alert</shortDescription>
+        <value>Users can only create Article Feedback records from knowledge articles.</value>
     </labels>
     <labels>
         <fullName>Article_Feedback_id_not_found_on_Related_Article_error</fullName>
@@ -49,52 +33,12 @@
         <value>The article was not found.</value>
     </labels>
     <labels>
-        <fullName>Available_values_label</fullName>
-        <categories>Article Feedback</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Available values label</shortDescription>
-        <value>Available values</value>
-    </labels>
-    <labels>
         <fullName>Choose_a_general_reason</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Choose a general reason</shortDescription>
         <value>Choose a general reason</value>
-    </labels>
-    <labels>
-        <fullName>Configure_values_helptext</fullName>
-        <categories>Article Feedback</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Configure values helptext</shortDescription>
-        <value>The selected values from these lists will be displayed when a user leaves a positive or negative vote using the Article Feedback component. If there are no values selected, the default list will be displayed.</value>
-    </labels>
-    <labels>
-        <fullName>Configure_values_to_be_displayed</fullName>
-        <categories>Article Feedback</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Configure values to be displayed</shortDescription>
-        <value>Configure values to be displayed for positive and negative vote (optional)</value>
-    </labels>
-    <labels>
-        <fullName>Delete_button</fullName>
-        <categories>Article Feedback</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Delete button</shortDescription>
-        <value>Delete</value>
-    </labels>
-    <labels>
-        <fullName>Deleting_values_error</fullName>
-        <categories>Article Feedback</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Deleting values error</shortDescription>
-        <value>An error occurred while deleting the values</value>
     </labels>
     <labels>
         <fullName>Description</fullName>
@@ -113,20 +57,20 @@
         <value>Please, leave us some feedback...</value>
     </labels>
     <labels>
-        <fullName>Feedback_reason_picklist</fullName>
+        <fullName>Feedback_saved_toast</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
         <protected>true</protected>
-        <shortDescription>Feedback reason picklist</shortDescription>
-        <value>Feedback reason picklist</value>
+        <shortDescription>Feedback saved toast</shortDescription>
+        <value>Feedback saved successfully.</value>
     </labels>
     <labels>
-        <fullName>Feedback_reason_picklist_explanation</fullName>
+        <fullName>Hashtag_helptext</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
         <protected>true</protected>
-        <shortDescription>Feedback reason picklist explanation</shortDescription>
-        <value>(select a value to delete, then press the Delete button below)</value>
+        <shortDescription>Hashtag helptext</shortDescription>
+        <value>Set up a specific hashtag to capture article feed posts both in desktop and communities. If no hashtag is configured the default hashtag is #ArticleFeedback.</value>
     </labels>
     <labels>
         <fullName>Hashtag_settings_title</fullName>
@@ -177,20 +121,28 @@
         <value>This field cannot be empty or include a closing square bracket (])</value>
     </labels>
     <labels>
-        <fullName>Picklist_empty_error</fullName>
+        <fullName>No_information_title</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
         <protected>true</protected>
-        <shortDescription>Picklist empty error</shortDescription>
-        <value>The picklist value field cannot be empty.</value>
+        <shortDescription>No information title</shortDescription>
+        <value>There&#39;s no information to show.</value>
     </labels>
     <labels>
-        <fullName>Picklist_with_semicolon_error</fullName>
+        <fullName>Provide_a_description_toast</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
         <protected>true</protected>
-        <shortDescription>Picklist with semicolon error</shortDescription>
-        <value>The picklist value cannot include a semi-colon.</value>
+        <shortDescription>Provide a description toast</shortDescription>
+        <value>Please, provide a description before submitting your vote</value>
+    </labels>
+    <labels>
+        <fullName>Rate_the_article_toast</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Rate the article toast</shortDescription>
+        <value>Please, rate the article before leaving any comments.</value>
     </labels>
     <labels>
         <fullName>Related_Article_Title</fullName>
@@ -225,44 +177,12 @@
         <value>Save</value>
     </labels>
     <labels>
-        <fullName>Select_a_value_to_delete_error</fullName>
-        <categories>Article Feedback</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Select a value to delete error</shortDescription>
-        <value>You need to select at least one value to delete</value>
-    </labels>
-    <labels>
-        <fullName>Selected_negative_values_label</fullName>
-        <categories>Article Feedback</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Selected negative values label</shortDescription>
-        <value>Selected negative values</value>
-    </labels>
-    <labels>
-        <fullName>Selected_positive_values_label</fullName>
-        <categories>Article Feedback</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Selected positive values label</shortDescription>
-        <value>Selected positive values</value>
-    </labels>
-    <labels>
         <fullName>Setup_page_title</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Setup page title</shortDescription>
         <value>Settings for Knowledge Feedback Tracking</value>
-    </labels>
-    <labels>
-        <fullName>Setup_picklist_values_title</fullName>
-        <categories>Article Feedback</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Setup picklist values title</shortDescription>
-        <value>Setup picklist values for Feedback Reason field</value>
     </labels>
     <labels>
         <fullName>Submit_button</fullName>
@@ -278,39 +198,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Update hashtag error</shortDescription>
-        <value>An error ocurred while updating the hashtag value</value>
-    </labels>
-    <labels>
-        <fullName>Update_values_error</fullName>
-        <categories>Article Feedback</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Update values error</shortDescription>
-        <value>An error ocurred while updating the values</value>
-    </labels>
-    <labels>
-        <fullName>Value_exists_error</fullName>
-        <categories>Article Feedback</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Value exists error</shortDescription>
-        <value>The value already exists.</value>
-    </labels>
-    <labels>
-        <fullName>Values_deleted_message</fullName>
-        <categories>Article Feedback</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Values deleted message</shortDescription>
-        <value>Values succesfully deleted</value>
-    </labels>
-    <labels>
-        <fullName>Values_updated_message</fullName>
-        <categories>Article Feedback</categories>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Values updated message</shortDescription>
-        <value>Values succesfully updated</value>
+        <value>An error occurred while updating the hashtag value</value>
     </labels>
     <labels>
         <fullName>View_Article_Button</fullName>
