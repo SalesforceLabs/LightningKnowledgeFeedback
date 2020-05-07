@@ -51,8 +51,8 @@ public with sharing class afl_RelatedArticleCtrl {
                     Boolean isArchived = ((String) actualKAV.get('PublishStatus') == 'Archived') ? true : false;
                     result.put('isArchived', isArchived);
                 } else {
-                    response.state = 'ERROR';
-                    response.error = Label.Related_article_not_found_error;
+                    response.state = 'ERRORNOTFOUND';
+                    response.error = Label.Article_was_not_found_error;
                 }
             } else {
                 response.state = 'ERROR';
