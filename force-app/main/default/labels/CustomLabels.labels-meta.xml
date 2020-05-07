@@ -32,6 +32,14 @@
         <shortDescription>Article was not found error</shortDescription>
         <value>The article was not found.</value>
     </labels>
+     <labels>
+        <fullName>The_related_article_could_not_be_found</fullName>
+        <categories>Article Feedback</categories>
+        <language>es</language>
+        <protected>true</protected>
+        <shortDescription>The related article could not be found</shortDescription>
+        <value>The related article could not be found. It might have changed or no longer exists.</value>
+    </labels>
     <labels>
         <fullName>Choose_a_general_reason</fullName>
         <categories>Article Feedback</categories>

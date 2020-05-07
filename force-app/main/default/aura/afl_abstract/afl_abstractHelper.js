@@ -34,7 +34,6 @@
 
 				var returnValue = undefined;
 				if (result.state == 'ERRORNOTFOUND') {
-					// remove the modal that reads "The related article could not be found
 					Response.error();
 				}
 				if (!$A.util.isEmpty(result.jsonResponse)) {
@@ -48,21 +47,20 @@
 				var errorTitle = "An error occurred";
 				var errorMessage = ex.message;
 				if(ex.message=='Response.error is not a function'){
+					response.error = Label.The_related_article_could_not_be_found;
 					//just show that can found the article and nothing else
 				}
 				else{
-
-				// Add a detailed description of the error if one is found.
-				if (!$A.util.isEmpty(ex.extendedMessage)) {
-					errorMessage = ex.extendedMessage;
+					// Add a detailed description of the error if one is found.
+					if (!$A.util.isEmpty(ex.extendedMessage)) {
+						errorMessage = ex.extendedMessage;
+					}
+					if ($A.util.isEmpty(errorCallback)) {
+						self.handleError(component, errorTitle, errorMessage);
+					} else {
+						errorCallback(component, errorTitle, errorMessage);
+					}
 				}
-
-				if ($A.util.isEmpty(errorCallback)) {
-					self.handleError(component, errorTitle, errorMessage);
-				} else {
-					errorCallback(component, errorTitle, errorMessage);
-				}
-			}
 			}
 		});
 

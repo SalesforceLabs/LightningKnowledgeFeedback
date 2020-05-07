@@ -1,0 +1,8 @@
+
+.forceignore
+.sfdx/orgs/amagalhaes@publicknowledge.dev/metadataTypeInfos.json
+.sfdx/sfdx-config.json
+.sfdx/typings/lwc/apex.d.ts
+.sfdx/typings/lwc/customlabels.d.ts
+*.ts
+force-app/main/default/lwc/jsconfig.json
