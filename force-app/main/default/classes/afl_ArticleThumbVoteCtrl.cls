@@ -119,11 +119,44 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			String query = 'SELECT KnowledgeArticleId, CreatedDate FROM ' + knowledgeObject + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
 			List<SObject> knowledgeObjList = Database.query(query);
 			String kavId = (String) recordId;
-			List<afl_Article_Feedback__c> listOfArticleF = [
+			
+            Vote[] sVote = new Vote[]{};
+            String parentId = '';
+
+			if (!knowledgeObjList.isEmpty()) {
+				SObject knowledgeObj = knowledgeObjList[0];
+				DateTime kavCreatedDate = (DateTime) knowledgeObj.get('CreatedDate');
+				parentId = (String) knowledgeObj.get('KnowledgeArticleId');
+				sVote = [
+					SELECT ParentId, Type, CreatedDate, LastModifiedDate 
+					FROM Vote 
+					WHERE ParentId =: parentId 
+					AND CreatedById=: UserInfo.getUserId() 
+					LIMIT 1
+				];
+				
+				Boolean voteCreatedAfterCurrentKav = false;
+				if (sVote.size() > 0) {
+					voteCreatedAfterCurrentKav = sVote.get(0).LastModifiedDate > kavCreatedDate;
+				}
+
+				if (!Test.isRunningTest()) {
+						if (!sVote.isEmpty()) {
+							Boolean voteUp = sVote.get(0).Type == '5' || sVote.get(0).Type == 'UP';
+							result.put('vote', JSON.serialize(voteUp));
+						}
+				} else {
+					result.put('vote', 'true');
+				}
+			}
+            
+            DateTime createdDateVote = sVote.get(0).CreatedDate;
+            List<afl_Article_Feedback__c> listOfArticleF = [
 				SELECT Feedback_Reason_Developer_Value__c, Feedback_Reason__c
 				FROM afl_Article_Feedback__c 
-				WHERE Knowledge_Article_Version_Id__c =: kavId 
-				AND OwnerId =: UserInfo.getUserId()
+				WHERE CreatedDate =: createdDateVote
+                AND Knowledge_kav_article_Id__c =: parentId
+                AND OwnerId =: UserInfo.getUserId()
 				AND Originated_From_Trigger__c = false
 				ORDER BY CreatedDate DESC NULLS FIRST 
 				LIMIT 1
@@ -135,35 +168,6 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 					feedbackReason = listOfArticleF[0].Feedback_Reason_Developer_Value__c;
 				} else {
 					feedbackReason = listOfArticleF[0].Feedback_Reason__c;
-				}
-			}
-
-			if (!knowledgeObjList.isEmpty()) {
-				SObject knowledgeObj = knowledgeObjList[0];
-				DateTime kavCreatedDate = (DateTime) knowledgeObj.get('CreatedDate');
-				String parentId = (String) knowledgeObj.get('KnowledgeArticleId');
-				Vote[] sVote = [
-					SELECT ParentId, Type, LastModifiedDate 
-					FROM Vote 
-					WHERE ParentId =: parentId 
-					AND CreatedById=: UserInfo.getUserId() 
-					LIMIT 1
-				];
-
-				Boolean voteCreatedAfterCurrentKav = false;
-				if (!sVote.isEmpty()) {
-					voteCreatedAfterCurrentKav = sVote.get(0).LastModifiedDate > kavCreatedDate;
-				}
-
-				if (!Test.isRunningTest()) {
-					if (voteCreatedAfterCurrentKav) {
-						if (voteCreatedAfterCurrentKav && !sVote.isEmpty()) {
-							Boolean voteUp = sVote.get(0).Type == '5' || sVote.get(0).Type == 'UP';
-							result.put('vote', JSON.serialize(voteUp));
-						}
-					}
-				} else {
-					result.put('vote', 'true');
 				}
 			}
 			result.put('feedbackReason', feedbackReason);
