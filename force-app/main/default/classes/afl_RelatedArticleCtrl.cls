@@ -53,7 +53,7 @@ public with sharing class afl_RelatedArticleCtrl {
                 } else {
                     // Handle error relate article was not found
                     response.state = 'ERRORNOTFOUND';  
-                    response.error = Label.The_related_article_could_not_be_found;       
+                    response.error = Label.Related_article_not_found_error;       
                 }
             } else {
                 response.state = 'ERROR';

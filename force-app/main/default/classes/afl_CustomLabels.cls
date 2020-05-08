@@ -39,7 +39,6 @@ public with sharing class afl_CustomLabels {
             String related_Article_Title = Label.Related_Article_Title;
             String view_Article_Button = Label.View_Article_Button;
             String article_was_not_found_error = Label.Article_was_not_found_error;
-            String the_related_article_could_not_be_found = Label.The_related_article_could_not_be_found;
             String related_article_not_found_error = Label.Related_article_not_found_error;
             String article_Feedback_id_not_found_on_Related_Article_error = Label.Article_Feedback_id_not_found_on_Related_Article_error;
             String related_article_information_retrieval_error = Label.Related_article_information_retrieval_error;
