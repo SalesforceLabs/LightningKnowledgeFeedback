@@ -47,8 +47,8 @@
 				var errorTitle = "An error occurred";
 				var errorMessage = ex.message;
 				if(ex.message=='Response.error is not a function'){
-					response.error = Label.Related_article_not_found_error;
 					//just show that can found the article and nothing else
+					response.error = Label.Related_article_not_found_error;	
 				}
 				else{
 					// Add a detailed description of the error if one is found.
