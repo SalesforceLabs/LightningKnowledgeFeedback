@@ -85,7 +85,7 @@
 		<force:recordView aura:id="recordView" recordId="{!v.kavId}" type="FULL"/>
 
 		<aura:set attribute="else">
-			<span>{!$Label.c.Article_was_not_found_error}</span>
+			<span>{!$Label.c.Related_article_not_found_error}</span>
 		</aura:set>
 	</aura:if>
 
