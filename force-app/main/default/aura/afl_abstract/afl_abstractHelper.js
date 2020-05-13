@@ -34,25 +34,25 @@
 
 				var returnValue = undefined;
 				if (result.state == 'ERRORNOTFOUND') {
-					Response.error();
+					var toastCmp = component.find("toastNotif");
+					toastCmp.set("v.title", 'WARNING');
+					toastCmp.set("v.description", 'The related article could not be found. It might have changed or no longer exists.');
+					toastCmp.set("v.className", '');
+					toastCmp.set("v.severity", 'warning');
 				}
-				if (!$A.util.isEmpty(result.jsonResponse)) {
-					// Will throw a JSON exception if the result cannot be parsed.
-					returnValue = JSON.parse(result.jsonResponse);
+				else{
+					if (!$A.util.isEmpty(result.jsonResponse)) {
+						// Will throw a JSON exception if the result cannot be parsed.
+						returnValue = JSON.parse(result.jsonResponse);
+					}
+					var concreteComponent = component.getConcreteComponent();
+					successCallback(concreteComponent,returnValue, self);
 				}
-				var concreteComponent = component.getConcreteComponent();
-				successCallback(concreteComponent,returnValue, self);
 			} catch(ex) {
 				// Handle any exceptions encountered in the callback
 				var errorTitle = "An error occurred";
 				var errorMessage = ex.message;
-				if(ex.message=='Response.error is not a function'){
-					//just show that can found the article and nothing else
-					response.error = Label.Related_article_not_found_error;	
-				}
-				else{
-					// Add a detailed description of the error if one is found.
-					if (!$A.util.isEmpty(ex.extendedMessage)) {
+				if (!$A.util.isEmpty(ex.extendedMessage)) {
 						errorMessage = ex.extendedMessage;
 					}
 					if ($A.util.isEmpty(errorCallback)) {
@@ -60,7 +60,7 @@
 					} else {
 						errorCallback(component, errorTitle, errorMessage);
 					}
-				}
+				
 			}
 		});
 
