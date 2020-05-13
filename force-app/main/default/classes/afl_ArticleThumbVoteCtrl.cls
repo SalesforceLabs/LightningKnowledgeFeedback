@@ -134,28 +134,21 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 					AND CreatedById=: UserInfo.getUserId() 
 					LIMIT 1
 				];
-				
-				Boolean voteCreatedAfterCurrentKav = false;
-				if (sVote.size() > 0) {
-					voteCreatedAfterCurrentKav = sVote.get(0).LastModifiedDate > kavCreatedDate;
-				}
 
 				if (!Test.isRunningTest()) {
-						if (!sVote.isEmpty()) {
-							Boolean voteUp = sVote.get(0).Type == '5' || sVote.get(0).Type == 'UP';
-							result.put('vote', JSON.serialize(voteUp));
-						}
+					if (!sVote.isEmpty()) {
+						Boolean voteUp = sVote.get(0).Type == '5' || sVote.get(0).Type == 'UP';
+						result.put('vote', JSON.serialize(voteUp));
+					}
 				} else {
 					result.put('vote', 'true');
 				}
 			}
             
-            DateTime createdDateVote = sVote.get(0).CreatedDate;
             List<afl_Article_Feedback__c> listOfArticleF = [
 				SELECT Feedback_Reason_Developer_Value__c, Feedback_Reason__c
 				FROM afl_Article_Feedback__c 
-				WHERE CreatedDate =: createdDateVote
-                AND Knowledge_kav_article_Id__c =: parentId
+				WHERE Knowledge_kav_article_Id__c =: parentId
                 AND OwnerId =: UserInfo.getUserId()
 				AND Originated_From_Trigger__c = false
 				ORDER BY CreatedDate DESC NULLS FIRST 
