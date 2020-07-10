@@ -74,21 +74,26 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 
 			if (!hasNoRate) {
 				if (!isSameVote) {
-					Vote vote = new Vote (
-						ParentId = artFeed.Knowledge_kav_article_Id__c,
-						Type = isLiked ? '5' : '1'
-					);
-					Vote[] sVote = [SELECT Id, ParentId FROM Vote WHERE ParentId =: artFeed.Knowledge_kav_article_Id__c AND CreatedById =: UserInfo.getUserId() LIMIT 1];
-					
-					if (!sVote.isEmpty()) {
-						vote.Id = sVote.get(0).Id;
-					}
+					Id currentUserId = UserInfo.getUserId();
+					User currentUser = [SELECT UserType FROM User WHERE Id =: currentUserId];
+					// Do not register votes of Guest users.
+					if (!currentUser.UserType.equals('Guest')) {
+						Vote vote = new Vote (
+							ParentId = artFeed.Knowledge_kav_article_Id__c,
+							Type = isLiked ? '5' : '1'
+						);
+						Vote[] sVote = [SELECT Id, ParentId FROM Vote WHERE ParentId =: artFeed.Knowledge_kav_article_Id__c AND CreatedById =: currentUserId LIMIT 1];
+						
+						if (!sVote.isEmpty()) {
+							vote.Id = sVote.get(0).Id;
+						}
 
-					try {
-						UPSERT vote;
-					} catch(DmlException e) {
-						vote.Type = isLiked ? 'UP' : 'DOWN';
-						UPSERT vote;
+						try {
+							UPSERT vote;
+						} catch(DmlException e) {
+							vote.Type = isLiked ? 'UP' : 'DOWN';
+							UPSERT vote;
+						}
 					}
 				}
 			}
