@@ -158,6 +158,6 @@ private with sharing class afl_RelatedArticleCtrl_Test {
         response = afl_RelatedArticleCtrl.loadKAVId(afd.Id);
         System.Test.StopTest();
 
-        System.assertEquals('ERROR', response.state, 'State should be ERROR');
+        System.assertEquals('ERRORNOTFOUND', response.state, 'State should be ERROR');
     }
 }
