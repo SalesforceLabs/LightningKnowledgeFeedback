@@ -18,8 +18,6 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 		try {
 			// Check FLS and CRUD
 			afl_ArticleFeedbackSecurityHandler.canCreate(afl_Article_Feedback__c.SObjectType);
-			afl_ArticleFeedbackSecurityHandler.canCreate(Vote.SObjectType);
-			afl_ArticleFeedbackSecurityHandler.canUpdate(Vote.SObjectType);
 
 			afl_Article_Feedback__c artFeed = new afl_Article_Feedback__c();
 
@@ -74,20 +72,19 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 
 			if (!hasNoRate) {
 				if (!isSameVote) {
-					Id currentUserId = UserInfo.getUserId();
-					User currentUser = [SELECT UserType FROM User WHERE Id =: currentUserId];
-					// Do not register votes of Guest users.
-					if (!currentUser.UserType.equals('Guest')) {
+					if (afl_ArticleFeedbackSecurityHandler.isAccessible(Vote.SObjectType) &&
+						afl_ArticleFeedbackSecurityHandler.isCreateable(Vote.SObjectType) &&
+						afl_ArticleFeedbackSecurityHandler.isUpdateable(Vote.SObjectType)) {
 						Vote vote = new Vote (
 							ParentId = artFeed.Knowledge_kav_article_Id__c,
 							Type = isLiked ? '5' : '1'
 						);
-						Vote[] sVote = [SELECT Id, ParentId FROM Vote WHERE ParentId =: artFeed.Knowledge_kav_article_Id__c AND CreatedById =: currentUserId LIMIT 1];
+						Vote[] sVote = [SELECT Id, ParentId FROM Vote WHERE ParentId =: artFeed.Knowledge_kav_article_Id__c AND CreatedById =: UserInfo.getUserId() LIMIT 1];
 						
 						if (!sVote.isEmpty()) {
 							vote.Id = sVote.get(0).Id;
 						}
-
+	
 						try {
 							UPSERT vote;
 						} catch(DmlException e) {
