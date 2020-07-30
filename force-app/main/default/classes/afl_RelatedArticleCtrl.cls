@@ -92,6 +92,7 @@ public with sharing class afl_RelatedArticleCtrl {
         result.put('languageLabel', fieldMap.get('Language').getDescribe().getLabel());
         result.put('articleNumberLabel', fieldMap.get('ArticleNumber').getDescribe().getLabel());
         result.put('publishStatusLabel', fieldMap.get('PublishStatus').getDescribe().getLabel());
+        
         result.put('versionNumberLabel', fieldMap.get('VersionNumber').getDescribe().getLabel());
 
         // Find the associated record type
@@ -102,7 +103,7 @@ public with sharing class afl_RelatedArticleCtrl {
             recordTypeField = ',RecordTypeId';
         }
 
-        queryString = 'SELECT Id, ArticleNumber, CreatedDate, Language, VersionNumber, PublishStatus' + recordTypeField + ' FROM ' + knowledgeObject + ' WHERE Id =  \'' + kavId + '\'';
+        queryString = 'SELECT Id, ArticleNumber, CreatedDate, Language, VersionNumber, toLabel(PublishStatus)' + recordTypeField + ' FROM ' + knowledgeObject + ' WHERE Id =  \'' + kavId + '\'';
         sObjList = Database.query(queryString);
         if (sObjList != null && !sObjList.isEmpty()) {
             SObject sObjKnowledge = sObjList.get(0);
@@ -110,15 +111,23 @@ public with sharing class afl_RelatedArticleCtrl {
             // Get record type name
             if (afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive) {
                 if (String.isNotEmpty((String) sObjKnowledge.get('RecordTypeId'))) {
-                    result.put('articleRecordType', afl_ArticleFeedbackSecurityHandler.getRecordTypeName(sObjKnowledge));
-                    result.put('recordTypeIdLabel', fieldMap.get('RecordTypeId').getDescribe().getLabel());
+                    queryString = 'SELECT Id, toLabel(Description), toLabel(Name) FROM RecordType WHERE Id =  \'' + ((String) sObjKnowledge.get('RecordTypeId')) + '\'';
+                    sObjList = Database.query(queryString);
+                    String recordTypeNameStr = fieldMap.get('RecordTypeId').getDescribe().getLabel();
+                    String descriptionKnowledgeArticle = afl_ArticleFeedbackSecurityHandler.getRecordTypeName(sObjKnowledge);
+                    if (sObjList != null && !sObjList.isEmpty()) {
+                        SObject recordTypeObj = sObjList.get(0);
+                        recordTypeNameStr = ((String) recordTypeObj.get('Name'));
+                        descriptionKnowledgeArticle =  ((String) recordTypeObj.get('Description'));
+                    }
+                    result.put('articleRecordType', descriptionKnowledgeArticle);
+                    result.put('recordTypeIdLabel', recordTypeNameStr);
                 }
             }
 
             result.put('articleVersion', (Decimal) sObjKnowledge.get('VersionNumber'));
             result.put('articleNumber', (String) sObjKnowledge.get('ArticleNumber'));
             result.put('articlePublishingStatus', (String) sObjKnowledge.get('PublishStatus'));
-
             Schema.DescribeFieldResult fieldResult = User.LanguageLocaleKey.getDescribe();
             List<Schema.PicklistEntry> picklistValues = fieldResult.getPicklistValues();
 
