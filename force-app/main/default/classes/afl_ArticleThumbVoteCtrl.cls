@@ -38,7 +38,11 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				SObject ntw = Database.query(query);
 				artFeed.Community_Name__c = communityName;
 				artFeed.Feedback_Source__c = 'Communities';
-				artFeed.Article_Link__c = baseUrl + '/' + (String) ntw.get('UrlPathPrefix') + '/s/article/' + recordId;
+				if(ntw.get('UrlPathPrefix') != null){
+					artFeed.Article_Link__c = baseUrl + '/' + (String) ntw.get('UrlPathPrefix') + '/s/article/' + recordId;
+				} else {
+					artFeed.Article_Link__c = baseUrl + '/s/article/' + recordId;
+				}
 			} else {
 				artFeed.Feedback_Source__c = 'Internal';
 				artFeed.Article_Link__c = baseUrl + '/' + recordId;
