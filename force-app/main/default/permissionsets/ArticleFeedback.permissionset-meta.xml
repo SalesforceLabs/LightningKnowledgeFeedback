@@ -4,6 +4,18 @@
         <application>Article_Feedback</application>
         <visible>true</visible>
     </applicationVisibilities>
+    <classAccesses>
+        <apexClass>afl_ArticleFeedbackRelatedCtrl</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>afl_ArticleThumbVoteCtrl</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>afl_RelatedArticleCtrl</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <description>Article Feedback Permission Set</description>
     <fieldPermissions>
         <editable>true</editable>
