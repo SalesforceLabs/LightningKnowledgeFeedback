@@ -100,76 +100,84 @@ public with sharing class afl_TriggerHandler {
 				mapLanguages.put(picklistEntry.getValue(),picklistEntry.getLabel());
 			}
 
-			// Set community availabilty and name
-			String netId = '';
-			Boolean communitiesAvailable = false;
-			String commName = afl_ArticleFeedbackSecurityHandler.getCommunityName();
-			Set<String> objectFields = Schema.SObjectType.FeedItem.fields.getMap().keySet();
-
-			if (objectFields.contains('networkscope')) {
-				communitiesAvailable = true;
-				netId = Network.getNetworkId();
-
-				if (String.isNotEmpty(netId)) {
-					String networkQuery = 'SELECT Name FROM Network WHERE Id =: netId';
-					SObject comm = Database.query(networkQuery);
-					commName = (String) comm.get('Name');
-				}
-			}
-
 			try {
 				// Check object permissions
 				if (afl_ArticleFeedbackSecurityHandler.isCreateable(Schema.SObjectType.afl_Article_Feedback__c.getSobjectType())) {
 					List<afl_Article_Feedback__c> lstAfd = new List<afl_Article_Feedback__c>();
+
+					// Set community availabilty and name
+					String netId = Network.getNetworkId();
+					String communityName = '';
+					String baseUrl = System.URL.getSalesforceBaseUrl().toExternalForm() + '/';
+					String finalLinkUrl = '';
+					Boolean communitiesAvailable = false;
+					Set<String> objectFields = Schema.SObjectType.FeedItem.fields.getMap().keySet();
+
+					if (objectFields.contains('networkscope')) {
+						communitiesAvailable = true;
+						communityName = afl_ArticleFeedbackSecurityHandler.getCommunityName();
+					}
+
+					if (String.isNotEmpty(communityName)) {
+						String netQuery = 'SELECT Id, UrlPathPrefix FROM Network WHERE Id =: netId LIMIT 1';
+						SObject ntw = Database.query(netQuery);
+						if (ntw.get('UrlPathPrefix') != null) {
+							finalLinkUrl = baseUrl + (String) ntw.get('UrlPathPrefix') + '/s/article/';
+						} else {
+							finalLinkUrl = baseUrl + 's/article/';
+						}
+					} else {
+						finalLinkUrl = baseUrl;
+					}
+
 					for (SObject feed : triggerObjects) {
 	                    String parentId = (String) feed.get('ParentId');
 
 	                    if (mKav.containsKey(parentId)) {
 	                        SObject kav = mKav.get(parentId);
-								afl_Article_Feedback__c afd = new afl_Article_Feedback__c();
+							afl_Article_Feedback__c afd = new afl_Article_Feedback__c();
 
-								afd.Article_Number__c = (String) kav.get('ArticleNumber');
-								afd.Article_Link__c = URL.getSalesforceBaseUrl().toExternalForm() + '/' + (String) kav.get('KnowledgeArticleId');
-								afd.Article_Title__c = (String) kav.get('Title');
-								afd.Knowledge_Article_Version_Id__c = (String) kav.get('Id');
+							afd.Article_Number__c = (String) kav.get('ArticleNumber');
+							afd.Article_Link__c = finalLinkUrl + (String) kav.get('KnowledgeArticleId');
+							afd.Article_Title__c = (String) kav.get('Title');
+							afd.Knowledge_Article_Version_Id__c = (String) kav.get('Id');
 
-								if(hasRecordType) {
-									afd.Record_Type__c = afl_ArticleFeedbackSecurityHandler.getRecordTypeName(kav);
-
-								}
-
-								// Set feedback from Feed Body and Id
-								if (type.equals('FeedItem')) {
-									afd.Feedback__c = (String) feed.get('Body');
-									afd.Parent_FeedItem__c = (String) feed.get('Id');
-								} else {
-									afd.Feedback__c = (String) feed.get('CommentBody');
-									afd.Parent_FeedItem__c = (String) feed.get('FeedItemId');
-								}
-
-								afd.Article_Version__c = (Decimal) kav.get('VersionNumber');
-								afd.Feedback_Status__c = 'New';
-								afd.Language__c = mapLanguages.get((String) kav.get('Language'));
-								afd.Last_Published_Date__c = (Datetime) kav.get('LastPublishedDate');
-								afd.Last_Published_By__c = (String) kav.get('LastModifiedById');
-								afd.Article_Created_Date__c = (Datetime) kav.get('CreatedDate');
-								
-								afd.Originated_From_Trigger__c = true;
-
-								if (communitiesAvailable) {
-									if (String.isEmpty(Network.getNetworkId())) {
-										afd.Feedback_Source__c = 'Internal';
-									} else {
-										afd.Feedback_Source__c = 'Communities';
-										afd.Community_Name__c = commName;
-									}
-								} else {
-									afd.Feedback_Source__c = 'Internal';
-								}
-
-								lstAfd.add(afd);
+							if (hasRecordType) {
+								afd.Record_Type__c = afl_ArticleFeedbackSecurityHandler.getRecordTypeName(kav);
 							}
-	                    }
+
+							// Set feedback from Feed Body and Id
+							if (type.equals('FeedItem')) {
+								afd.Feedback__c = (String) feed.get('Body');
+								afd.Parent_FeedItem__c = (String) feed.get('Id');
+							} else {
+								afd.Feedback__c = (String) feed.get('CommentBody');
+								afd.Parent_FeedItem__c = (String) feed.get('FeedItemId');
+							}
+
+							afd.Article_Version__c = (Decimal) kav.get('VersionNumber');
+							afd.Feedback_Status__c = 'New';
+							afd.Language__c = mapLanguages.get((String) kav.get('Language'));
+							afd.Last_Published_Date__c = (Datetime) kav.get('LastPublishedDate');
+							afd.Last_Published_By__c = (String) kav.get('LastModifiedById');
+							afd.Article_Created_Date__c = (Datetime) kav.get('CreatedDate');
+							
+							afd.Originated_From_Trigger__c = true;
+
+							if (communitiesAvailable) {
+								if (String.isEmpty(netId)) {
+									afd.Feedback_Source__c = 'Internal';
+								} else {
+									afd.Feedback_Source__c = 'Communities';
+									afd.Community_Name__c = communityName;
+								}
+							} else {
+								afd.Feedback_Source__c = 'Internal';
+							}
+
+							lstAfd.add(afd);
+						}
+					}
 
 	                if (!lstAfd.isEmpty()) {
 	                    INSERT lstAfd;
