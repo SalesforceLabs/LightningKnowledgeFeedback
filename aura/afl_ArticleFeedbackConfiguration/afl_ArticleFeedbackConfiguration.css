@@ -1,0 +1,42 @@
+.THIS .labelSLDS {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+    display: inline-block;
+    color: rgb(107, 109, 112);
+    padding-right: .5rem;
+    padding-top: .25rem;
+    margin-bottom: .125rem;
+    margin-left: 33%;
+}
+
+.THIS .mainTitleSLDS {
+    margin-left: 19%;
+}
+
+.THIS .titleSLDS {
+    margin-left: 32%;
+    margin-right: -1%;
+    padding-left: 1%;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+    color: white;
+    background-color: rgb(28, 69, 135);
+}
+
+.THIS .displayInline {
+    display: inline-block;
+}
+
+.THIS .slds-required {
+    display: none;
+}
+
+.THIS .required {
+    display: inline;
+    color: red;
+    margin-left: -0.7%;
+    margin-right: 0.5%;
+}

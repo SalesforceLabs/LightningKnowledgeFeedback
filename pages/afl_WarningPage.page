@@ -1,0 +1,6 @@
+<apex:page standardController="afl_Article_Feedback__c">
+    <script>
+        alert('{!JSENCODE($Label.afl__article_feedback_creation_alert)}');
+        history.go(-1);
+    </script>
+</apex:page>

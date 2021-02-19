@@ -1,0 +1,21 @@
+.THIS .view-button {
+    font-size:14px;
+    padding-top:5px;
+    padding-bottom:5px;
+}
+
+.THIS div.slds-form-element__control.slds-grid.itemBody > span > div > iframe {
+    width: 100% !important;
+}
+
+.THIS div.slds-form-element__control.slds-grid.itemBody > span > div table {
+    width: 100% !important;
+}
+
+.THIS div.slds-form-element__control.slds-grid.itemBody > span div {
+    margin:auto !important;
+}
+
+.THIS .languageDisclaimer {
+    font-style: italic;
+}

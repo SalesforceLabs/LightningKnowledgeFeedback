@@ -1,0 +1,12 @@
+.moveUp {
+    position: relative;
+    top: -2rem;
+}
+
+.removeSpace {
+    margin-bottom: -2rem;
+}
+
+.comboboxOver {
+    z-index: 30;
+}
