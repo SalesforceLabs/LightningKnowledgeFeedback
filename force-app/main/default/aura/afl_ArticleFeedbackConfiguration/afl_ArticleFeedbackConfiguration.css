@@ -40,3 +40,8 @@
     margin-left: -0.7%;
     margin-right: 0.5%;
 }
+
+.THIS .helpTextMargin {
+    display: inline-block;
+    margin-left: 0.5%;
+}

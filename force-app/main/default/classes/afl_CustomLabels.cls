@@ -29,6 +29,8 @@ public with sharing class afl_CustomLabels {
             String hashtag_value_updated_message = Label.Hashtag_value_updated_message;
             String update_hashtag_error = Label.Update_hashtag_error;
             String hashtag_helptext = Label.Hashtag_helptext;
+            String trigger_settings_title = Label.Trigger_settings_title;
+            String chatter_trigger_helptext = Label.Chatter_trigger_helptext;
 
             // Article Feedback standard record page
             String article_Feedback_creation_alert = Label.Article_Feedback_creation_alert;

@@ -33,6 +33,14 @@
         <value>The article was not found.</value>
     </labels>
     <labels>
+        <fullName>Chatter_trigger_helptext</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Chatter trigger helptext</shortDescription>
+        <value>Checked by default. Disabling it avoids the creation of Article Feedback records using the designated hashtags on Chatter posts. Only disable it if you need to run processes that involve the FeedItem and FeedComment objects.</value>
+    </labels>
+    <labels>
         <fullName>Choose_a_general_reason</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
@@ -126,7 +134,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>No information title</shortDescription>
-        <value>There&#39;s no information to show.</value>
+        <value>There&apos;s no information to show.</value>
     </labels>
     <labels>
         <fullName>Provide_a_description_toast</fullName>
@@ -191,6 +199,14 @@
         <protected>true</protected>
         <shortDescription>Submit button</shortDescription>
         <value>Submit</value>
+    </labels>
+    <labels>
+        <fullName>Trigger_settings_title</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Chatter triggers enabled</shortDescription>
+        <value>Chatter triggers enabled</value>
     </labels>
     <labels>
         <fullName>Update_hashtag_error</fullName>
