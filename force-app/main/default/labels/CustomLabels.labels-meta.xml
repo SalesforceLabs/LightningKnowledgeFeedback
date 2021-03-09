@@ -94,7 +94,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Hashtag value updated message</shortDescription>
-        <value>Hashtag value successfully updated</value>
+        <value>Values updated successfully.</value>
     </labels>
     <labels>
         <fullName>Language_Disclaimer</fullName>
