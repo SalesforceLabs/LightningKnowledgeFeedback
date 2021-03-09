@@ -10,6 +10,7 @@
 			}
 
 			if (!$A.util.isUndefinedOrNull(response.hashtag)) {
+				component.set('v.triggerCheckbox', response.triggersEnabled);
 				component.set('v.hashtagValue', response.hashtag);
 			}
 		}
@@ -17,11 +18,13 @@
 
 	updateHashtagHelper: function(component) {
 		var hashtag = component.find('inputHashtag').get('v.value');
+		var triggerEnabledCheckbox = component.find('triggerEnabledCheckbox').get('v.value');
+
 		if ((!$A.util.isEmpty(hashtag) && !$A.util.isUndefinedOrNull(hashtag)) && hashtag.indexOf("]") === -1) {
 			if (hashtag.charAt(0).indexOf("#") === -1) {
 				this.showToast('fail', 'Error', $A.get("$Label.c.No_hashtag_error"));
 			} else { 
-				var actionParams = {'hashtag' : hashtag};
+				var actionParams = {'hashtag' : hashtag, 'triggerEnabled' : triggerEnabledCheckbox};
 				this.handleAction(component, actionParams, 'c.updateHashtagValue', this.updateHashtagValueCallback);
 			}
 		} else {

@@ -85,6 +85,17 @@ public with sharing class afl_TriggerHandler {
 			' ORDER BY CreatedDate ASC';
 			List<SObject> kavs = Database.query(query);
 
+			// Check if no published article was found
+			if (kavs.isEmpty()) {
+				// Retrieve draft article
+				query = 'SELECT KnowledgeArticleId, CreatedDate, ArticleNumber, Title, VersionNumber, Language, LastPublishedDate, LastModifiedById ' + recordTypeField +
+				' FROM ' + knowledgeObject +
+				' WHERE PublishStatus = \'draft\' AND KnowledgeArticleId IN :setIds ' + masterLanguageField +
+				' ORDER BY CreatedDate ASC';
+
+				kavs = Database.query(query);
+			}
+
 			for (SObject kav : kavs) {
 				if (!mKav.containsKey((Id) kav.get('KnowledgeArticleId'))) {
 					mKav.put((Id) kav.get('KnowledgeArticleId'), kav);

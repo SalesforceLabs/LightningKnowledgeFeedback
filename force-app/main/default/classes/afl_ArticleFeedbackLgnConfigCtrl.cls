@@ -34,12 +34,13 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 	@auraEnabled
 	public static afl_LightningResponse getInitialData() {
 		afl_LightningResponse response = new afl_LightningResponse();
-		Map<String,String> result = new Map<String, String>();
+		Map<String,Object> result = new Map<String,Object>();
 		afl_Knowledge_feedback__c af = afl_Knowledge_feedback__c.getOrgDefaults();
 		try {
 			if (String.isNotEmpty(af.Hashtag__c)) {
 				result.put('hashtag', af.Hashtag__c);
 			}
+			result.put('triggersEnabled', af.Chatter_triggers_enabled__c);
 
 			response.jsonResponse = JSON.serialize(result);
 		} catch(Exception e) {
@@ -58,7 +59,7 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 	*	None
 	*/
 	@auraEnabled
-	public static afl_LightningResponse updateHashtagValue(String hashtag) {
+	public static afl_LightningResponse updateHashtagValue(String hashtag, Boolean triggerEnabled) {
 		// Check FLS
 		afl_ArticleFeedbackSecurityHandler.canCreate(afl_Article_Feedback__c.SObjectType);
 		afl_ArticleFeedbackSecurityHandler.canUpdate(afl_Article_Feedback__c.SObjectType);
@@ -70,6 +71,7 @@ public with sharing class afl_ArticleFeedbackLgnConfigCtrl {
 		try {
 			if (String.isNotEmpty(hashtag) && hashtag != null) {
 				af.Hashtag__c = hashtag;
+				af.Chatter_triggers_enabled__c = triggerEnabled;
 				UPSERT af;
 				result.put('status', 'SUCCESS');
 			}

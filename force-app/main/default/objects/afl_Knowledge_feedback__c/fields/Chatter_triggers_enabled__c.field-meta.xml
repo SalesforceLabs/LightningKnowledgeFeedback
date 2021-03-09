@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Chatter_triggers_enabled__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>Checked by default. Disabling it avoids the creation of Article Feedback records using the designated hashtags on Chatter posts</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Checked by default. Disabling it avoids the creation of Article Feedback records using the designated hashtags on Chatter posts. Only disable it if you need to run processes that involve the FeedItem and FeedComment objects.</inlineHelpText>
+    <label>Chatter triggers enabled</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
