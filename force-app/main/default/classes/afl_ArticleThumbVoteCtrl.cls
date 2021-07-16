@@ -92,8 +92,12 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 						try {
 							UPSERT vote;
 						} catch(DmlException e) {
-							vote.Type = isLiked ? 'UP' : 'DOWN';
-							UPSERT vote;
+							if (e.getDmlMessage(0).contains('FIELD_INTEGRITY_EXCEPTION')) {
+								vote.Type = isLiked ? 'UP' : 'DOWN';
+								UPSERT vote;
+							} else if (e.getDmlMessage(0).contains('DUPLICATE_VALUE')) {
+								return null;
+							}
 						}
 					}
 				}
