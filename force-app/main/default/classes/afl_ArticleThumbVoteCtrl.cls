@@ -182,4 +182,39 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			return new afl_LightningResponse(e);
 		}
 	}
+
+	/*
+	* @description
+	*   Method that counts the number of votes a Knowledge Article has.
+	* @params
+	*  Id recordId, String voteType
+	* @return
+	*  Integer
+	*/
+	@AuraEnabled
+	public static Map<String, Integer> voteCounts(Id recordId) {		
+		afl_ArticleFeedbackSecurityHandler.canAccess(Vote.SObjectType);
+		String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
+		String query = 'SELECT KnowledgeArticleId FROM ' + knowledgeObject + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
+		List<SObject> knowledgeObjList = Database.query(query);
+		String parentId = '';
+
+		if (!knowledgeObjList.isEmpty()) {
+			SObject knowledgeObj = knowledgeObjList[0];			
+			parentId = (String) knowledgeObj.get('KnowledgeArticleId');			
+		}
+
+		String voteQuery = 'SELECT Type type, Count(Id) counter FROM Vote WHERE ParentId = \'' + parentId + '\' GROUP BY Type';
+		List<AggregateResult> aggregateResult = Database.query(voteQuery);
+		Map<String, Integer> countVotesByType = new Map<String, Integer>();
+		for (AggregateResult result : aggregateResult) {
+			if (result.get('type') == '5' || result.get('type') == 'Up'){
+				countVotesByType.put((String) 'Likes', (Integer) result.get('counter'));
+			} else if (result.get('type') == '1' || result.get('type') == 'Down') {
+				countVotesByType.put((String) 'Dislikes', (Integer) result.get('counter'));
+			}
+		}
+
+		return countVotesByType;		
+	}
 }

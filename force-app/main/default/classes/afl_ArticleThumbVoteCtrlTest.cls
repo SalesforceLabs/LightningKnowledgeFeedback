@@ -30,4 +30,16 @@ private class afl_ArticleThumbVoteCtrlTest {
 
 		System.assertEquals('true', mResult.get('vote'), 'The record returned should be a vote');
 	}
+
+	@isTest
+    static void voteCounterTest() {
+		SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
+		afl_LightningResponse upsertRec = afl_ArticleThumbVoteCtrl.upsertThumbArticleVote(knowledgeObject.Id, '', '', 'Test Description', true, false, false);
+
+		Test.startTest();
+		Map<String, Integer> result = afl_ArticleThumbVoteCtrl.voteCounts(knowledgeObject.Id);
+		Test.stopTest();
+
+		System.assertEquals(1, result.get('Likes'), 'There should be one positive vote');
+	}
 }

@@ -17,6 +17,7 @@ import feedbackSavedToast from '@salesforce/label/c.Feedback_saved_toast';
 
 import getVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.getVote';
 import upsertThumbArticleVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.upsertThumbArticleVote';
+import voteCounts from '@salesforce/apex/afl_ArticleThumbVoteCtrl.voteCounts';
 import FeedbackObject from '@salesforce/schema/afl_Article_Feedback__c';
 
 export default class Afl_ArticleThumbVote extends LightningElement {
@@ -26,6 +27,8 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     @api alwaysDisplayFeedbackDescription;
     @api ratingRequired;
     @api descriptionRequired;
+    @api likeCount;
+	@api dislikeCount;
 
     @track liked = false;
     @track disliked = false;
@@ -96,6 +99,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         }
 
         this.getUserVote();
+        this.getVoteCounts();
     }
 
     getUserVote() {
@@ -300,6 +304,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
                 this.savedVote = this.liked ? '5' : '1';
                 this.showHideSpinner = 'slds-hide';
                 this.showToast('SUCCESS', 'Success', feedbackSavedToast, 'pester');
+                this.getVoteCounts();
             }
 
             if (response.state === 'ERROR') {
@@ -319,4 +324,15 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         });
         this.dispatchEvent(event);
     }
+
+    getVoteCounts() {
+		voteCounts({ recordId: this.recordId })
+        .then(response => {
+            this.likeCount = (response.Likes) ? response.Likes : '0';
+            this.dislikeCount = (response.Dislikes) ? response.Dislikes : '0';
+        })
+        .catch(error => {
+            console.log(error);
+        });
+	}	
 }
