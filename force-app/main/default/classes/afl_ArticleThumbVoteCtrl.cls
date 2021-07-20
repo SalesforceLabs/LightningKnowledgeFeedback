@@ -182,4 +182,36 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			return new afl_LightningResponse(e);
 		}
 	}
+
+	/*
+	* @description
+	*   Method that counts the number of votes a Knowledge Article has.
+	* @params
+	*  Id recordId, String voteType
+	* @return
+	*  Integer
+	*/
+	@AuraEnabled
+	public static Integer voteCounter(Id recordId, String voteType) {		
+		afl_ArticleFeedbackSecurityHandler.canAccess(Vote.SObjectType);
+		String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
+		String query = 'SELECT KnowledgeArticleId FROM ' + knowledgeObject + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
+		List<SObject> knowledgeObjList = Database.query(query);
+		String parentId = '';
+
+		if (!knowledgeObjList.isEmpty()) {
+			SObject knowledgeObj = knowledgeObjList[0];			
+			parentId = (String) knowledgeObj.get('KnowledgeArticleId');			
+		}
+
+		String voteQuery = 'SELECT Count() FROM Vote WHERE ParentId = \'' + parentId + '\'' + ' AND '; 
+		if (voteType == '5') {
+			voteQuery+= '(Type = \'' + voteType + '\'  OR Type=\'Up\')';
+		} else {
+			voteQuery+= '(Type = \'' + voteType + '\'  OR Type=\'Down\')';
+		}
+
+		Integer count = Database.countQuery(voteQuery);
+		return count;		
+	}
 }
