@@ -192,7 +192,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 	*  Integer
 	*/
 	@AuraEnabled
-	public static Integer voteCounter(Id recordId, String voteType) {		
+	public static Map<String, Integer> voteCounts(Id recordId) {		
 		afl_ArticleFeedbackSecurityHandler.canAccess(Vote.SObjectType);
 		String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
 		String query = 'SELECT KnowledgeArticleId FROM ' + knowledgeObject + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
@@ -204,14 +204,17 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			parentId = (String) knowledgeObj.get('KnowledgeArticleId');			
 		}
 
-		String voteQuery = 'SELECT Count() FROM Vote WHERE ParentId = \'' + parentId + '\'' + ' AND '; 
-		if (voteType == '5') {
-			voteQuery+= '(Type = \'' + voteType + '\'  OR Type=\'Up\')';
-		} else {
-			voteQuery+= '(Type = \'' + voteType + '\'  OR Type=\'Down\')';
+		String voteQuery = 'SELECT Type type, Count(Id) counter FROM Vote WHERE ParentId = \'' + parentId + '\' GROUP BY Type';
+		List<AggregateResult> aggregateResult = Database.query(voteQuery);
+		Map<String, Integer> countVotesByType = new Map<String, Integer>();
+		for (AggregateResult result : aggregateResult) {
+			if (result.get('type') == '5' || result.get('type') == 'Up'){
+				countVotesByType.put((String) 'Likes', (Integer) result.get('counter'));
+			} else if (result.get('type') == '1' || result.get('type') == 'Down') {
+				countVotesByType.put((String) 'Dislikes', (Integer) result.get('counter'));
+			}
 		}
 
-		Integer count = Database.countQuery(voteQuery);
-		return count;		
+		return countVotesByType;		
 	}
 }

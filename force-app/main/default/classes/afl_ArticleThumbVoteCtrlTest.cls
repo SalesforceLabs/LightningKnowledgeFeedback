@@ -37,9 +37,9 @@ private class afl_ArticleThumbVoteCtrlTest {
 		afl_LightningResponse upsertRec = afl_ArticleThumbVoteCtrl.upsertThumbArticleVote(knowledgeObject.Id, '', '', 'Test Description', true, false, false);
 
 		Test.startTest();
-		Integer result = afl_ArticleThumbVoteCtrl.voteCounter(knowledgeObject.Id, '5');
+		Map<String, Integer> result = afl_ArticleThumbVoteCtrl.voteCounts(knowledgeObject.Id);
 		Test.stopTest();
 
-		System.assertEquals(1, result, 'There should be one positive vote');
+		System.assertEquals(1, result.get('Likes'), 'There should be one positive vote');
 	}
 }
