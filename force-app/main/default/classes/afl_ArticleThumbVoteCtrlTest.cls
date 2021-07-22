@@ -32,7 +32,7 @@ private class afl_ArticleThumbVoteCtrlTest {
 	}
 
 	@isTest
-    static void voteCounterTest() {
+    static void voteCountsTestLike() {
 		SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
 		afl_LightningResponse upsertRec = afl_ArticleThumbVoteCtrl.upsertThumbArticleVote(knowledgeObject.Id, '', '', 'Test Description', true, false, false);
 
@@ -41,5 +41,17 @@ private class afl_ArticleThumbVoteCtrlTest {
 		Test.stopTest();
 
 		System.assertEquals(1, result.get('Likes'), 'There should be one positive vote');
+	}
+
+	@isTest
+    static void voteCountsTestDislike() {
+		SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
+		afl_LightningResponse upsertRec = afl_ArticleThumbVoteCtrl.upsertThumbArticleVote(knowledgeObject.Id, '', '', 'Test Description', false, false, false);
+
+		Test.startTest();
+		Map<String, Integer> result = afl_ArticleThumbVoteCtrl.voteCounts(knowledgeObject.Id);
+		Test.stopTest();
+
+		System.assertEquals(1, result.get('Dislikes'), 'There should be one negative vote');
 	}
 }
