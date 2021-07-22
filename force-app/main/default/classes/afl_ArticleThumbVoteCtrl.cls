@@ -92,16 +92,16 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 						try {
 							UPSERT vote;
 						} catch(DmlException e) {
-							if (e.getDmlMessage(0).contains('FIELD_INTEGRITY_EXCEPTION')) {
+							if (e.getDmlType(0) == StatusCode.FIELD_INTEGRITY_EXCEPTION) {
 								vote.Type = isLiked ? 'UP' : 'DOWN';
 								UPSERT vote;
-							} else if (e.getDmlMessage(0).contains('DUPLICATE_VALUE')) {
+							} else if (e.getDmlType(0) == StatusCode.DUPLICATE_VALUE) {
 								return null;
 							}
 						}
 					}
 				}
-			}
+			}			
 			INSERT artFeed;
 
 			return new afl_LightningResponse();
