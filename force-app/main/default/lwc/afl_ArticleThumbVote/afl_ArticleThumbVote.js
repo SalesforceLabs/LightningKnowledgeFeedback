@@ -273,7 +273,9 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 		// Prevent user from voting the same again
 		if ((this.savedVote === '5' && this.liked === true) || (this.savedVote === '1' && this.disliked === true)) {
 			this.isSameVote = true;
-		}
+		} else {
+            this.isSameVote = false;
+        }
 		this.showHideSpinner = 'slds-show';
 
 		if (!this.ratingRequired && !this.liked && !this.disliked) {
