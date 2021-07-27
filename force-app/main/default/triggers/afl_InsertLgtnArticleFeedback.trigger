@@ -12,4 +12,3 @@ trigger afl_InsertLgtnArticleFeedback on FeedComment (after insert) {
         afl_TriggerHandler.handleTriggerInsertion('FeedComment', trigger.new);
     }
 }
-   
