@@ -41,6 +41,7 @@
 		<members>afl_RelatedArticle</members>
 		<members>afl_abstract</members>
 		<members>afl_toast</members>
+		<members>afl_WarningComponent</members>
 		<name>AuraDefinitionBundle</name>
 	</types>
 	<types>
