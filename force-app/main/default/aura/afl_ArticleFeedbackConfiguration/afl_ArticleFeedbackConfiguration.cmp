@@ -27,7 +27,7 @@
                     </header>
                 </div>
 
-                <div class="slds-card__body slds-card__body_inner slds-m-around--medium">
+                <div class="slds-card__body slds-card__body_inner slds-var-m-around_medium">
                     <lightning:layoutItem size="8">
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
@@ -42,9 +42,8 @@
                         <div class="slds-form slds-form_horizontal">
                             <div class="slds-form-element">
                                 <ui:outputText value="Hashtag" class="labelSLDS"/>
-                                <p class="required">*</p>
                                 <lightning:helptext class="displayInline" content="{!$Label.c.Hashtag_helptext}"/>
-                                <lightning:input aura:id="inputHashtag" placeholder="#ArticleFeedback" value="{!v.hashtagValue}" required="true" maxlength="99"></lightning:input>
+                                <lightning:input aura:id="inputHashtag" placeholder="#ArticleFeedback" value="{!v.hashtagValue}" maxlength="99"></lightning:input>
                             </div>
                         </div>
                     </lightning:layoutItem>
@@ -70,7 +69,7 @@
                     </lightning:layoutItem>
 
                     <lightning:layoutItem size="10">
-                        <lightning:button label="{!$Label.c.Save_button}" class="slds-align--absolute-center slds-m-bottom_large slds-m-top_small" variant="brand" onclick="{!c.updateHashtag}"/>
+                        <lightning:button label="{!$Label.c.Save_button}" class="slds-align_absolute-center slds-var-m-bottom_large slds-var-m-top_small" variant="brand" onclick="{!c.updateHashtag}"/>
                     </lightning:layoutItem>
                 </div>
             </article>

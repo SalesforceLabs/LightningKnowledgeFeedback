@@ -26,6 +26,7 @@ public with sharing class afl_CustomLabels {
             String save_button = Label.Save_button;
             String no_hashtag_error = Label.No_hashtag_error;
             String no_hashtag_or_square_bracket_error = Label.No_hashtag_or_square_bracket_error;
+            String square_bracket_error = Label.Square_bracket_error;
             String hashtag_value_updated_message = Label.Hashtag_value_updated_message;
             String update_hashtag_error = Label.Update_hashtag_error;
             String hashtag_helptext = Label.Hashtag_helptext;
