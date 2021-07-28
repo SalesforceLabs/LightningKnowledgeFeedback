@@ -193,6 +193,14 @@
         <value>Settings for Knowledge Feedback Tracking</value>
     </labels>
     <labels>
+        <fullName>Square_bracket_error</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Square bracket error</shortDescription>
+        <value>This field cannot include a closing square bracket (])</value>
+    </labels>
+    <labels>
         <fullName>Submit_button</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
