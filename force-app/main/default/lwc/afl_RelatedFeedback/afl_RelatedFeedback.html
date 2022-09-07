@@ -1,0 +1,33 @@
+<template>
+    <article class="slds-card slds-card_boundary">
+        <!-- Component's Header -->
+        <div class="slds-card__header slds-grid slds-theme_shade">
+            <h2 class="slds-card__header-title slds-p-vertical_medium">
+                <lightning-icon icon-name="custom:custom46" title="custom46" size="small"></lightning-icon>
+                <span title="Article Feedback" class="slds-truncate slds-m-left--small">
+                    Article Feedback ({recordCount})
+                </span>
+            </h2>
+        </div>
+
+        <template if:true={showTable}> 
+            <!-- Component's Datatable -->
+            <div class="slds-border_top" style={setDatatableHeight}>
+                <lightning-datatable 
+                    key-field="Id" 
+                    data={renderedFeedbackRecordList} 
+                    columns={columns} 
+                    hide-checkbox-column
+                    resize-column-disabled
+                    enable-infinite-loading
+                    onloadmore={handleLoadMore}>
+                </lightning-datatable>
+            </div>
+        </template>
+        
+        <!-- Spinner -->
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" variant="brand" size="small"></lightning-spinner>
+        </template>
+    </article>
+</template>
