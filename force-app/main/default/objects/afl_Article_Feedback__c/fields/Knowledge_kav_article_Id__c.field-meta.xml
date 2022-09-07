@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Knowledge_kav_article_Id__c</fullName>
-    <deprecated>false</deprecated>
     <description>Holds the value of the field KnowledgeArticleId from the Knowledge__kav object. Used for register/retrieve the vote on the Vote object for a Knowledge Article</description>
     <externalId>false</externalId>
     <label>Knowledge kav article Id</label>

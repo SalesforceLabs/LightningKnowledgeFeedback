@@ -39,9 +39,9 @@
 		<members>afl_ArticleFeedbackConfigContainer</members>
 		<members>afl_ArticleFeedbackConfiguration</members>
 		<members>afl_RelatedArticle</members>
+		<members>afl_WarningComponent</members>
 		<members>afl_abstract</members>
 		<members>afl_toast</members>
-		<members>afl_WarningComponent</members>
 		<name>AuraDefinitionBundle</name>
 	</types>
 	<types>
@@ -49,8 +49,37 @@
 		<name>CustomApplication</name>
 	</types>
 	<types>
-		<members>*</members>
-		<name>CustomLabels</name>
+		<members>Appropriate_record_page_message</members>
+		<members>Article_Feedback_creation_alert</members>
+		<members>Article_Feedback_id_not_found_on_Related_Article_error</members>
+		<members>Article_was_not_found_error</members>
+		<members>Chatter_trigger_helptext</members>
+		<members>Choose_a_general_reason</members>
+		<members>Description</members>
+		<members>Description_placeholder</members>
+		<members>Feedback_saved_toast</members>
+		<members>Hashtag_helptext</members>
+		<members>Hashtag_settings_title</members>
+		<members>Hashtag_value_updated_message</members>
+		<members>Language_Disclaimer</members>
+		<members>Language_Disclaimer_Helptext</members>
+		<members>No_hashtag_error</members>
+		<members>No_hashtag_or_square_bracket_error</members>
+		<members>No_information_title</members>
+		<members>Provide_a_description_toast</members>
+		<members>Rate_the_article_toast</members>
+		<members>Related_Article_Title</members>
+		<members>Related_article_information_retrieval_error</members>
+		<members>Related_article_not_found_error</members>
+		<members>Save_button</members>
+		<members>Setup_page_title</members>
+		<members>Square_bracket_error</members>
+		<members>Submit_button</members>
+		<members>Trigger_settings_title</members>
+		<members>Update_hashtag_error</members>
+		<members>View_Article_Button</members>
+		<members>Was_this_article_helpful</members>
+		<name>CustomLabel</name>
 	</types>
 	<types>
 		<members>Article_Feedback_Values__c</members>
@@ -75,5 +104,5 @@
 		<members>afl_Article_Feedback__c-Article Feedback Layout</members>
 		<name>Layout</name>
 	</types>
-	<version>47.0</version>
+	<version>51.0</version>
 </Package>
