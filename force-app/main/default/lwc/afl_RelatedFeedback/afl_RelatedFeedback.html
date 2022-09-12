@@ -9,22 +9,18 @@
                 </span>
             </h2>
         </div>
-
-        <template if:true={showTable}> 
-            <!-- Component's Datatable -->
-            <div class="slds-border_top" style={setDatatableHeight}>
-                <lightning-datatable 
-                    key-field="Id" 
-                    data={renderedFeedbackRecordList} 
-                    columns={columns} 
-                    hide-checkbox-column
-                    resize-column-disabled
-                    enable-infinite-loading
-                    onloadmore={handleLoadMore}>
-                </lightning-datatable>
-            </div>
-        </template>
-        
+        <!-- Component's Datatable -->
+        <div class="slds-border_top" style={setDatatableHeight}>
+            <lightning-datatable 
+                key-field="Id" 
+                data={renderedFeedbackRecordList} 
+                columns={columns} 
+                hide-checkbox-column
+                resize-column-disabled
+                enable-infinite-loading={loadMoreRecords}
+                onloadmore={handleLoadMore}>
+            </lightning-datatable>
+        </div>
         <!-- Spinner -->
         <template if:true={isLoading}>
             <lightning-spinner alternative-text="Loading" variant="brand" size="small"></lightning-spinner>
