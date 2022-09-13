@@ -1,13 +1,18 @@
 <template>
     <article class="slds-card slds-card_boundary">
         <!-- Component's Header -->
-        <div class="slds-card__header slds-grid slds-theme_shade">
-            <h2 class="slds-card__header-title slds-p-vertical_medium">
-                <lightning-icon icon-name="custom:custom46" title="custom46" size="small"></lightning-icon>
-                <span title="Article Feedback" class="slds-truncate slds-m-left--small">
-                    Article Feedback ({recordCount})
-                </span>
-            </h2>
+        <div class="slds-card__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-theme_shade">
+            <div class="slds-col">
+                <h2 class="slds-card__header-title slds-p-vertical_medium">
+                    <lightning-icon icon-name="custom:custom46" title="custom46" size="small"></lightning-icon>
+                    <span title="Article Feedback" class="slds-truncate slds-m-left--small">
+                        Article Feedback ({recordCount})
+                    </span>
+                </h2>
+            </div>
+            <div class="slds-col slds-p-vertical_medium">
+                <lightning-button-icon variant="border-filled" alternative-text="Refresh data" size="medium" icon-name="utility:refresh" onclick={handleRefresh}></lightning-button-icon>
+            </div>
         </div>
         <!-- Component's Datatable -->
         <div class="slds-border_top" style={setDatatableHeight}>
