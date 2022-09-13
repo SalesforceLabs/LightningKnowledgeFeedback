@@ -152,6 +152,7 @@ public with sharing class afl_TriggerHandler {
 							afd.Article_Link__c = finalLinkUrl + (String) kav.get('KnowledgeArticleId');
 							afd.Article_Title__c = (String) kav.get('Title');
 							afd.Knowledge_Article_Version_Id__c = (String) kav.get('Id');
+							afd.Knowledge_kav_article_Id__c = (String) kav.get('KnowledgeArticleId');
 
 							if (hasRecordType) {
 								afd.Record_Type__c = afl_ArticleFeedbackSecurityHandler.getRecordTypeName(kav);
