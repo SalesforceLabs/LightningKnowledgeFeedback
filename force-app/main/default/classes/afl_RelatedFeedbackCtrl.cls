@@ -9,7 +9,7 @@ public with sharing class afl_RelatedFeedbackCtrl {
     * @param kavId
     * @return afl_LightningResponse
     */
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
 	public static afl_LightningResponse getRelatedFeedback(String kavId) {
 		try {
 			// Check FLS
@@ -35,6 +35,7 @@ public with sharing class afl_RelatedFeedbackCtrl {
                     AND Article_Version__c =:versionNumber
                     WITH SECURITY_ENFORCED
                     ORDER BY CreatedDate DESC
+                    LIMIT 50000
                 ];
             }
 			afl_LightningResponse response = new afl_LightningResponse();
