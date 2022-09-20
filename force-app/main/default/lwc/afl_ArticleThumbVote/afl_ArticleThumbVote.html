@@ -25,8 +25,21 @@
                                     options={reasonTypeOptions} 
                                     value={reasonType}
                                     disabled={isEmpty}></lightning-combobox>
-                                <lightning-textarea class="slds-m-top_medium slds-m-bottom_medium" label={label.description} value={voteReasonDescription} placeholder={label.descriptionPlaceholder} maxlength="29000"></lightning-textarea>
+                                <lightning-textarea class="slds-m-top_medium slds-m-bottom_small" label={label.description} value={voteReasonDescription} placeholder={label.descriptionPlaceholder} maxlength="29000"></lightning-textarea>
                                 
+                                <!--  File Attachment Section -->
+                                <div class={showHideFileUpload}>
+                                    <div class="slds-m-bottom_medium">
+                                        <lightning-file-upload 
+                                            label="Upload Files" 
+                                            name="fileUploader" 
+                                            accept=".png, .jpg, .jpeg, .zip, .doc, .docx, .pdf, .xlsx, .xls"
+                                            onuploadfinished={handleUploadFinished} 
+                                            multiple>
+                                        </lightning-file-upload>
+                                    </div>
+                                </div>
+
                                 <center>
                                     <lightning-button variant="brand" label={label.submit} onclick={handleClick}></lightning-button>
                                 </center>

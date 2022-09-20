@@ -27,6 +27,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     @api alwaysDisplayFeedbackDescription;
     @api ratingRequired;
     @api descriptionRequired;
+    @api displayFileAttachmentSection;
     @api likeCount;
 	@api dislikeCount;
 
@@ -44,11 +45,12 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     optionsLabelToValueMap;
     voteReasonDescription;
     showHideFeedback;
+    showHideFileUpload;
     hasNoRate = false;
     isSameVote = false;
     showHideSpinner = 'slds-hide';
-
     totalDependentValues = [];
+    insertedFilesIds = [];
     
     // Account object info
     @wire(getObjectInfo, { objectApiName: FeedbackObject  })
@@ -97,6 +99,10 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         if (this.alwaysDisplayFeedbackDescription === false) {
             this.showHideFeedback = 'slds-hide';
         }
+
+        if (this.displayFileAttachmentSection === false) {
+			this.showHideFileUpload = 'slds-hide';
+		}
 
         this.getUserVote();
         this.getVoteCounts();
@@ -298,7 +304,8 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 			voteDescription : this.voteReasonDescription,
 			isLiked : this.liked,
 			isSameVote : this.isSameVote,
-			hasNoRate : this.hasNoRate
+			hasNoRate : this.hasNoRate,
+            filesInserted: this.insertedFilesIds
 		})
         .then(response => {
             if (response.state === 'SUCCESS') {
@@ -307,6 +314,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
                 this.showHideSpinner = 'slds-hide';
                 this.showToast('SUCCESS', 'Success', feedbackSavedToast, 'pester');
                 this.getVoteCounts();
+                this.insertedFilesIds = [];
             }
 
             if (response.state === 'ERROR') {
@@ -337,4 +345,9 @@ export default class Afl_ArticleThumbVote extends LightningElement {
             console.log(error);
         });
 	}	
+
+    handleUploadFinished(event){
+        let files = event.detail.files;
+        files.forEach((x) => {this.insertedFilesIds.push(x.documentId)});
+    }
 }

@@ -9,8 +9,9 @@ private class afl_ArticleThumbVoteCtrlTest {
 	@isTest
     static void upsertThumbArticleVoteTest() {
 		SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
+		List<String> fileList = new List<String>();
 		Test.startTest();
-		afl_LightningResponse response = afl_ArticleThumbVoteCtrl.upsertThumbArticleVote(knowledgeObject.Id, '', '', 'Test Description', true, false, false);
+		afl_LightningResponse response = afl_ArticleThumbVoteCtrl.upsertThumbArticleVote(knowledgeObject.Id, '', '', 'Test Description', true, false, false, fileList);
 		Test.stopTest();
 		
 		afl_Article_Feedback__c[] afl = [SELECT Name FROM afl_Article_Feedback__c WHERE Knowledge_Article_Version_Id__c =: knowledgeObject.Id LIMIT 1];
@@ -34,7 +35,8 @@ private class afl_ArticleThumbVoteCtrlTest {
 	@isTest
     static void voteCountsTestLike() {
 		SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
-		afl_LightningResponse upsertRec = afl_ArticleThumbVoteCtrl.upsertThumbArticleVote(knowledgeObject.Id, '', '', 'Test Description', true, false, false);
+		List<String> fileList = new List<String>();
+		afl_LightningResponse upsertRec = afl_ArticleThumbVoteCtrl.upsertThumbArticleVote(knowledgeObject.Id, '', '', 'Test Description', true, false, false, fileList);
 
 		Test.startTest();
 		Map<String, Integer> result = afl_ArticleThumbVoteCtrl.voteCounts(knowledgeObject.Id);
@@ -46,12 +48,27 @@ private class afl_ArticleThumbVoteCtrlTest {
 	@isTest
     static void voteCountsTestDislike() {
 		SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
-		afl_LightningResponse upsertRec = afl_ArticleThumbVoteCtrl.upsertThumbArticleVote(knowledgeObject.Id, '', '', 'Test Description', false, false, false);
+		List<String> fileList = new List<String>();
+		afl_LightningResponse upsertRec = afl_ArticleThumbVoteCtrl.upsertThumbArticleVote(knowledgeObject.Id, '', '', 'Test Description', false, false, false,fileList);
 
 		Test.startTest();
 		Map<String, Integer> result = afl_ArticleThumbVoteCtrl.voteCounts(knowledgeObject.Id);
 		Test.stopTest();
 
 		System.assertEquals(1, result.get('Dislikes'), 'There should be one negative vote');
+	}
+
+	@isTest
+    static void upsertFeedbackWithAttachment() {
+		SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
+		List<String> fileToAttach = afl_TestDataFactory.createFileAttachment();
+		Test.startTest();
+		afl_LightningResponse response = afl_ArticleThumbVoteCtrl.upsertThumbArticleVote(knowledgeObject.Id, '', '', 'Test Description', true, false, false, fileToAttach);
+		Test.stopTest();
+		
+		Id aflId = [SELECT Id FROM afl_Article_Feedback__c WHERE Knowledge_Article_Version_Id__c =: knowledgeObject.Id LIMIT 1].Id;
+		ContentDocumentLink[] insertedFile = [SELECT Id FROM ContentDocumentLink WHERE LinkedEntityId =: aflId];
+		
+		System.assertEquals(1, insertedFile.size(), 'There should be an inserted attachment');
 	}
 }

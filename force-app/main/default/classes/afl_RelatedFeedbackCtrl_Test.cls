@@ -8,7 +8,8 @@ private class afl_RelatedFeedbackCtrl_Test {
     static void getRelatedFeedbackTest() {
         SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
 		String kavId = (String) knowledgeObject.get('Id');
-		afl_LightningResponse upsertRec = afl_ArticleThumbVoteCtrl.upsertThumbArticleVote(kavId, '', '', 'Test Description', true, false, false);
+		List<String> fileList = new List<String>();
+		afl_LightningResponse upsertRec = afl_ArticleThumbVoteCtrl.upsertThumbArticleVote(kavId, '', '', 'Test Description', true, false, false,fileList);
 
         Test.startTest();
 		afl_LightningResponse response = afl_RelatedFeedbackCtrl.getRelatedFeedback(kavId);
