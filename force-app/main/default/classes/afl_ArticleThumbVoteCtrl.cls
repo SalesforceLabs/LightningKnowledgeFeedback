@@ -14,7 +14,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 	*  Object - afl_LightningResponse
 	*/
 	@AuraEnabled
-	public static afl_LightningResponse upsertThumbArticleVote(Id recordId, String feedbackReason, String feedbackReasonDeveloperValue, String voteDescription, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate) {
+	public static afl_LightningResponse upsertThumbArticleVote(Id recordId, String feedbackReason, String feedbackReasonDeveloperValue, String voteDescription, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate, List<String> filesInserted) {
 		try {
 			// Check FLS and CRUD
 			afl_ArticleFeedbackSecurityHandler.canCreate(afl_Article_Feedback__c.SObjectType);
@@ -103,6 +103,11 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				}
 			}			
 			INSERT artFeed;
+
+			if(!filesInserted.isEmpty()) {
+				String feedbackId = artFeed.Id;  
+				linkAttachedFiles(filesInserted, feedbackId);
+			}
 
 			return new afl_LightningResponse();
 		} catch (Exception e) {
@@ -217,4 +222,29 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 
 		return countVotesByType;		
 	}
+
+	/*
+	* @description Method that links the attached files to the Article Feedback record.
+	* @params List<String> filesInserted, String feedbackId
+	*/
+	public static void linkAttachedFiles(List<String> filesInserted, String feedbackId) { 
+       
+        List<ContentDocumentLink> contentDocLinkList = new List<ContentDocumentLink>();
+        for (String docId : filesInserted) {
+            ContentDocumentLink contentDocLink = new ContentDocumentLink();
+            contentDocLink.ContentDocumentId =  docId;
+            contentDocLink.LinkedEntityId = feedbackId;
+            contentDocLink.ShareType = 'V'; 
+            contentDocLinkList.add(contentDocLink);
+        }
+        
+        if(!contentDocLinkList.isEmpty()) {
+			try {
+				afl_ArticleFeedbackSecurityHandler.canCreate(ContentDocumentLink.SObjectType);
+				List<Database.SaveResult> res = Database.INSERT(contentDocLinkList);
+			} catch (Exception e) {
+				System.Debug(e);
+			}
+        }
+    }
 }
