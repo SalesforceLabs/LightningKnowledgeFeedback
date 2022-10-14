@@ -1,3 +1,7 @@
+/**
+* @author Altimetrik
+* @description started on 10/2022 - Test class for the afl_ArticleFeedbackFlowAction class
+**/
 @isTest
 public with sharing class afl_ArticleFeedbackFlowAction_Test {
     @isTest

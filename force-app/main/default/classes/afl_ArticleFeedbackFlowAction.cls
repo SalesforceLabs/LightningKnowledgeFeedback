@@ -1,4 +1,13 @@
+/**
+* @author Altimetrik
+* @description started on 10/2022 - Article Feedback Flow Screen Action 
+**/
 global with sharing class afl_ArticleFeedbackFlowAction {
+    /*
+	* @description Method that that gets information from the related Knowledge Article.
+	* @params List<afl_ArticleFeedbackFlowAction.Request> req
+	* @return List<afl_ArticleFeedbackFlowAction.Response> responses
+	*/
     @InvocableMethod(label='Get Knowledge Article' description='Gets data from knowledge article')
     global static List<Response> getKav (List<Request> req){
         List<Response> responses = new List<Response>();
@@ -39,6 +48,11 @@ global with sharing class afl_ArticleFeedbackFlowAction {
         return responses;
     }
 
+    /*
+	* @description Method that gets the source of the article that's being rated.
+	* @params String articleId
+	* @return Map<String, String> 
+	*/
     global static Map<String, String> getFeedbackSource(String articleId) {
         Map<String, String> result = new Map<String, String>();
 		String baseUrl = System.URL.getSalesforceBaseUrl().toExternalForm();
