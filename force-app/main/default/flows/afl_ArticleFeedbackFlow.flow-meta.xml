@@ -3,12 +3,12 @@
     <actionCalls>
         <name>Get_Data_From_Article</name>
         <label>Get Data From Article</label>
-        <locationX>1546</locationX>
-        <locationY>638</locationY>
+        <locationX>930</locationX>
+        <locationY>518</locationY>
         <actionName>afl_ArticleFeedbackFlowAction</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Get_Vote_Record</targetReference>
+            <targetReference>Check_User_Type</targetReference>
         </connector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
@@ -53,7 +53,7 @@
         <locationX>490</locationX>
         <locationY>398</locationY>
         <defaultConnector>
-            <targetReference>Check_User_Type</targetReference>
+            <targetReference>Get_Data_From_Article</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Rating is not blank</defaultConnectorLabel>
         <rules>
@@ -77,9 +77,9 @@
         <name>Check_User_Type</name>
         <label>Check User Type</label>
         <locationX>930</locationX>
-        <locationY>518</locationY>
+        <locationY>638</locationY>
         <defaultConnector>
-            <targetReference>Get_Data_From_Article</targetReference>
+            <targetReference>Get_Vote_Record</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Is Not Guest User</defaultConnectorLabel>
         <rules>
