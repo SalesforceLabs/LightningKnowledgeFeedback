@@ -353,12 +353,6 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Last_Published_By__c</field>
-            <value>
-                <elementReference>Get_Data_From_Article.articleLastModifiedBy</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>Last_Published_Date__c</field>
             <value>
                 <elementReference>Get_Data_From_Article.articleLastPublishedDate</elementReference>
