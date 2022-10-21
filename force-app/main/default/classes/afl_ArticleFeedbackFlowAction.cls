@@ -18,7 +18,7 @@ global with sharing class afl_ArticleFeedbackFlowAction {
             recordTypeField = ', RecordTypeId';
         }
 
-		String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate, KnowledgeArticleId, Language, LastPublishedDate, LastModifiedById ' + recordTypeField + ' FROM ' + knowledgeObject + ' WHERE Id = \'' + req[0].kavId + '\' LIMIT 1';
+		String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate, KnowledgeArticleId, Language, LastPublishedDate ' + recordTypeField + ' FROM ' + knowledgeObject + ' WHERE Id = \'' + req[0].kavId + '\' LIMIT 1';
         List<SObject> sObjList = Database.query(query);
         if (!sObjList.isEmpty()) {
 			SObject sObj = sObjList[0];
@@ -30,8 +30,6 @@ global with sharing class afl_ArticleFeedbackFlowAction {
             response.articleCreatedDate = (Datetime) sObj.get('ArticleCreatedDate');
             response.articleLanguage = (String) sObj.get('Language');
             response.articleLastPublishedDate = (Datetime) sObj.get('LastPublishedDate');
-            response.articleLastModifiedBy = (String) sObj.get('LastModifiedById');
-			response.feedbackStatus = 'New';
 			response.communityName = (String) getFeedbackSource(req[0].kavId).get('CommunityName');
 			response.feedbackSource = (String) getFeedbackSource(req[0].kavId).get('FeedbackSource');
 			response.articleUrl = (String) getFeedbackSource(req[0].kavId).get('ArticleUrl');
@@ -95,8 +93,6 @@ global with sharing class afl_ArticleFeedbackFlowAction {
         @InvocableVariable
         global Datetime articleCreatedDate;
         @InvocableVariable
-        global String feedbackStatus;
-        @InvocableVariable
         global String communityName;
         @InvocableVariable
         global String feedbackSource;
@@ -104,8 +100,6 @@ global with sharing class afl_ArticleFeedbackFlowAction {
         global String articleLanguage;
         @InvocableVariable
         global Datetime articleLastPublishedDate;
-        @InvocableVariable
-        global String articleLastModifiedBy;
         @InvocableVariable
         global String articleRecordTypeName;
         @InvocableVariable
