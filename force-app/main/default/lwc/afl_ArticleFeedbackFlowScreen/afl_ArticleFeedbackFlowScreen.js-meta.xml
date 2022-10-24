@@ -10,8 +10,8 @@
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
             <property name="recordId" label="recordId" type="String" role="inputOnly" description="Used to automatically detect the record Id. If configured in App Builder, use the value: {!Record.Id}. If configured in Experience Builder, use the value: {!recordId}." />
-            <property name="controllingFieldValue" label="Controlling Field Value" type="Boolean" role="outputOnly" description="Stores the Up/Down vote"/>
-            <property name="dependentFieldValue" label="Dependent Field Value" type="String" role="outputOnly" description="Stores the feedback reason" />
+            <property name="controllingFieldValue" label="Controlling Field Value" type="Boolean"  description="Stores the Up/Down vote"/>
+            <property name="dependentFieldValue" label="Dependent Field Value" type="String"  description="Stores the feedback reason" />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

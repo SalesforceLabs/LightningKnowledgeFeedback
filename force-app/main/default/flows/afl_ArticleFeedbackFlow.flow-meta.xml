@@ -60,7 +60,7 @@
             <name>Rating_is_blank</name>
             <conditionLogic>or</conditionLogic>
             <conditions>
-                <leftValueReference>afl_ArticleFeedbackFlowScreen.controllingFieldValue</leftValueReference>
+                <leftValueReference>selectedVote</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -119,7 +119,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>afl_ArticleFeedbackFlowScreen.controllingFieldValue</leftValueReference>
+                <leftValueReference>selectedVote</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -141,7 +141,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>afl_ArticleFeedbackFlowScreen.controllingFieldValue</leftValueReference>
+                <leftValueReference>selectedVote</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -163,7 +163,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>afl_ArticleFeedbackFlowScreen.controllingFieldValue</leftValueReference>
+                <leftValueReference>selectedVote</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -199,7 +199,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>afl_ArticleFeedbackFlowScreen.controllingFieldValue</leftValueReference>
+                <leftValueReference>selectedVote</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -313,7 +313,7 @@
         <inputAssignments>
             <field>Feedback_Reason__c</field>
             <value>
-                <elementReference>afl_ArticleFeedbackFlowScreen.dependentFieldValue</elementReference>
+                <elementReference>selectedReason</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -361,7 +361,7 @@
         <inputAssignments>
             <field>Like__c</field>
             <value>
-                <elementReference>afl_ArticleFeedbackFlowScreen.controllingFieldValue</elementReference>
+                <elementReference>selectedVote</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -657,9 +657,28 @@
                     <elementReference>recordId</elementReference>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>controllingFieldValue</name>
+                <value>
+                    <elementReference>selectedVote</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>dependentFieldValue</name>
+                <value>
+                    <elementReference>selectedReason</elementReference>
+                </value>
+            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <outputParameters>
+                <assignToReference>selectedVote</assignToReference>
+                <name>controllingFieldValue</name>
+            </outputParameters>
+            <outputParameters>
+                <assignToReference>selectedReason</assignToReference>
+                <name>dependentFieldValue</name>
+            </outputParameters>
         </fields>
         <fields>
             <name>Description_Input_Field</name>
@@ -775,5 +794,19 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>selectedReason</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>selectedVote</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
     </variables>
 </Flow>
