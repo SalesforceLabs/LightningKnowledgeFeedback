@@ -20,7 +20,7 @@ export default class Afl_ArticleFeedbackFlowScreen extends LightningElement {
 	@track reasonType;
 	@track controlValues;
 	@track selectedValue;
-    
+
 	optionsValueToLabelMap;
 	optionsLabelToValueMap;
 	totalDependentValues = [];
@@ -54,14 +54,20 @@ export default class Afl_ArticleFeedbackFlowScreen extends LightningElement {
 	};
 
 	connectedCallback() {
-		this.getUserVote();
+		if (this.controllingFieldValue === undefined && this.dependentFieldValue === undefined) {
+			this.getUserVote();
+		} else {
+			this.selectedValue = '';
+			this.liked = this.controllingFieldValue;
+			this.disliked = !this.controllingFieldValue;
+			this.reasonType = this.dependentFieldValue;
+		}
 		this.getVoteCounts();
 	}
 
 	getUserVote() {
 		getVote({ recordId: this.recordId })
 			.then(response => {
-                console.log(response);
 				const parsedVote = JSON.parse(response.jsonResponse);
 				if (parsedVote.vote === 'true') {
 					this.liked = true;
@@ -75,6 +81,7 @@ export default class Afl_ArticleFeedbackFlowScreen extends LightningElement {
 
 				if (parsedVote.feedbackReason) {
 					this.selectedValue = parsedVote.feedbackReason;
+                    this.dependentFieldValue = parsedVote.feedbackReason;
 				} else {
 					this.selectedValue = 'None';
 				}
@@ -124,7 +131,7 @@ export default class Afl_ArticleFeedbackFlowScreen extends LightningElement {
 			}
 		}
 
-		if (this.selectedValue !== '') {
+		if (this.selectedValue !== '' && this.optionsLabelToValueMap.size !== 0) {
 			if (this.optionsLabelToValueMap.get(this.selectedValue)) {
 				this.reasonType = this.optionsLabelToValueMap.get(this.selectedValue);
 			} else {
@@ -159,7 +166,6 @@ export default class Afl_ArticleFeedbackFlowScreen extends LightningElement {
 		});
 
 		this.reasonTypeOptions = dependValues;
-		this.reasonType = dependValues[0] ? dependValues[0].value : '';
 	}
 
 	handleReasonChange(event) {
@@ -194,13 +200,11 @@ export default class Afl_ArticleFeedbackFlowScreen extends LightningElement {
 		});
 
 		this.reasonTypeOptions = dependValues;
-		this.reasonType = dependValues[0] ? dependValues[0].value : '';
 	}
 
 	getVoteCounts() {
 		voteCounts({ recordId: this.recordId })
 			.then(response => {
-                console.log(response);
 				this.likeCount = response.Likes ? response.Likes : '0';
 				this.dislikeCount = response.Dislikes ? response.Dislikes : '0';
 			})
