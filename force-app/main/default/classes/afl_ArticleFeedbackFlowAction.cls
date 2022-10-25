@@ -18,7 +18,7 @@ global with sharing class afl_ArticleFeedbackFlowAction {
             recordTypeField = ', RecordTypeId';
         }
 
-		String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate, KnowledgeArticleId, Language, LastPublishedDate ' + recordTypeField + ' FROM ' + knowledgeObject + ' WHERE Id = \'' + req[0].kavId + '\' LIMIT 1';
+		String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate, KnowledgeArticleId, Language, LastPublishedDate, OwnerId ' + recordTypeField + ' FROM ' + knowledgeObject + ' WHERE Id = \'' + req[0].kavId + '\' LIMIT 1';
         List<SObject> sObjList = Database.query(query);
         if (!sObjList.isEmpty()) {
 			SObject sObj = sObjList[0];
@@ -33,6 +33,7 @@ global with sharing class afl_ArticleFeedbackFlowAction {
 			response.communityName = (String) getFeedbackSource(req[0].kavId).get('CommunityName');
 			response.feedbackSource = (String) getFeedbackSource(req[0].kavId).get('FeedbackSource');
 			response.articleUrl = (String) getFeedbackSource(req[0].kavId).get('ArticleUrl');
+            response.ownerId = (String) sObj.get('OwnerId');
 
             if (hasRecordType) {
                 if (String.isNotEmpty((String)sObj.get('RecordTypeId'))) {
@@ -104,5 +105,7 @@ global with sharing class afl_ArticleFeedbackFlowAction {
         global String articleRecordTypeName;
         @InvocableVariable
         global String articleUrl;
+        @InvocableVariable
+        global String ownerId;
     }
 }
