@@ -31,7 +31,7 @@
                                 <div class={showHideFileUpload}>
                                     <div class="slds-m-bottom_medium">
                                         <lightning-file-upload 
-                                            label="Upload Files" 
+                                            label={label.uploadFileLabel} 
                                             name="fileUploader" 
                                             accept=".png, .jpg, .jpeg, .zip, .doc, .docx, .pdf, .xlsx, .xls"
                                             onuploadfinished={handleUploadFinished} 

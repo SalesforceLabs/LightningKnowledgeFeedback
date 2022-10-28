@@ -14,6 +14,7 @@ import appropriateRecPage from '@salesforce/label/c.Appropriate_record_page_mess
 import rateTheArticleToast from '@salesforce/label/c.Rate_the_article_toast';
 import provideaDescriptionToast from '@salesforce/label/c.Provide_a_description_toast';
 import feedbackSavedToast from '@salesforce/label/c.Feedback_saved_toast';
+import uploadFileLabel from '@salesforce/label/c.Upload_Files_Label';
 
 import getVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.getVote';
 import upsertThumbArticleVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.upsertThumbArticleVote';
@@ -87,7 +88,8 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         appropriateRecPage,
         rateTheArticleToast,
         provideaDescriptionToast,
-        feedbackSavedToast
+        feedbackSavedToast,
+        uploadFileLabel
     };
 
     connectedCallback() {
