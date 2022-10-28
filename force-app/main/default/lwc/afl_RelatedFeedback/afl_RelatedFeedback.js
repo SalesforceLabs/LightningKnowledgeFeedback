@@ -1,11 +1,16 @@
 import { LightningElement, api, track, wire } from 'lwc';
 import getRelatedFeedback from '@salesforce/apex/afl_RelatedFeedbackCtrl.getRelatedFeedback';
+import FeedbackObject from '@salesforce/schema/afl_Article_Feedback__c';
+import SOURCE_FIELD from '@salesforce/schema/afl_Article_Feedback__c.Feedback_Source__c';
+import STATUS_FIELD from '@salesforce/schema/afl_Article_Feedback__c.Feedback_Status__c';
+import REASON_FIELD from '@salesforce/schema/afl_Article_Feedback__c.Feedback_Reason__c';
+
 
 const columns = [
 	{ label: 'Name', fieldName: 'linkName', type: 'url', hideDefaultActions: true, typeAttributes: { label: { fieldName: 'Name' }, target: '_parent' } },
-	{ label: 'Feedback Source', fieldName: 'Feedback_Source__c', hideDefaultActions: true },
-	{ label: 'Status', fieldName: 'Feedback_Status__c', hideDefaultActions: true },
-	{ label: 'Feedback Reason', fieldName: 'Feedback_Reason__c', hideDefaultActions: true },
+	{ label: 'Feedback Source', fieldName: SOURCE_FIELD.fieldApiName, hideDefaultActions: true },
+	{ label: 'Status', fieldName: STATUS_FIELD.fieldApiName, hideDefaultActions: true },
+	{ label: 'Feedback Reason', fieldName: REASON_FIELD.fieldApiName, hideDefaultActions: true },
 	{ label: 'Assigned To', fieldName: 'Assigned_To', hideDefaultActions: true }
 ];
 
@@ -49,7 +54,11 @@ export default class Afl_RelatedFeedback extends LightningElement {
 				response = JSON.parse(response.jsonResponse);
 				response.forEach(record => {
 					record.linkName = '/' + record.Id;
-					record.Assigned_To = record.Assigned_To__r !== undefined ? record.Assigned_To__r.Name : '';
+					if (record.afl__Assigned_To__r) {
+						record.Assigned_To = record.afl__Assigned_To__r !== undefined ? record.afl__Assigned_To__r.Name : '';
+					} else {
+						record.Assigned_To = record.Assigned_To__r !== undefined ? record.Assigned_To__r.Name : '';
+					}	
 				});
 				this.totalNumberOfRecords = response.length;
 				this.allFeedbackRecordList = [...response];
