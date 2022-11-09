@@ -41,7 +41,7 @@ private class afl_ArticleFeedbackLgnConfigCtrlTest {
 		Map<String,Object> result = new Map<String,Object>();
 
 		Test.startTest();
-		response = afl_ArticleFeedbackLgnConfigCtrl.updateHashtagValue('#TestHashtag');
+		response = afl_ArticleFeedbackLgnConfigCtrl.updateHashtagValue('#TestHashtag', true);
 		result = (Map<String,Object>) JSON.deserializeUntyped(response.jsonResponse);
 		
 		Test.stopTest();

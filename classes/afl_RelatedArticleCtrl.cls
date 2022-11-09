@@ -111,7 +111,6 @@ public with sharing class afl_RelatedArticleCtrl {
             // Get record type name
             if (afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive) {
                 if (String.isNotEmpty((String) sObjKnowledge.get('RecordTypeId'))) {
-                    afl_ArticleFeedbackSecurityHandler.canAccess(RecordType.SObjectType);
                     queryString = 'SELECT Id, toLabel(Description), toLabel(Name) FROM RecordType WHERE Id =  \'' + ((String) sObjKnowledge.get('RecordTypeId')) + '\'';
                     sObjList = Database.query(queryString);
                     String recordTypeNameStr = fieldMap.get('RecordTypeId').getDescribe().getLabel();

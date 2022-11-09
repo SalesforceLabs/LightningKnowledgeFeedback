@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>47.0</apiVersion>
+    <apiVersion>51.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>Article Rating and Feedback</masterLabel>
     <description>Lets you rate and leave feedback for a Knowledge Article.</description>
@@ -13,13 +13,15 @@
         <targetConfig targets="lightning__RecordPage">
             <property name="alwaysDisplayFeedbackDescription" type="Boolean" label="Always display feedback section" default="true"/>
             <property name="ratingRequired" type="Boolean" label="Make rating required" default="true"/>
-            <property name="descriptionRequired" type="Boolean" label="Require written feedback with negative rating" default="true"/>
+            <property name="descriptionRequired" type="Boolean" label="Require written feedback with negative rating" default="true" />
+            <property name="displayFileAttachmentSection" type="Boolean" label="Display File Attachment section" default="true" />
         </targetConfig>
         <targetConfig targets="lightningCommunity__Default">
             <property name="alwaysDisplayFeedbackDescription" type="Boolean" label="Always display feedback section" default="true"/>
             <property name="ratingRequired" type="Boolean" label="Make rating required" default="true"/>
             <property name="descriptionRequired" type="Boolean" label="Require written feedback with negative rating" default="true"/>
             <property name="recordId" type="String" label="Record Id" description="This field needs to remain with the following value: {!recordId}. It is needed to automatically detect record Ids in communities." default="{!recordId}" />
-        </targetConfig> 
+            <property name="displayFileAttachmentSection" type="Boolean" label="Display File Attachment section" default="true" />
+        </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

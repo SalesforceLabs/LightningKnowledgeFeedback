@@ -14,7 +14,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 	*  Object - afl_LightningResponse
 	*/
 	@AuraEnabled
-	public static afl_LightningResponse upsertThumbArticleVote(Id recordId, String feedbackReason, String feedbackReasonDeveloperValue, String voteDescription, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate) {
+	public static afl_LightningResponse upsertThumbArticleVote(Id recordId, String feedbackReason, String feedbackReasonDeveloperValue, String voteDescription, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate, List<String> filesInserted) {
 		try {
 			// Check FLS and CRUD
 			afl_ArticleFeedbackSecurityHandler.canCreate(afl_Article_Feedback__c.SObjectType);
@@ -38,7 +38,11 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				SObject ntw = Database.query(query);
 				artFeed.Community_Name__c = communityName;
 				artFeed.Feedback_Source__c = 'Communities';
-				artFeed.Article_Link__c = baseUrl + '/' + (String) ntw.get('UrlPathPrefix') + '/s/article/' + recordId;
+				if(ntw.get('UrlPathPrefix') != null){
+					artFeed.Article_Link__c = baseUrl + '/' + (String) ntw.get('UrlPathPrefix') + '/s/article/' + recordId;
+				} else {
+					artFeed.Article_Link__c = baseUrl + '/s/article/' + recordId;
+				}
 			} else {
 				artFeed.Feedback_Source__c = 'Internal';
 				artFeed.Article_Link__c = baseUrl + '/' + recordId;
@@ -88,13 +92,22 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 						try {
 							UPSERT vote;
 						} catch(DmlException e) {
-							vote.Type = isLiked ? 'UP' : 'DOWN';
-							UPSERT vote;
+							if (e.getDmlType(0) == StatusCode.FIELD_INTEGRITY_EXCEPTION) {
+								vote.Type = isLiked ? 'UP' : 'DOWN';
+								UPSERT vote;
+							} else if (e.getDmlType(0) == StatusCode.DUPLICATE_VALUE) {
+								return null;
+							}
 						}
 					}
 				}
-			}
+			}			
 			INSERT artFeed;
+
+			if(!filesInserted.isEmpty()) {
+				String feedbackId = artFeed.Id;  
+				linkAttachedFiles(filesInserted, feedbackId);
+			}
 
 			return new afl_LightningResponse();
 		} catch (Exception e) {
@@ -174,4 +187,64 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			return new afl_LightningResponse(e);
 		}
 	}
+
+	/*
+	* @description
+	*   Method that counts the number of votes a Knowledge Article has.
+	* @params
+	*  Id recordId, String voteType
+	* @return
+	*  Integer
+	*/
+	@AuraEnabled
+	public static Map<String, Integer> voteCounts(Id recordId) {		
+		afl_ArticleFeedbackSecurityHandler.canAccess(Vote.SObjectType);
+		String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
+		String query = 'SELECT KnowledgeArticleId FROM ' + knowledgeObject + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
+		List<SObject> knowledgeObjList = Database.query(query);
+		String parentId = '';
+
+		if (!knowledgeObjList.isEmpty()) {
+			SObject knowledgeObj = knowledgeObjList[0];			
+			parentId = (String) knowledgeObj.get('KnowledgeArticleId');			
+		}
+
+		String voteQuery = 'SELECT Type type, Count(Id) counter FROM Vote WHERE ParentId = \'' + parentId + '\' GROUP BY Type';
+		List<AggregateResult> aggregateResult = Database.query(voteQuery);
+		Map<String, Integer> countVotesByType = new Map<String, Integer>();
+		for (AggregateResult result : aggregateResult) {
+			if (result.get('type') == '5' || result.get('type') == 'Up'){
+				countVotesByType.put((String) 'Likes', (Integer) result.get('counter'));
+			} else if (result.get('type') == '1' || result.get('type') == 'Down') {
+				countVotesByType.put((String) 'Dislikes', (Integer) result.get('counter'));
+			}
+		}
+
+		return countVotesByType;		
+	}
+
+	/*
+	* @description Method that links the attached files to the Article Feedback record.
+	* @params List<String> filesInserted, String feedbackId
+	*/
+	public static void linkAttachedFiles(List<String> filesInserted, String feedbackId) { 
+       
+        List<ContentDocumentLink> contentDocLinkList = new List<ContentDocumentLink>();
+        for (String docId : filesInserted) {
+            ContentDocumentLink contentDocLink = new ContentDocumentLink();
+            contentDocLink.ContentDocumentId =  docId;
+            contentDocLink.LinkedEntityId = feedbackId;
+            contentDocLink.ShareType = 'V'; 
+            contentDocLinkList.add(contentDocLink);
+        }
+        
+        if(!contentDocLinkList.isEmpty()) {
+			try {
+				afl_ArticleFeedbackSecurityHandler.canCreate(ContentDocumentLink.SObjectType);
+				List<Database.SaveResult> res = Database.INSERT(contentDocLinkList);
+			} catch (Exception e) {
+				System.Debug(e);
+			}
+        }
+    }
 }

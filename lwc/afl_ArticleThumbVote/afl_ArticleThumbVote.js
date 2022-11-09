@@ -14,9 +14,11 @@ import appropriateRecPage from '@salesforce/label/c.Appropriate_record_page_mess
 import rateTheArticleToast from '@salesforce/label/c.Rate_the_article_toast';
 import provideaDescriptionToast from '@salesforce/label/c.Provide_a_description_toast';
 import feedbackSavedToast from '@salesforce/label/c.Feedback_saved_toast';
+import uploadFileLabel from '@salesforce/label/c.Upload_Files_Label';
 
 import getVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.getVote';
 import upsertThumbArticleVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.upsertThumbArticleVote';
+import voteCounts from '@salesforce/apex/afl_ArticleThumbVoteCtrl.voteCounts';
 import FeedbackObject from '@salesforce/schema/afl_Article_Feedback__c';
 
 export default class Afl_ArticleThumbVote extends LightningElement {
@@ -26,6 +28,9 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     @api alwaysDisplayFeedbackDescription;
     @api ratingRequired;
     @api descriptionRequired;
+    @api displayFileAttachmentSection;
+    @api likeCount;
+	@api dislikeCount;
 
     @track liked = false;
     @track disliked = false;
@@ -41,11 +46,12 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     optionsLabelToValueMap;
     voteReasonDescription;
     showHideFeedback;
+    showHideFileUpload;
     hasNoRate = false;
     isSameVote = false;
     showHideSpinner = 'slds-hide';
-
     totalDependentValues = [];
+    insertedFilesIds = [];
     
     // Account object info
     @wire(getObjectInfo, { objectApiName: FeedbackObject  })
@@ -82,7 +88,8 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         appropriateRecPage,
         rateTheArticleToast,
         provideaDescriptionToast,
-        feedbackSavedToast
+        feedbackSavedToast,
+        uploadFileLabel
     };
 
     connectedCallback() {
@@ -95,7 +102,12 @@ export default class Afl_ArticleThumbVote extends LightningElement {
             this.showHideFeedback = 'slds-hide';
         }
 
+        if (this.displayFileAttachmentSection === false) {
+			this.showHideFileUpload = 'slds-hide';
+		}
+
         this.getUserVote();
+        this.getVoteCounts();
     }
 
     getUserVote() {
@@ -269,7 +281,9 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 		// Prevent user from voting the same again
 		if ((this.savedVote === '5' && this.liked === true) || (this.savedVote === '1' && this.disliked === true)) {
 			this.isSameVote = true;
-		}
+		} else {
+            this.isSameVote = false;
+        }
 		this.showHideSpinner = 'slds-show';
 
 		if (!this.ratingRequired && !this.liked && !this.disliked) {
@@ -292,7 +306,8 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 			voteDescription : this.voteReasonDescription,
 			isLiked : this.liked,
 			isSameVote : this.isSameVote,
-			hasNoRate : this.hasNoRate
+			hasNoRate : this.hasNoRate,
+            filesInserted: this.insertedFilesIds
 		})
         .then(response => {
             if (response.state === 'SUCCESS') {
@@ -300,6 +315,8 @@ export default class Afl_ArticleThumbVote extends LightningElement {
                 this.savedVote = this.liked ? '5' : '1';
                 this.showHideSpinner = 'slds-hide';
                 this.showToast('SUCCESS', 'Success', feedbackSavedToast, 'pester');
+                this.getVoteCounts();
+                this.insertedFilesIds = [];
             }
 
             if (response.state === 'ERROR') {
@@ -318,5 +335,21 @@ export default class Afl_ArticleThumbVote extends LightningElement {
             duration: 5000
         });
         this.dispatchEvent(event);
+    }
+
+    getVoteCounts() {
+		voteCounts({ recordId: this.recordId })
+        .then(response => {
+            this.likeCount = (response.Likes) ? response.Likes : '0';
+            this.dislikeCount = (response.Dislikes) ? response.Dislikes : '0';
+        })
+        .catch(error => {
+            console.log(error);
+        });
+	}	
+
+    handleUploadFinished(event){
+        let files = event.detail.files;
+        files.forEach((x) => {this.insertedFilesIds.push(x.documentId)});
     }
 }

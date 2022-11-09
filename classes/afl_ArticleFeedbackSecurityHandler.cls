@@ -42,7 +42,7 @@ public class afl_ArticleFeedbackSecurityHandler {
                 Set<String> keySet = gd.keySet();
                 for (String key : keySet) {
                     Schema.SObjectType objectType = gd.get(key);
-                    if (key.endsWith('kav')&& objectType.getDescribe().isAccessible()) {
+                    if (key.endsWith('kav') && objectType.getDescribe().isAccessible()) {
                         knowledgeObject = objectType.getDescribe().getName();
                     }
                 }

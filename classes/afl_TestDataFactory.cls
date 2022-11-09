@@ -132,4 +132,22 @@ public class afl_TestDataFactory {
 
 		return result;
 	}
+
+	/*
+	* @description Creates file
+	* @return List<String> with inserted files Ids
+	*/
+	public static List<String> createFileAttachment() {
+		List<String> fileIdList = new List<String>();
+		ContentVersion contentVersion = new ContentVersion(
+            Title = 'File',
+            PathOnClient = 'File.jpg',
+            VersionData = Blob.valueOf('Test Content'),
+            IsMajorVersion = true
+        );
+        INSERT contentVersion;
+		String documentId = [SELECT Id FROM ContentDocument].Id;
+		fileIdList.add(documentId);
+		return fileIdList;
+	}
 }
