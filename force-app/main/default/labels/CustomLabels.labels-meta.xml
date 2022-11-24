@@ -4,7 +4,7 @@
         <fullName>Appropriate_record_page_message</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Appropriate record page message</shortDescription>
         <value>Please make sure the component is placed in the appropriate Record Page.</value>
     </labels>
@@ -52,7 +52,7 @@
         <fullName>Description</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Description</shortDescription>
         <value>Description</value>
     </labels>
@@ -68,7 +68,7 @@
         <fullName>Feedback_saved_toast</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Feedback saved toast</shortDescription>
         <value>Feedback saved successfully.</value>
     </labels>
@@ -132,7 +132,7 @@
         <fullName>No_information_title</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>No information title</shortDescription>
         <value>There&apos;s no information to show.</value>
     </labels>
@@ -148,7 +148,7 @@
         <fullName>Rate_the_article_toast</fullName>
         <categories>Article Feedback</categories>
         <language>en_US</language>
-        <protected>true</protected>
+        <protected>false</protected>
         <shortDescription>Rate the article toast</shortDescription>
         <value>Please, rate the article before leaving any comments.</value>
     </labels>

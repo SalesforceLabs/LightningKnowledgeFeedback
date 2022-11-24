@@ -119,7 +119,7 @@ public with sharing class afl_TriggerHandler {
 					// Set community availabilty and name
 					String netId = Network.getNetworkId();
 					String communityName = '';
-					String baseUrl = System.URL.getSalesforceBaseUrl().toExternalForm() + '/';
+					String baseUrl = 'https://' + DomainCreator.getLightningHostname() + '/';
 					String finalLinkUrl = '';
 					Boolean communitiesAvailable = false;
 					Set<String> objectFields = Schema.SObjectType.FeedItem.fields.getMap().keySet();
@@ -149,7 +149,7 @@ public with sharing class afl_TriggerHandler {
 							afl_Article_Feedback__c afd = new afl_Article_Feedback__c();
 
 							afd.Article_Number__c = (String) kav.get('ArticleNumber');
-							afd.Article_Link__c = finalLinkUrl + (String) kav.get('KnowledgeArticleId');
+							afd.Article_Link__c = finalLinkUrl + 'lightning/r/' + knowledgeObject + '/' + (String) kav.get('KnowledgeArticleId') + '/view';
 							afd.Article_Title__c = (String) kav.get('Title');
 							afd.Knowledge_Article_Version_Id__c = (String) kav.get('Id');
 							afd.Knowledge_kav_article_Id__c = (String) kav.get('KnowledgeArticleId');
