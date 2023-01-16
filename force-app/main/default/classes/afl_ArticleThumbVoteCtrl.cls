@@ -34,6 +34,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			String communityName = afl_ArticleFeedbackSecurityHandler.getCommunityName();
 
 			if (String.isNotEmpty(communityName)) {
+				baseUrl = 'https://' + DomainCreator.getExperienceCloudSitesHostname();
 				String networkId = Network.getNetworkId();
 				String query = 'SELECT Id, UrlPathPrefix FROM Network WHERE Id =: networkId LIMIT 1';
 				SObject ntw = Database.query(query);
