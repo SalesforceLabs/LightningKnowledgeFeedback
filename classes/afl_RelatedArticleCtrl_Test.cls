@@ -39,7 +39,7 @@ private with sharing class afl_RelatedArticleCtrl_Test {
 
         afl_Article_Feedback__c afd = new afl_Article_Feedback__c();
         afd.Article_Number__c = (String) kavObj.get('ArticleNumber');
-        afd.Article_Link__c = URL.getSalesforceBaseUrl().toExternalForm() + '/' + (String) kavObj.get('KnowledgeArticleId');
+        afd.Article_Link__c = 'https://' + DomainCreator.getLightningHostname()+ '/lightning/r/' + afl_ArticleFeedbackSecurityHandler.knowledgeObject + '/' + (String) kavObj.get('KnowledgeArticleId') + '/view';
         afd.Article_Title__c = (String) kavObj.get('Title');
         afd.Knowledge_Article_Version_Id__c = (String) kavObj.get('Id');
         afd.Record_Type__c = '';
@@ -71,7 +71,7 @@ private with sharing class afl_RelatedArticleCtrl_Test {
 
         afl_Article_Feedback__c afd = new afl_Article_Feedback__c();
         afd.Article_Number__c = (String) kavObj.get('ArticleNumber');
-        afd.Article_Link__c = URL.getSalesforceBaseUrl().toExternalForm() + '/' + (String) kavObj.get('KnowledgeArticleId');
+        afd.Article_Link__c = 'https://' + DomainCreator.getLightningHostname()+ '/lightning/r/' + afl_ArticleFeedbackSecurityHandler.knowledgeObject + '/' + (String) kavObj.get('KnowledgeArticleId') + '/view';
         afd.Article_Title__c = (String) kavObj.get('Title');
         afd.Knowledge_Article_Version_Id__c = (String) kavObj.get('Id');
         afd.Record_Type__c = '';

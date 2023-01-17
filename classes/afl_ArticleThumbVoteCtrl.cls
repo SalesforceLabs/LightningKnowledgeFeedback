@@ -18,6 +18,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 		try {
 			// Check FLS and CRUD
 			afl_ArticleFeedbackSecurityHandler.canCreate(afl_Article_Feedback__c.SObjectType);
+			String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
 
 			afl_Article_Feedback__c artFeed = new afl_Article_Feedback__c();
 
@@ -29,10 +30,11 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			artFeed.Feedback_Reason__c = feedbackReason;
 			artFeed.Feedback_Reason_Developer_Value__c = feedbackReasonDeveloperValue;
 
-			String baseUrl = System.URL.getSalesforceBaseUrl().toExternalForm();
+			String baseUrl = 'https://' + DomainCreator.getLightningHostname();
 			String communityName = afl_ArticleFeedbackSecurityHandler.getCommunityName();
 
 			if (String.isNotEmpty(communityName)) {
+				baseUrl = 'https://' + DomainCreator.getExperienceCloudSitesHostname();
 				String networkId = Network.getNetworkId();
 				String query = 'SELECT Id, UrlPathPrefix FROM Network WHERE Id =: networkId LIMIT 1';
 				SObject ntw = Database.query(query);
@@ -45,11 +47,10 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				}
 			} else {
 				artFeed.Feedback_Source__c = 'Internal';
-				artFeed.Article_Link__c = baseUrl + '/' + recordId;
+				artFeed.Article_Link__c = baseUrl + '/lightning/r/' + knowledgeObject + '/' +  recordId + '/view';
 			}
 
 			artFeed.Knowledge_Article_Version_Id__c = recordId;
-			String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
 			Boolean hasRecordType = afl_ArticleFeedbackSecurityHandler.isRecordTypeIdActive;
 			String recordTypeField = '';
 			if (hasRecordType) {

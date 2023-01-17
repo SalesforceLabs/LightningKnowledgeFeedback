@@ -54,10 +54,12 @@ global with sharing class afl_ArticleFeedbackFlowAction {
 	*/
     global static Map<String, String> getFeedbackSource(String articleId) {
         Map<String, String> result = new Map<String, String>();
-		String baseUrl = System.URL.getSalesforceBaseUrl().toExternalForm();
+        String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
+		String baseUrl = 'https://' + DomainCreator.getLightningHostname();
 		String communityName = afl_ArticleFeedbackSecurityHandler.getCommunityName();
 
         if (String.isNotEmpty(communityName)) {
+            baseUrl = 'https://' + DomainCreator.getExperienceCloudSitesHostname();
             String networkId = Network.getNetworkId();
             String query = 'SELECT Id, UrlPathPrefix FROM Network WHERE Id =: networkId LIMIT 1';
             SObject ntw = Database.query(query);
@@ -72,7 +74,7 @@ global with sharing class afl_ArticleFeedbackFlowAction {
         } else {
             result.put('CommunityName','');
             result.put('FeedbackSource','Internal');
-            result.put('ArticleUrl', (baseUrl + '/' + articleId));
+            result.put('ArticleUrl', (baseUrl + '/lightning/r/' + knowledgeObject + '/' +  articleId + '/view'));
         }
         return result;
     }
