@@ -365,6 +365,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>Get_Data_From_Article.afName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Record_Type__c</field>
             <value>
                 <elementReference>Get_Data_From_Article.articleRecordTypeName</elementReference>
