@@ -76,7 +76,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			}
 
 			//set record name (cannot exceed 80 char)
-			artFeed.Name = System.UserInfo.getFirstName().left(15) + ' ' + System.UserInfo.getLastName().left(15) + ' - ' + ((String) sObjList[0].get('Title')).left(24) + ' - ' + DateTime.now().format('yyyy/MM/dd h:mm a');
+			artFeed.Name = System.UserInfo.getFirstName()?.left(15) + ' ' + System.UserInfo.getLastName()?.left(15) + ' - ' + ((String) sObjList[0].get('Title'))?.left(24) + ' - ' + DateTime.now().format('yyyy/MM/dd h:mm a');
 
 			if (!hasNoRate) {
 				if (!isSameVote) {
