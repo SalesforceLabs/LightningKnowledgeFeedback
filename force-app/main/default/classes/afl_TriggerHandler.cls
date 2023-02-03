@@ -156,7 +156,7 @@ public with sharing class afl_TriggerHandler {
 							afd.Knowledge_kav_article_Id__c = (String) kav.get('KnowledgeArticleId');
 
 							//set record name (cannot exceed 80 char)
-							afd.Name = System.UserInfo.getFirstName()?.left(15) + ' ' + System.UserInfo.getLastName()?.left(15) + ' - ' + ((String) kav.get('Title'))?.left(24) + ' - ' + DateTime.now().format('yyyy/MM/dd h:mm a');
+							afd.Name = System.UserInfo.getName()?.left(30) + ' - ' + ((String) kav.get('Title'))?.left(25) + ' - ' + DateTime.now().format('yyyy/MM/dd h:mm a');
 
 							if (hasRecordType) {
 								afd.Record_Type__c = afl_ArticleFeedbackSecurityHandler.getRecordTypeName(kav);

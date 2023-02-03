@@ -35,7 +35,7 @@ global with sharing class afl_ArticleFeedbackFlowAction {
 			response.articleUrl = (String) getFeedbackSource(req[0].kavId).get('ArticleUrl');
             response.ownerId = (String) sObj.get('OwnerId');
             //set record name (cannot exceed 80 char)
-			response.afName = System.UserInfo.getFirstName()?.left(15) + ' ' + System.UserInfo.getLastName()?.left(15) + ' - ' + ((String) sObj.get('Title'))?.left(24) + ' - ' + DateTime.now().format('yyyy/MM/dd h:mm a');
+			response.afName = System.UserInfo.getName()?.left(30) + ' - ' + ((String) sObj.get('Title'))?.left(25) + ' - ' + DateTime.now().format('yyyy/MM/dd h:mm a');
 
             if (hasRecordType) {
                 if (String.isNotEmpty((String)sObj.get('RecordTypeId'))) {
