@@ -17,10 +17,10 @@
             <property name="displayFileAttachmentSection" type="Boolean" label="Display File Attachment section" default="true" />
         </targetConfig>
         <targetConfig targets="lightningCommunity__Default">
+            <property name="recordId" type="String" label="Record Id" description="This field needs to remain with the following value: {!recordId}. It is needed to automatically detect record Ids in communities." default="{!recordId}" />
             <property name="alwaysDisplayFeedbackDescription" type="Boolean" label="Always display feedback section" default="true"/>
             <property name="ratingRequired" type="Boolean" label="Make rating required" default="true"/>
             <property name="descriptionRequired" type="Boolean" label="Require written feedback with negative rating" default="true"/>
-            <property name="recordId" type="String" label="Record Id" description="This field needs to remain with the following value: {!recordId}. It is needed to automatically detect record Ids in communities." default="{!recordId}" />
             <property name="displayFileAttachmentSection" type="Boolean" label="Display File Attachment section" default="true" />
         </targetConfig>
     </targetConfigs>
