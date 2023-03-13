@@ -9,9 +9,13 @@
     
                     <div class="slds-float_right moveUp">
                         <lightning-button-icon-stateful class="slds-m-right_x-small" icon-name="utility:like" selected={liked} onclick={handleToggleLike}></lightning-button-icon-stateful>
-                        <lightning-formatted-number class="slds-m-right--medium" value={likeCount}></lightning-formatted-number>
+                        <template lwc:if={hideVoteCounter}>
+                            <lightning-formatted-number class="slds-m-right--medium" value={likeCount}></lightning-formatted-number>
+                        </template>
                         <lightning-button-icon-stateful class="slds-m-right_x-small" icon-name="utility:dislike" selected={disliked} onclick={handleToggleDislike}></lightning-button-icon-stateful>
-                        <lightning-formatted-number value={dislikeCount}></lightning-formatted-number>
+                        <template lwc:if={hideVoteCounter}>
+                            <lightning-formatted-number value={dislikeCount}></lightning-formatted-number>
+                        </template>
                     </div>
     
                     <br></br>

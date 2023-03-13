@@ -11,12 +11,14 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
+            <property name="hideVoteCounter" type="Boolean" label="Upvote/Downvote Count Behavior" default="False" description="Controls whether upvote and downvote counts are shown"/>
             <property name="alwaysDisplayFeedbackDescription" type="Boolean" label="Always display feedback section" default="true"/>
             <property name="ratingRequired" type="Boolean" label="Rating Required for Feedback Submission" default="true" description="Determines whether a user needs to submit a vote before feedback is submitted"/>
             <property name="descriptionRequired" type="Boolean" label="Description Required for Feedback Submission" default="true" description="Determines whether a user needs to submit a description before feedback is submitted"/>
             <property name="displayFileAttachmentSection" type="Boolean" label="Allow File Attachment" default="true" description="Controls whether the File Attachment section is shown"/>
         </targetConfig>
         <targetConfig targets="lightningCommunity__Default">
+            <property name="hideVoteCounter" type="Boolean" label="Upvote/Downvote Count Behavior" default="False" description="Controls whether upvote and downvote counts are shown"/>
             <property name="recordId" type="String" label="Record Id" description="This field needs to remain with the following value: {!recordId}. It is needed to automatically detect record Ids in communities." default="{!recordId}" />
             <property name="alwaysDisplayFeedbackDescription" type="Boolean" label="Always display feedback section" default="true"/>
             <property name="ratingRequired" type="Boolean" label="Rating Required for Feedback Submission" default="true" description="Determines whether a user needs to submit a vote before feedback is submitted"/>
