@@ -23,7 +23,8 @@ import FeedbackObject from '@salesforce/schema/afl_Article_Feedback__c';
 
 export default class Afl_ArticleThumbVote extends LightningElement {
     invalidRecordId = false;
-
+    
+    @api hideVoteCounter;
     @api recordId;
     @api alwaysDisplayFeedbackDescription;
     @api ratingRequired;
@@ -52,6 +53,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     showHideSpinner = 'slds-hide';
     totalDependentValues = [];
     insertedFilesIds = [];
+    
     
     // Account object info
     @wire(getObjectInfo, { objectApiName: FeedbackObject  })
