@@ -20,6 +20,7 @@
                     <value>3</value>
                 </componentInstanceProperties>
                 <componentName>force:highlightsPanel</componentName>
+                <identifier>force_highlightsPanel</identifier>
             </componentInstance>
         </itemInstances>
         <name>header</name>
@@ -29,6 +30,7 @@
         <itemInstances>
             <componentInstance>
                 <componentName>force:detailPanel</componentName>
+                <identifier>force_detailPanel</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-2b29a875-0409-42dc-9a85-fd9f706e83bd</name>
@@ -50,6 +52,7 @@
                     <value>GRID</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
+                <identifier>force_relatedListSingleContainer</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-33e8966e-7b48-4ccc-aa98-25f69a4ce826</name>
@@ -71,6 +74,7 @@
                     <value>Standard.Tab.detail</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
+                <identifier>detailTab</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -84,6 +88,7 @@
                     <value>Standard.Tab.relatedLists</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
+                <identifier>flexipage_tab</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-82c704b8-c7be-43e8-86b1-4ccbbf723407</name>
@@ -97,6 +102,7 @@
                     <value>Facet-82c704b8-c7be-43e8-86b1-4ccbbf723407</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
+                <identifier>flexipage_tabset</identifier>
             </componentInstance>
         </itemInstances>
         <name>main</name>
@@ -106,6 +112,7 @@
         <itemInstances>
             <componentInstance>
                 <componentName>afl_RelatedArticle</componentName>
+                <identifier>afl_RelatedArticle</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-2ff47efd-2fd6-4531-8a72-e043f9890da7</name>
@@ -115,6 +122,7 @@
         <itemInstances>
             <componentInstance>
                 <componentName>forceChatter:recordFeedContainer</componentName>
+                <identifier>forceChatter_recordFeedContainer</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-50c21987-fe4a-4675-adda-0203c519b045</name>
@@ -132,6 +140,7 @@
                     <value>Related Article</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
+                <identifier>customTab</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -145,6 +154,7 @@
                     <value>Chatter</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
+                <identifier>customTab2</identifier>
             </componentInstance>
         </itemInstances>
         <name>Facet-db45ca3c-85d7-4e2a-a579-080d1785b203</name>
@@ -158,6 +168,7 @@
                     <value>Facet-db45ca3c-85d7-4e2a-a579-080d1785b203</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
+                <identifier>flexipage_tabset2</identifier>
             </componentInstance>
         </itemInstances>
         <name>sidebar</name>

@@ -81,6 +81,7 @@
 		<members>Submit_button</members>
 		<members>Trigger_settings_title</members>
 		<members>Update_hashtag_error</members>
+		<members>Upload_Files_Label</members>
 		<members>View_Article_Button</members>
 		<members>Was_this_article_helpful</members>
 		<name>CustomLabel</name>
@@ -114,5 +115,5 @@
 		<members>afl_RelatedFeedback</members>
 		<name>LightningComponentBundle</name>
 	</types>
-	<version>55.0</version>
+	<version>56.0</version>
 </Package>
