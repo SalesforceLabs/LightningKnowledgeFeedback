@@ -121,6 +121,59 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 
 	/*
 	* @description
+	*   Method that inserts only the vote on an Knowledge Article.
+	* @params
+	*  Id recordId, String title, String reasonAttr, String unlineDescAttr, Boolean isLikedAttr, Boolean isSameVote
+	* @return
+	*  Object - afl_LightningResponse
+	*/
+	@AuraEnabled
+	public static Boolean upsertOnlyVote(Id recordId, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate){
+		if (!hasNoRate) {
+			if (!isSameVote) {
+				afl_ArticleFeedbackSecurityHandler.canCreate(afl_Article_Feedback__c.SObjectType);
+				String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;				
+				String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate, KnowledgeArticleId FROM ' + knowledgeObject + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
+				List<SObject> sObjList = Database.query(query);
+				SObject sObj = sObjList[0];
+				String parentArticleId = (String) sObj.get('KnowledgeArticleId');
+
+				if (afl_ArticleFeedbackSecurityHandler.isAccessible(Vote.SObjectType) &&
+					afl_ArticleFeedbackSecurityHandler.isCreateable(Vote.SObjectType) &&
+					afl_ArticleFeedbackSecurityHandler.isUpdateable(Vote.SObjectType)) {
+					Vote vote = new Vote (
+						ParentId = parentArticleId,
+						Type = isLiked ? '5' : '1'
+					);
+					Vote[] sVote = [SELECT Id, ParentId FROM Vote WHERE ParentId =: parentArticleId AND CreatedById =: UserInfo.getUserId() LIMIT 1];
+					
+					if (!sVote.isEmpty()) {
+						vote.Id = sVote.get(0).Id;
+					}
+
+					try {
+						UPSERT vote;
+						System.debug('Vote upserted without exceptions');
+					} catch(DmlException e) {
+						if (e.getDmlType(0) == StatusCode.FIELD_INTEGRITY_EXCEPTION) {
+							vote.Type = isLiked ? 'UP' : 'DOWN';
+							UPSERT vote;
+							System.debug('Vote upserted');
+							return True;
+						} else if (e.getDmlType(0) == StatusCode.DUPLICATE_VALUE) {
+							System.debug('a');
+							return False;
+						}
+					}
+				}
+			}
+		}			
+		return False;
+	}
+
+
+	/*
+	* @description
 	*   Method that gets the vote made by the user most recently associated .
 	* @params
 	*  Id recordId
