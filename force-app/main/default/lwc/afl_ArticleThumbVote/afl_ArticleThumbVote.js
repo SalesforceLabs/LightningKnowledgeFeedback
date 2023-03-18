@@ -18,6 +18,7 @@ import uploadFileLabel from '@salesforce/label/c.Upload_Files_Label';
 
 import getVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.getVote';
 import upsertThumbArticleVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.upsertThumbArticleVote';
+import upsertOnlyVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.upsertOnlyVote';
 import voteCounts from '@salesforce/apex/afl_ArticleThumbVoteCtrl.voteCounts';
 import FeedbackObject from '@salesforce/schema/afl_Article_Feedback__c';
 
@@ -199,11 +200,31 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         return false;
     }
 
-    handleToggleLike() {
+    async handleToggleLike() {        
         this.liked = true;
         this.disliked = false;
-        this.showHideFeedback = 'slds-show';
-        this.setLikeValues();
+        this.showHideFeedback = 'slds-show';        
+        this.checkSameVote();
+        await this.upsertSingleVote(
+            this.recordId,
+            this.liked,
+            this.isSameVote,
+            this.hasNoRate
+        );
+        this.setLikeValues(); 
+        this.savedVote = '5';
+        await this.getVoteCounts();
+        //this.getUserVote();
+    }
+
+    async upsertSingleVote(recordId, isLiked, isSameVote, hasNoRate){
+        await upsertOnlyVote({
+            recordId : recordId,
+			isLiked : isLiked,
+			isSameVote : isSameVote,
+			hasNoRate : hasNoRate,
+		})
+
     }
 
     setLikeValues() {
@@ -233,11 +254,21 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         this.reasonType = selectedOption;
     }
 
-    handleToggleDislike() {
+    async handleToggleDislike() {
         this.liked = false;
         this.disliked = true;
         this.showHideFeedback = 'slds-show';
+        
+        this.checkSameVote();
+        await this.upsertSingleVote(
+            this.recordId,
+            this.liked,
+            this.isSameVote,
+            this.hasNoRate
+        );
+        this.savedVote = '1';
         this.setDislikeValues();
+        await this.getVoteCounts();
     }
 
     setDislikeValues() {
@@ -281,13 +312,8 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         }
 
 		// Prevent user from voting the same again
-		if ((this.savedVote === '5' && this.liked === true) || (this.savedVote === '1' && this.disliked === true)) {
-			this.isSameVote = true;
-		} else {
-            this.isSameVote = false;
-        }
+        this.checkSameVote();
 		this.showHideSpinner = 'slds-show';
-
 		if (!this.ratingRequired && !this.liked && !this.disliked) {
 			this.hasNoRate = true;
         }
@@ -300,7 +326,6 @@ export default class Afl_ArticleThumbVote extends LightningElement {
             reasonSelected = this.optionsValueToLabelMap.get(this.reasonType);
             reasonSelectedDeveloperValue = this.reasonType;
         }
-
         upsertThumbArticleVote({
 			recordId : this.recordId,
 			feedbackReason : reasonSelected,
@@ -317,15 +342,22 @@ export default class Afl_ArticleThumbVote extends LightningElement {
                 this.savedVote = this.liked ? '5' : '1';
                 this.showHideSpinner = 'slds-hide';
                 this.showToast('SUCCESS', 'Success', feedbackSavedToast, 'pester');
-                this.getVoteCounts();
+                //this.getVoteCounts();
                 this.insertedFilesIds = [];
             }
-
             if (response.state === 'ERROR') {
                 this.showToast('ERROR', 'ERROR', response.error, 'pester');
                 this.showHideSpinner = 'slds-hide';
             }
         })
+    }
+
+    checkSameVote(){
+        if ((this.savedVote === '5' && this.liked === true) || (this.savedVote === '1' && this.disliked === true)) {
+			this.isSameVote = true;
+		} else {
+            this.isSameVote = false;
+        }
     }
 
     showToast(type, title, message, mode) {
@@ -339,8 +371,8 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         this.dispatchEvent(event);
     }
 
-    getVoteCounts() {
-		voteCounts({ recordId: this.recordId })
+    async getVoteCounts() {
+		await voteCounts({ recordId: this.recordId })
         .then(response => {
             this.likeCount = (response.Likes) ? response.Likes : '0';
             this.dislikeCount = (response.Dislikes) ? response.Dislikes : '0';

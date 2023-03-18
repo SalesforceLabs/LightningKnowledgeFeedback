@@ -14,7 +14,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 	*  Object - afl_LightningResponse
 	*/
 	@AuraEnabled
-	public static afl_LightningResponse upsertThumbArticleVote(Id recordId, String feedbackReason, String feedbackReasonDeveloperValue, String voteDescription, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate, List<String> filesInserted) {
+	public static afl_LightningResponse upsertThumbArticleVote(Id recordId, String feedbackReason, String feedbackReasonDeveloperValue, String voteDescription, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate, List<String> filesInserted) {		
 		try {
 			// Check FLS and CRUD
 			afl_ArticleFeedbackSecurityHandler.canCreate(afl_Article_Feedback__c.SObjectType);
@@ -91,8 +91,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 						
 						if (!sVote.isEmpty()) {
 							vote.Id = sVote.get(0).Id;
-						}
-	
+						}	
 						try {
 							UPSERT vote;
 						} catch(DmlException e) {
@@ -100,6 +99,11 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 								vote.Type = isLiked ? 'UP' : 'DOWN';
 								UPSERT vote;
 							} else if (e.getDmlType(0) == StatusCode.DUPLICATE_VALUE) {
+								System.debug(e);
+								return null;
+							}
+							else {
+								System.debug(e);
 								return null;
 							}
 						}
@@ -123,12 +127,13 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 	* @description
 	*   Method that inserts only the vote on an Knowledge Article.
 	* @params
-	*  Id recordId, String title, String reasonAttr, String unlineDescAttr, Boolean isLikedAttr, Boolean isSameVote
+	*  Id recordId, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate
 	* @return
-	*  Object - afl_LightningResponse
+	*  Boolean
 	*/
 	@AuraEnabled
 	public static Boolean upsertOnlyVote(Id recordId, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate){
+		Boolean output = False;
 		if (!hasNoRate) {
 			if (!isSameVote) {
 				afl_ArticleFeedbackSecurityHandler.canCreate(afl_Article_Feedback__c.SObjectType);
@@ -153,22 +158,21 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 
 					try {
 						UPSERT vote;
-						System.debug('Vote upserted without exceptions');
+						output = True;
 					} catch(DmlException e) {
 						if (e.getDmlType(0) == StatusCode.FIELD_INTEGRITY_EXCEPTION) {
 							vote.Type = isLiked ? 'UP' : 'DOWN';
 							UPSERT vote;
-							System.debug('Vote upserted');
-							return True;
+							output = True;
 						} else if (e.getDmlType(0) == StatusCode.DUPLICATE_VALUE) {
-							System.debug('a');
-							return False;
+						} else{
+							System.debug(e);
 						}
 					}
 				}
 			}
 		}			
-		return False;
+		return output;
 	}
 
 
@@ -254,18 +258,18 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 	*  Integer
 	*/
 	@AuraEnabled
-	public static Map<String, Integer> voteCounts(Id recordId) {		
+	public static Map<String, Integer> voteCounts(Id recordId) {	
 		afl_ArticleFeedbackSecurityHandler.canAccess(Vote.SObjectType);
 		String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
 		String query = 'SELECT KnowledgeArticleId FROM ' + knowledgeObject + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
 		List<SObject> knowledgeObjList = Database.query(query);
 		String parentId = '';
-
+		
 		if (!knowledgeObjList.isEmpty()) {
 			SObject knowledgeObj = knowledgeObjList[0];			
 			parentId = (String) knowledgeObj.get('KnowledgeArticleId');			
 		}
-
+		
 		String voteQuery = 'SELECT Type type, Count(Id) counter FROM Vote WHERE ParentId = \'' + parentId + '\' GROUP BY Type';
 		List<AggregateResult> aggregateResult = Database.query(voteQuery);
 		Map<String, Integer> countVotesByType = new Map<String, Integer>();
@@ -276,7 +280,6 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				countVotesByType.put((String) 'Dislikes', (Integer) result.get('counter'));
 			}
 		}
-
 		return countVotesByType;		
 	}
 
