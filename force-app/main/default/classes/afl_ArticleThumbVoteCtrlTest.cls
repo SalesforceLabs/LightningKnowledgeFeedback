@@ -71,4 +71,83 @@ private class afl_ArticleThumbVoteCtrlTest {
 		
 		System.assertEquals(1, insertedFile.size(), 'There should be an inserted attachment');
 	}
+	
+	@isTest
+	static void upsertOnlyVoteLike(){
+		SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
+		List<SObject> knowledgeObjectList = new List<SObject>();
+		knowledgeObjectList.add(knowledgeObject);
+				
+		Id recordId = knowledgeObject.Id;
+		Boolean isLiked = True;
+		Boolean isSameVote = False;
+		Boolean hasNoRate = False;
+		
+		Test.startTest();
+		Map<String, Integer> result = afl_ArticleThumbVoteCtrl.voteCounts(knowledgeObject.Id);
+		System.assertEquals(Null, result.get('Likes'), 'Result should be null');
+		Boolean voteResult = afl_ArticleThumbVoteCtrl.upsertOnlyVote(recordId, isLiked, isSameVote, hasNoRate);
+		result = afl_ArticleThumbVoteCtrl.voteCounts(knowledgeObject.Id);
+		Test.stopTest();
+		
+		System.assertEquals(True, voteResult, 'Upsert only vote should return True');
+		System.assertEquals(1, result.get('Likes'), 'There should be one positive vote');
+	}
+
+	@isTest
+	static void upsertOnlyVoteDislike(){
+		SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
+		List<SObject> knowledgeObjectList = new List<SObject>();
+		knowledgeObjectList.add(knowledgeObject);
+		
+		Id recordId = knowledgeObject.Id;
+		Boolean isLiked = False;
+		Boolean isSameVote = False;
+		Boolean hasNoRate = False;
+		
+		Test.startTest();
+		Map<String, Integer> result = afl_ArticleThumbVoteCtrl.voteCounts(knowledgeObject.Id);
+		System.assertEquals(Null, result.get('Dislikes'), 'Result should be null');
+		Boolean voteResult = afl_ArticleThumbVoteCtrl.upsertOnlyVote(recordId, isLiked, isSameVote, hasNoRate);
+		result = afl_ArticleThumbVoteCtrl.voteCounts(knowledgeObject.Id);
+		Test.stopTest();
+		
+		System.assertEquals(True, voteResult, 'Upsert only vote should return True');
+		System.assertEquals(1, result.get('Dislikes'), 'There should be one negative vote');
+	}	
+
+	@isTest
+	static void upsertOnlyVoteSameVote(){
+		SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
+		List<SObject> knowledgeObjectList = new List<SObject>();
+		knowledgeObjectList.add(knowledgeObject);
+		
+		Id recordId = knowledgeObject.Id;
+		Boolean isLiked = False;
+		Boolean isSameVote = True;
+		Boolean hasNoRate = False;
+		
+		Test.startTest();
+		Boolean voteResult = afl_ArticleThumbVoteCtrl.upsertOnlyVote(recordId, isLiked, isSameVote, hasNoRate);
+		Test.stopTest();
+		
+		System.assertEquals(False, voteResult, 'Upsert only vote should return False');		
+	}
+	
+	@isTest
+	static void upsertOnlyVoteHasNoRate(){
+		SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
+		List<SObject> knowledgeObjectList = new List<SObject>();
+		knowledgeObjectList.add(knowledgeObject);
+		
+		Id recordId = knowledgeObject.Id;
+		Boolean isLiked = False;
+		Boolean isSameVote = False;
+		Boolean hasNoRate = True;
+		
+		Test.startTest();
+		Boolean voteResult = afl_ArticleThumbVoteCtrl.upsertOnlyVote(recordId, isLiked, isSameVote, hasNoRate);
+		Test.stopTest();
+		System.assertEquals(False, voteResult, 'Upsert only vote should return False');
+	}
 }
