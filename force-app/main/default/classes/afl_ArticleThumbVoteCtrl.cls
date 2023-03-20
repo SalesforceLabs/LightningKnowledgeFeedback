@@ -134,44 +134,42 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 	@AuraEnabled
 	public static Boolean upsertOnlyVote(Id recordId, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate){
 		Boolean output = False;
-		if (!hasNoRate) {
-			if (!isSameVote) {
-				afl_ArticleFeedbackSecurityHandler.canCreate(afl_Article_Feedback__c.SObjectType);
-				String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;				
-				String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate, KnowledgeArticleId FROM ' + knowledgeObject + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
-				List<SObject> sObjList = Database.query(query);
-				SObject sObj = sObjList[0];
-				String parentArticleId = (String) sObj.get('KnowledgeArticleId');
+		if (!hasNoRate && !isSameVote) {			
+			String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;				
+			String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate, KnowledgeArticleId FROM ' + knowledgeObject + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
+			List<SObject> sObjList = Database.query(query);
+			SObject sObj = sObjList[0];
+			String parentArticleId = (String) sObj.get('KnowledgeArticleId');
 
-				if (afl_ArticleFeedbackSecurityHandler.isAccessible(Vote.SObjectType) &&
-					afl_ArticleFeedbackSecurityHandler.isCreateable(Vote.SObjectType) &&
-					afl_ArticleFeedbackSecurityHandler.isUpdateable(Vote.SObjectType)) {
-					Vote vote = new Vote (
-						ParentId = parentArticleId,
-						Type = isLiked ? '5' : '1'
-					);
-					Vote[] sVote = [SELECT Id, ParentId FROM Vote WHERE ParentId =: parentArticleId AND CreatedById =: UserInfo.getUserId() LIMIT 1];
-					
-					if (!sVote.isEmpty()) {
-						vote.Id = sVote.get(0).Id;
-					}
+			if (afl_ArticleFeedbackSecurityHandler.isAccessible(Vote.SObjectType) &&
+				afl_ArticleFeedbackSecurityHandler.isCreateable(Vote.SObjectType) &&
+				afl_ArticleFeedbackSecurityHandler.isUpdateable(Vote.SObjectType)) {
+				Vote vote = new Vote (
+					ParentId = parentArticleId,
+					Type = isLiked ? '5' : '1'
+				);
+				Vote[] sVote = [SELECT Id, ParentId FROM Vote WHERE ParentId =: parentArticleId AND CreatedById =: UserInfo.getUserId() LIMIT 1];
+				
+				if (!sVote.isEmpty()) {
+					vote.Id = sVote.get(0).Id;
+				}
 
-					try {
+				try {
+					UPSERT vote;
+					output = True;
+				} catch(DmlException e) {
+					if (e.getDmlType(0) == StatusCode.FIELD_INTEGRITY_EXCEPTION) {
+						vote.Type = isLiked ? 'UP' : 'DOWN';
 						UPSERT vote;
 						output = True;
-					} catch(DmlException e) {
-						if (e.getDmlType(0) == StatusCode.FIELD_INTEGRITY_EXCEPTION) {
-							vote.Type = isLiked ? 'UP' : 'DOWN';
-							UPSERT vote;
-							output = True;
-						} else if (e.getDmlType(0) == StatusCode.DUPLICATE_VALUE) {
-						} else{
-							System.debug(e);
-						}
+					} else if (e.getDmlType(0) == StatusCode.DUPLICATE_VALUE) {
+					} else{
+						System.debug(e);
 					}
 				}
 			}
-		}			
+		
+		}		
 		return output;
 	}
 

@@ -214,7 +214,6 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         this.setLikeValues(); 
         this.savedVote = '5';
         await this.getVoteCounts();
-        //this.getUserVote();
     }
 
     async upsertSingleVote(recordId, isLiked, isSameVote, hasNoRate){
@@ -342,7 +341,6 @@ export default class Afl_ArticleThumbVote extends LightningElement {
                 this.savedVote = this.liked ? '5' : '1';
                 this.showHideSpinner = 'slds-hide';
                 this.showToast('SUCCESS', 'Success', feedbackSavedToast, 'pester');
-                //this.getVoteCounts();
                 this.insertedFilesIds = [];
             }
             if (response.state === 'ERROR') {
