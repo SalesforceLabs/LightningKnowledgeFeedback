@@ -27,7 +27,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     
     @api hideVoteCounter;
     @api recordId;
-    @api alwaysDisplayFeedbackDescription;
+    @api feedbackFormBehavior;
     @api ratingRequired;
     @api descriptionRequired;
     @api displayFileAttachmentSection;
@@ -47,7 +47,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     optionsValueToLabelMap;
     optionsLabelToValueMap;
     voteReasonDescription;
-    showHideFeedback;
+    showHideFeedback = 'slds-hide';
     showHideFileUpload;
     hasNoRate = false;
     isSameVote = false;
@@ -100,17 +100,13 @@ export default class Afl_ArticleThumbVote extends LightningElement {
             this.invalidRecordId =true;
             return;
         }
-        
-        if (this.alwaysDisplayFeedbackDescription === false) {
-            this.showHideFeedback = 'slds-hide';
-        }
 
         if (this.displayFileAttachmentSection === false) {
 			this.showHideFileUpload = 'slds-hide';
 		}
-
         this.getUserVote();
         this.getVoteCounts();
+        this.checkFeedbackVisibility();
     }
 
     getUserVote() {
@@ -124,10 +120,9 @@ export default class Afl_ArticleThumbVote extends LightningElement {
             } else if (parsedVote.vote === 'false') {
                 this.liked = false;
                 this.disliked = true;
-                this.savedVote = '1';
-
-                this.showHideFeedback = 'slds-show';
+                this.savedVote = '1';                
             }
+            this.checkFeedbackVisibility();
 
             if (parsedVote.feedbackReason) {
                 this.selectedValue = parsedVote.feedbackReason;
@@ -200,21 +195,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         return false;
     }
 
-    async handleToggleLike() {        
-        this.liked = true;
-        this.disliked = false;
-        this.showHideFeedback = 'slds-show';        
-        this.checkSameVote();
-        await this.upsertSingleVote(
-            this.recordId,
-            this.liked,
-            this.isSameVote,
-            this.hasNoRate
-        );
-        this.setLikeValues(); 
-        this.savedVote = '5';
-        await this.getVoteCounts();
-    }
+
 
     async upsertSingleVote(recordId, isLiked, isSameVote, hasNoRate){
         await upsertOnlyVote({
@@ -253,10 +234,25 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         this.reasonType = selectedOption;
     }
 
+    async handleToggleLike() {        
+        this.liked = true;
+        this.disliked = false;
+        this.checkSameVote();
+        await this.upsertSingleVote(
+            this.recordId,
+            this.liked,
+            this.isSameVote,
+            this.hasNoRate
+        );
+        this.setLikeValues(); 
+        this.savedVote = '5';
+        await this.getVoteCounts();
+        this.checkFeedbackVisibility();
+    }
+
     async handleToggleDislike() {
         this.liked = false;
         this.disliked = true;
-        this.showHideFeedback = 'slds-show';
         
         this.checkSameVote();
         await this.upsertSingleVote(
@@ -268,6 +264,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         this.savedVote = '1';
         this.setDislikeValues();
         await this.getVoteCounts();
+        this.checkFeedbackVisibility();
     }
 
     setDislikeValues() {
@@ -384,4 +381,30 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         let files = event.detail.files;
         files.forEach((x) => {this.insertedFilesIds.push(x.documentId)});
     }
+
+    checkFeedbackVisibility(){
+        switch(this.feedbackFormBehavior){
+            case 'Always Show':
+                this.showHideFeedback = 'slds-show';        
+                break;
+            case 'Only Show After Upvote/Downvote':
+                if(this.liked || this.disliked){
+                    this.showHideFeedback = 'slds-show';        
+                } else {
+                    this.showHideFeedback = 'slds-hide';        
+                }                
+                break;
+            case 'Only Show After Downvote':
+                if(this.disliked){
+                    this.showHideFeedback = 'slds-show';        
+                } else {
+                    this.showHideFeedback = 'slds-hide';        
+                }
+                break;
+            case 'Always Hide':
+                this.showHideFeedback = 'slds-hide';
+                break;
+        }
+    }    
+
 }
