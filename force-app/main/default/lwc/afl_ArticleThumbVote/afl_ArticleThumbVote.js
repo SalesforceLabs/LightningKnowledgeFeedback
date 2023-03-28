@@ -22,6 +22,11 @@ import upsertOnlyVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.upsertOnly
 import voteCounts from '@salesforce/apex/afl_ArticleThumbVoteCtrl.voteCounts';
 import FeedbackObject from '@salesforce/schema/afl_Article_Feedback__c';
 
+const ALWAYS_SHOW = 'Always Show';
+const SHOW_AFTER_VOTE = 'Only Show After Upvote/Downvote';
+const SHOW_AFTER_DISLIKE = 'Only Show After Downvote';
+const ALWAYS_HIDE = 'Always Hide';
+
 export default class Afl_ArticleThumbVote extends LightningElement {
     invalidRecordId = false;
     
@@ -54,7 +59,6 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     showHideSpinner = 'slds-hide';
     totalDependentValues = [];
     insertedFilesIds = [];
-    
     
     // Account object info
     @wire(getObjectInfo, { objectApiName: FeedbackObject  })
@@ -106,7 +110,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
 		}
         this.getUserVote();
         this.getVoteCounts();
-        this.checkFeedbackVisibility();
+        this.setInitialFeedbackVisibility();
     }
 
     getUserVote() {
@@ -122,7 +126,6 @@ export default class Afl_ArticleThumbVote extends LightningElement {
                 this.disliked = true;
                 this.savedVote = '1';                
             }
-            this.checkFeedbackVisibility();
 
             if (parsedVote.feedbackReason) {
                 this.selectedValue = parsedVote.feedbackReason;
@@ -247,7 +250,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         this.setLikeValues(); 
         this.savedVote = '5';
         await this.getVoteCounts();
-        this.checkFeedbackVisibility();
+        this.updateFeedbackVisibility();
     }
 
     async handleToggleDislike() {
@@ -264,7 +267,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         this.savedVote = '1';
         this.setDislikeValues();
         await this.getVoteCounts();
-        this.checkFeedbackVisibility();
+        this.updateFeedbackVisibility();
     }
 
     setDislikeValues() {
@@ -382,29 +385,42 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         files.forEach((x) => {this.insertedFilesIds.push(x.documentId)});
     }
 
-    checkFeedbackVisibility(){
+    setInitialFeedbackVisibility(){
         switch(this.feedbackFormBehavior){
-            case 'Always Show':
+            case ALWAYS_SHOW:
                 this.showHideFeedback = 'slds-show';        
                 break;
-            case 'Only Show After Upvote/Downvote':
-                if(this.liked || this.disliked){
-                    this.showHideFeedback = 'slds-show';        
-                } else {
-                    this.showHideFeedback = 'slds-hide';        
-                }                
+            case SHOW_AFTER_VOTE:
+                this.showHideFeedback = 'slds-hide';        
                 break;
-            case 'Only Show After Downvote':
-                if(this.disliked){
-                    this.showHideFeedback = 'slds-show';        
+            case SHOW_AFTER_DISLIKE:
+                this.showHideFeedback = 'slds-hide';        
+                break;
+            case ALWAYS_HIDE:
+                this.showHideFeedback = 'slds-hide';
+                break;
+        }
+    }
+
+    updateFeedbackVisibility(){    
+        switch(this.feedbackFormBehavior){
+            case SHOW_AFTER_VOTE:
+                if(this.liked || this.disliked){
+                    this.showHideFeedback = 'slds-show';                            
                 } else {
                     this.showHideFeedback = 'slds-hide';        
                 }
                 break;
-            case 'Always Hide':
-                this.showHideFeedback = 'slds-hide';
+
+            case SHOW_AFTER_DISLIKE:
+                if(this.disliked){
+                    this.showHideFeedback = 'slds-show';                            
+                } else {
+                    this.showHideFeedback = 'slds-hide';        
+                }        
                 break;
-        }
-    }    
+        }        
+
+    }
 
 }
