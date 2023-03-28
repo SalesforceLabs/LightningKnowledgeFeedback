@@ -11,8 +11,8 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
-            <property name="hideVoteCounter" type="Boolean" label="Upvote/Downvote Count Behavior" default="False" description="Controls whether upvote and downvote counts are shown"/>
             <property name="feedbackFormBehavior" type="String" label="Feedback Form Behavior" datasource="Always Show,Only Show After Upvote/Downvote,Only Show After Downvote,Always Hide" default="Only Show After Downvote" description="Controls when the feedback form is shown"/>
+            <property name="hideVoteCounter" type="Boolean" label="Upvote/Downvote Count Behavior" default="False" description="Controls whether upvote and downvote counts are shown"/>
             <property name="ratingRequired" type="Boolean" label="Rating Required for Feedback Submission" default="true" description="Determines whether a user needs to submit a vote before feedback is submitted"/>
             <property name="descriptionRequired" type="Boolean" label="Description Required for Feedback Submission" default="true" description="Determines whether a user needs to submit a description before feedback is submitted"/>
             <property name="displayFileAttachmentSection" type="Boolean" label="Allow File Attachment" default="true" description="Controls whether the File Attachment section is shown"/>
