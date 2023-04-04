@@ -3,6 +3,7 @@ import { LightningElement, wire, api, track } from 'lwc';
 import { getPicklistValuesByRecordType } from 'lightning/uiObjectInfoApi';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import ISGUEST from '@salesforce/user/isGuest';
 
 import cardTitle from '@salesforce/label/c.Was_this_article_helpful';
 import chooseGeneralReason from '@salesforce/label/c.Choose_a_general_reason';
@@ -59,6 +60,9 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     showHideSpinner = 'slds-hide';
     totalDependentValues = [];
     insertedFilesIds = [];
+    isGuestUser = ISGUEST;
+    likeBtnDisabled = false;
+    dislikeBtnDisabled = false;
     
     // Account object info
     @wire(getObjectInfo, { objectApiName: FeedbackObject  })
@@ -198,8 +202,6 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         return false;
     }
 
-
-
     async upsertSingleVote(recordId, isLiked, isSameVote, hasNoRate){
         await upsertOnlyVote({
             recordId : recordId,
@@ -251,6 +253,11 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         this.savedVote = '5';
         await this.getVoteCounts();
         this.updateFeedbackVisibility();
+        if (this.isGuestUser == true && (this.feedbackFormBehavior == ALWAYS_HIDE || this.feedbackFormBehavior == SHOW_AFTER_DISLIKE)) {
+			this.upsertArticleFeedback('', '');
+			this.likeBtnDisabled = true;
+			this.dislikeBtnDisabled = true;
+		}
     }
 
     async handleToggleDislike() {
@@ -268,6 +275,11 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         this.setDislikeValues();
         await this.getVoteCounts();
         this.updateFeedbackVisibility();
+        if (this.isGuestUser == true && this.feedbackFormBehavior == ALWAYS_HIDE) {
+			this.upsertArticleFeedback('', '');
+            this.likeBtnDisabled = true;
+            this.dislikeBtnDisabled = true;
+		}
     }
 
     setDislikeValues() {
@@ -325,16 +337,21 @@ export default class Afl_ArticleThumbVote extends LightningElement {
             reasonSelected = this.optionsValueToLabelMap.get(this.reasonType);
             reasonSelectedDeveloperValue = this.reasonType;
         }
+        this.upsertArticleFeedback(reasonSelected, reasonSelectedDeveloperValue);
+	}
+
+    //Imperative Apex call to upsert the Artice Feedback record
+    upsertArticleFeedback(reason, reasonDevValue) {
         upsertThumbArticleVote({
 			recordId : this.recordId,
-			feedbackReason : reasonSelected,
-			feedbackReasonDeveloperValue : reasonSelectedDeveloperValue,
+			feedbackReason : reason,
+			feedbackReasonDeveloperValue : reasonDevValue,
 			voteDescription : this.voteReasonDescription,
 			isLiked : this.liked,
 			isSameVote : this.isSameVote,
 			hasNoRate : this.hasNoRate,
             filesInserted: this.insertedFilesIds
-		})
+        })
         .then(response => {
             if (response.state === 'SUCCESS') {
                 this.voteReasonDescription = "";
@@ -350,6 +367,7 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         })
     }
 
+    //checks whether the previous saved vote is the same as the current vote or not
     checkSameVote(){
         if ((this.savedVote === '5' && this.liked === true) || (this.savedVote === '1' && this.disliked === true)) {
 			this.isSameVote = true;

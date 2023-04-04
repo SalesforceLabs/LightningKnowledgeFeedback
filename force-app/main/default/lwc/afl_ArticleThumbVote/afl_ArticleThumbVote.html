@@ -18,7 +18,8 @@
                             class="slds-m-right_x-small" 
                             icon-name="utility:like" 
                             selected={liked}
-                            onclick={handleToggleLike}>
+                            onclick={handleToggleLike}
+                            disabled={likeBtnDisabled}>
                         </lightning-button-icon-stateful>
                         <template lwc:if={hideVoteCounter}>
                             <lightning-formatted-number class="slds-m-right--medium" value={likeCount}></lightning-formatted-number>
@@ -28,7 +29,8 @@
                             class="slds-m-right_x-small" 
                             icon-name="utility:dislike" 
                             selected={disliked}
-                            onclick={handleToggleDislike}>
+                            onclick={handleToggleDislike}
+                            disabled={dislikeBtnDisabled}>
                         </lightning-button-icon-stateful>
                         <template lwc:if={hideVoteCounter}>
                             <lightning-formatted-number value={dislikeCount}></lightning-formatted-number>
