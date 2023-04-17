@@ -3,7 +3,6 @@ import { LightningElement, wire, api, track } from 'lwc';
 import { getPicklistValuesByRecordType } from 'lightning/uiObjectInfoApi';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import ISGUEST from '@salesforce/user/isGuest';
 
 import cardTitle from '@salesforce/label/c.Was_this_article_helpful';
 import chooseGeneralReason from '@salesforce/label/c.Choose_a_general_reason';
@@ -19,21 +18,14 @@ import uploadFileLabel from '@salesforce/label/c.Upload_Files_Label';
 
 import getVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.getVote';
 import upsertThumbArticleVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.upsertThumbArticleVote';
-import upsertOnlyVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.upsertOnlyVote';
 import voteCounts from '@salesforce/apex/afl_ArticleThumbVoteCtrl.voteCounts';
 import FeedbackObject from '@salesforce/schema/afl_Article_Feedback__c';
 
-const ALWAYS_SHOW = 'Always Show';
-const SHOW_AFTER_VOTE = 'Only Show After Upvote/Downvote';
-const SHOW_AFTER_DISLIKE = 'Only Show After Downvote';
-const ALWAYS_HIDE = 'Always Hide';
-
 export default class Afl_ArticleThumbVote extends LightningElement {
     invalidRecordId = false;
-    
-    @api hideVoteCounter;
+
     @api recordId;
-    @api feedbackFormBehavior;
+    @api alwaysDisplayFeedbackDescription;
     @api ratingRequired;
     @api descriptionRequired;
     @api displayFileAttachmentSection;
@@ -53,16 +45,13 @@ export default class Afl_ArticleThumbVote extends LightningElement {
     optionsValueToLabelMap;
     optionsLabelToValueMap;
     voteReasonDescription;
-    showHideFeedback = 'slds-hide';
+    showHideFeedback;
     showHideFileUpload;
     hasNoRate = false;
     isSameVote = false;
     showHideSpinner = 'slds-hide';
     totalDependentValues = [];
     insertedFilesIds = [];
-    isGuestUser = ISGUEST;
-    likeBtnDisabled = false;
-    dislikeBtnDisabled = false;
     
     // Account object info
     @wire(getObjectInfo, { objectApiName: FeedbackObject  })
@@ -108,13 +97,17 @@ export default class Afl_ArticleThumbVote extends LightningElement {
             this.invalidRecordId =true;
             return;
         }
+        
+        if (this.alwaysDisplayFeedbackDescription === false) {
+            this.showHideFeedback = 'slds-hide';
+        }
 
         if (this.displayFileAttachmentSection === false) {
 			this.showHideFileUpload = 'slds-hide';
 		}
+
         this.getUserVote();
         this.getVoteCounts();
-        this.setInitialFeedbackVisibility();
     }
 
     getUserVote() {
@@ -128,7 +121,9 @@ export default class Afl_ArticleThumbVote extends LightningElement {
             } else if (parsedVote.vote === 'false') {
                 this.liked = false;
                 this.disliked = true;
-                this.savedVote = '1';                
+                this.savedVote = '1';
+
+                this.showHideFeedback = 'slds-show';
             }
 
             if (parsedVote.feedbackReason) {
@@ -202,14 +197,11 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         return false;
     }
 
-    async upsertSingleVote(recordId, isLiked, isSameVote, hasNoRate){
-        await upsertOnlyVote({
-            recordId : recordId,
-			isLiked : isLiked,
-			isSameVote : isSameVote,
-			hasNoRate : hasNoRate,
-		})
-
+    handleToggleLike() {
+        this.liked = true;
+        this.disliked = false;
+        this.showHideFeedback = 'slds-show';
+        this.setLikeValues();
     }
 
     setLikeValues() {
@@ -239,47 +231,11 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         this.reasonType = selectedOption;
     }
 
-    async handleToggleLike() {        
-        this.liked = true;
-        this.disliked = false;
-        this.checkSameVote();
-        await this.upsertSingleVote(
-            this.recordId,
-            this.liked,
-            this.isSameVote,
-            this.hasNoRate
-        );
-        this.setLikeValues(); 
-        this.savedVote = '5';
-        await this.getVoteCounts();
-        this.updateFeedbackVisibility();
-        if (this.isGuestUser == true && (this.feedbackFormBehavior == ALWAYS_HIDE || this.feedbackFormBehavior == SHOW_AFTER_DISLIKE)) {
-			this.upsertArticleFeedback('', '');
-			this.likeBtnDisabled = true;
-			this.dislikeBtnDisabled = true;
-		}
-    }
-
-    async handleToggleDislike() {
+    handleToggleDislike() {
         this.liked = false;
         this.disliked = true;
-        
-        this.checkSameVote();
-        await this.upsertSingleVote(
-            this.recordId,
-            this.liked,
-            this.isSameVote,
-            this.hasNoRate
-        );
-        this.savedVote = '1';
+        this.showHideFeedback = 'slds-show';
         this.setDislikeValues();
-        await this.getVoteCounts();
-        this.updateFeedbackVisibility();
-        if (this.isGuestUser == true && this.feedbackFormBehavior == ALWAYS_HIDE) {
-			this.upsertArticleFeedback('', '');
-            this.likeBtnDisabled = true;
-            this.dislikeBtnDisabled = true;
-		}
     }
 
     setDislikeValues() {
@@ -323,8 +279,13 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         }
 
 		// Prevent user from voting the same again
-        this.checkSameVote();
+		if ((this.savedVote === '5' && this.liked === true) || (this.savedVote === '1' && this.disliked === true)) {
+			this.isSameVote = true;
+		} else {
+            this.isSameVote = false;
+        }
 		this.showHideSpinner = 'slds-show';
+
 		if (!this.ratingRequired && !this.liked && !this.disliked) {
 			this.hasNoRate = true;
         }
@@ -337,43 +298,32 @@ export default class Afl_ArticleThumbVote extends LightningElement {
             reasonSelected = this.optionsValueToLabelMap.get(this.reasonType);
             reasonSelectedDeveloperValue = this.reasonType;
         }
-        this.upsertArticleFeedback(reasonSelected, reasonSelectedDeveloperValue);
-	}
 
-    //Imperative Apex call to upsert the Artice Feedback record
-    upsertArticleFeedback(reason, reasonDevValue) {
         upsertThumbArticleVote({
 			recordId : this.recordId,
-			feedbackReason : reason,
-			feedbackReasonDeveloperValue : reasonDevValue,
+			feedbackReason : reasonSelected,
+			feedbackReasonDeveloperValue : reasonSelectedDeveloperValue,
 			voteDescription : this.voteReasonDescription,
 			isLiked : this.liked,
 			isSameVote : this.isSameVote,
 			hasNoRate : this.hasNoRate,
             filesInserted: this.insertedFilesIds
-        })
+		})
         .then(response => {
             if (response.state === 'SUCCESS') {
                 this.voteReasonDescription = "";
                 this.savedVote = this.liked ? '5' : '1';
                 this.showHideSpinner = 'slds-hide';
                 this.showToast('SUCCESS', 'Success', feedbackSavedToast, 'pester');
+                this.getVoteCounts();
                 this.insertedFilesIds = [];
             }
+
             if (response.state === 'ERROR') {
                 this.showToast('ERROR', 'ERROR', response.error, 'pester');
                 this.showHideSpinner = 'slds-hide';
             }
         })
-    }
-
-    //checks whether the previous saved vote is the same as the current vote or not
-    checkSameVote(){
-        if ((this.savedVote === '5' && this.liked === true) || (this.savedVote === '1' && this.disliked === true)) {
-			this.isSameVote = true;
-		} else {
-            this.isSameVote = false;
-        }
     }
 
     showToast(type, title, message, mode) {
@@ -387,8 +337,8 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         this.dispatchEvent(event);
     }
 
-    async getVoteCounts() {
-		await voteCounts({ recordId: this.recordId })
+    getVoteCounts() {
+		voteCounts({ recordId: this.recordId })
         .then(response => {
             this.likeCount = (response.Likes) ? response.Likes : '0';
             this.dislikeCount = (response.Dislikes) ? response.Dislikes : '0';
@@ -402,43 +352,4 @@ export default class Afl_ArticleThumbVote extends LightningElement {
         let files = event.detail.files;
         files.forEach((x) => {this.insertedFilesIds.push(x.documentId)});
     }
-
-    setInitialFeedbackVisibility(){
-        switch(this.feedbackFormBehavior){
-            case ALWAYS_SHOW:
-                this.showHideFeedback = 'slds-show';        
-                break;
-            case SHOW_AFTER_VOTE:
-                this.showHideFeedback = 'slds-hide';        
-                break;
-            case SHOW_AFTER_DISLIKE:
-                this.showHideFeedback = 'slds-hide';        
-                break;
-            case ALWAYS_HIDE:
-                this.showHideFeedback = 'slds-hide';
-                break;
-        }
-    }
-
-    updateFeedbackVisibility(){    
-        switch(this.feedbackFormBehavior){
-            case SHOW_AFTER_VOTE:
-                if(this.liked || this.disliked){
-                    this.showHideFeedback = 'slds-show';                            
-                } else {
-                    this.showHideFeedback = 'slds-hide';        
-                }
-                break;
-
-            case SHOW_AFTER_DISLIKE:
-                if(this.disliked){
-                    this.showHideFeedback = 'slds-show';                            
-                } else {
-                    this.showHideFeedback = 'slds-hide';        
-                }        
-                break;
-        }        
-
-    }
-
 }

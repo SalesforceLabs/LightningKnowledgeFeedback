@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Article Rating and Feedback</masterLabel>
+    <description>Lets you rate and leave feedback for a Knowledge Article.</description>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="hideVoteCounter" type="Boolean" label="Show Upvote/Downvote Count" default="False" description="Controls whether upvote and downvote counts are shown"/>
+            <property name="feedbackFormBehavior" type="String" label="Feedback Form Behavior" datasource="Always Show,Only Show After Upvote/Downvote,Only Show After Downvote,Always Hide" default="Only Show After Downvote" description="Controls when the feedback form is shown"/>
+            <property name="ratingRequired" type="Boolean" label="Rating Required for Feedback Submission" default="true" description="Determines whether a user needs to submit a vote before feedback is submitted"/>
+            <property name="descriptionRequired" type="Boolean" label="Description Required for Feedback Submission" default="true" description="Determines whether a user needs to submit a description before feedback is submitted"/>
+            <property name="displayFileAttachmentSection" type="Boolean" label="Allow File Attachment" default="true" description="Controls whether the File Attachment section is shown"/>
+        </targetConfig>
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="recordId" type="String" label="Record Id" description="This field needs to remain with the following value: {!recordId}. It is needed to automatically detect record Ids in communities." default="{!recordId}" />
+            <property name="hideVoteCounter" type="Boolean" label="Show Upvote/Downvote Count" default="False" description="Controls whether upvote and downvote counts are shown"/>
+            <property name="feedbackFormBehavior" type="String" label="Feedback Form Behavior" datasource="Always Show,Only Show After Upvote/Downvote,Only Show After Downvote,Always Hide" default="Only Show After Downvote" description="Controls when the feedback form is shown"/>
+            <property name="ratingRequired" type="Boolean" label="Rating Required for Feedback Submission" default="true" description="Determines whether a user needs to submit a vote before feedback is submitted"/>
+            <property name="descriptionRequired" type="Boolean" label="Description Required for Feedback Submission" default="true" description="Determines whether a user needs to submit a description before feedback is submitted"/>
+            <property name="displayFileAttachmentSection" type="Boolean" label="Allow File Attachment" default="true" description="Controls whether the File Attachment section is shown"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
