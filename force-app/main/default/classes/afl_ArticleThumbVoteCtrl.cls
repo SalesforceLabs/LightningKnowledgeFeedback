@@ -14,7 +14,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 	*  Object - afl_LightningResponse
 	*/
 	@AuraEnabled
-	public static afl_LightningResponse upsertThumbArticleVote(Id recordId, String feedbackReason, String feedbackReasonDeveloperValue, String voteDescription, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate, List<String> filesInserted) {
+	public static afl_LightningResponse upsertThumbArticleVote(Id recordId, String feedbackReason, String feedbackReasonDeveloperValue, String voteDescription, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate, List<String> filesInserted) {		
 		try {
 			// Check FLS and CRUD
 			afl_ArticleFeedbackSecurityHandler.canCreate(afl_Article_Feedback__c.SObjectType);
@@ -91,8 +91,7 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 						
 						if (!sVote.isEmpty()) {
 							vote.Id = sVote.get(0).Id;
-						}
-	
+						}	
 						try {
 							UPSERT vote;
 						} catch(DmlException e) {
@@ -100,6 +99,11 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 								vote.Type = isLiked ? 'UP' : 'DOWN';
 								UPSERT vote;
 							} else if (e.getDmlType(0) == StatusCode.DUPLICATE_VALUE) {
+								System.debug(e);
+								return null;
+							}
+							else {
+								System.debug(e);
 								return null;
 							}
 						}
@@ -118,6 +122,57 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 			return new afl_LightningResponse(e);
 		}
 	}
+
+	/*
+	* @description
+	*   Method that inserts only the vote on an Knowledge Article.
+	* @params
+	*  Id recordId, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate
+	* @return
+	*  Boolean
+	*/
+	@AuraEnabled
+	public static Boolean upsertOnlyVote(Id recordId, Boolean isLiked, Boolean isSameVote, Boolean hasNoRate){
+		Boolean output = False;
+		if (!hasNoRate && !isSameVote) {			
+			String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;				
+			String query = 'SELECT Id, Title, VersionNumber, ArticleNumber, ArticleCreatedDate, KnowledgeArticleId FROM ' + knowledgeObject + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
+			List<SObject> sObjList = Database.query(query);
+			SObject sObj = sObjList[0];
+			String parentArticleId = (String) sObj.get('KnowledgeArticleId');
+
+			if (afl_ArticleFeedbackSecurityHandler.isAccessible(Vote.SObjectType) &&
+				afl_ArticleFeedbackSecurityHandler.isCreateable(Vote.SObjectType) &&
+				afl_ArticleFeedbackSecurityHandler.isUpdateable(Vote.SObjectType)) {
+				Vote vote = new Vote (
+					ParentId = parentArticleId,
+					Type = isLiked ? '5' : '1'
+				);
+				Vote[] sVote = [SELECT Id, ParentId FROM Vote WHERE ParentId =: parentArticleId AND CreatedById =: UserInfo.getUserId() LIMIT 1];
+				
+				if (!sVote.isEmpty()) {
+					vote.Id = sVote.get(0).Id;
+				}
+
+				try {
+					UPSERT vote;
+					output = True;
+				} catch(DmlException e) {
+					if (e.getDmlType(0) == StatusCode.FIELD_INTEGRITY_EXCEPTION) {
+						vote.Type = isLiked ? 'UP' : 'DOWN';
+						UPSERT vote;
+						output = True;
+					} else if (e.getDmlType(0) == StatusCode.DUPLICATE_VALUE) {
+					} else{
+						System.debug(e);
+					}
+				}
+			}
+		
+		}		
+		return output;
+	}
+
 
 	/*
 	* @description
@@ -201,18 +256,18 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 	*  Integer
 	*/
 	@AuraEnabled
-	public static Map<String, Integer> voteCounts(Id recordId) {		
+	public static Map<String, Integer> voteCounts(Id recordId) {	
 		afl_ArticleFeedbackSecurityHandler.canAccess(Vote.SObjectType);
 		String knowledgeObject = afl_ArticleFeedbackSecurityHandler.knowledgeObject;
 		String query = 'SELECT KnowledgeArticleId FROM ' + knowledgeObject + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
 		List<SObject> knowledgeObjList = Database.query(query);
 		String parentId = '';
-
+		
 		if (!knowledgeObjList.isEmpty()) {
 			SObject knowledgeObj = knowledgeObjList[0];			
 			parentId = (String) knowledgeObj.get('KnowledgeArticleId');			
 		}
-
+		
 		String voteQuery = 'SELECT Type type, Count(Id) counter FROM Vote WHERE ParentId = \'' + parentId + '\' GROUP BY Type';
 		List<AggregateResult> aggregateResult = Database.query(voteQuery);
 		Map<String, Integer> countVotesByType = new Map<String, Integer>();
@@ -223,7 +278,6 @@ public with sharing class afl_ArticleThumbVoteCtrl {
 				countVotesByType.put((String) 'Dislikes', (Integer) result.get('counter'));
 			}
 		}
-
 		return countVotesByType;		
 	}
 
