@@ -3,12 +3,12 @@
     <actionCalls>
         <name>Get_Data_From_Article</name>
         <label>Get Data From Article</label>
-        <locationX>930</locationX>
+        <locationX>402</locationX>
         <locationY>518</locationY>
         <actionName>afl_ArticleFeedbackFlowAction</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Check_User_Type</targetReference>
+            <targetReference>Create_Article_Feedback</targetReference>
         </connector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
@@ -24,7 +24,7 @@
         <description>Checks that the component is inside a Knowledge record page. If it&apos;s not, throws message &quot;Please make sure the component is placed in the appropriate Record Page.&quot;</description>
         <name>Check_component_is_inside_a_Knowledge_record_page</name>
         <label>Check component is inside a Knowledge record page</label>
-        <locationX>1766</locationX>
+        <locationX>578</locationX>
         <locationY>158</locationY>
         <defaultConnector>
             <targetReference>Inappropriate_Record_Page</targetReference>
@@ -50,7 +50,7 @@
         <description>Checks if rating has been populated. If not, the user is redirected to an error screen asking for the field to be populated.</description>
         <name>Check_if_rating_is_blank</name>
         <label>Check if rating is blank</label>
-        <locationX>490</locationX>
+        <locationX>226</locationX>
         <locationY>398</locationY>
         <defaultConnector>
             <targetReference>Get_Data_From_Article</targetReference>
@@ -72,168 +72,16 @@
             <label>Rating is blank</label>
         </rules>
     </decisions>
-    <decisions>
-        <description>Checks the type of user. If it&apos;s a Guest, a vote won&apos;t be inserted.</description>
-        <name>Check_User_Type</name>
-        <label>Check User Type</label>
-        <locationX>930</locationX>
-        <locationY>638</locationY>
-        <defaultConnector>
-            <targetReference>Get_Vote_Record</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Is Not Guest User</defaultConnectorLabel>
-        <rules>
-            <name>Is_Guest_User</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$User.UserType</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Guest</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Create_Article_Feedback</targetReference>
-            </connector>
-            <label>Is Guest User</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <description>Checks the Type of Vote configured in the org (5 star or Up/Down) and updates the value accordingly.</description>
-        <name>Check_Vote_Type</name>
-        <label>Check Vote Type</label>
-        <locationX>1546</locationX>
-        <locationY>878</locationY>
-        <defaultConnector>
-            <targetReference>Create_Article_Feedback</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default</defaultConnectorLabel>
-        <rules>
-            <name>Insert_Positive_Vote</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Get_Vote_Record</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>selectedVote</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Create_Positive_Vote</targetReference>
-            </connector>
-            <label>Insert Positive Vote</label>
-        </rules>
-        <rules>
-            <name>Insert_Negative_Vote</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Get_Vote_Record</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>selectedVote</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Create_Negative_Vote</targetReference>
-            </connector>
-            <label>Insert Negative Vote</label>
-        </rules>
-        <rules>
-            <name>Update_Positive_Votes</name>
-            <conditionLogic>1 AND 2 AND (3 OR 4)</conditionLogic>
-            <conditions>
-                <leftValueReference>Get_Vote_Record.ParentId</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>selectedVote</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Get_Vote_Record.Type</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>1</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Get_Vote_Record.Type</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Down</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Update_Positive_Vote</targetReference>
-            </connector>
-            <label>Update Positive Votes</label>
-        </rules>
-        <rules>
-            <name>Update_Negative_Votes</name>
-            <conditionLogic>1 AND 2 AND (3 OR 4)</conditionLogic>
-            <conditions>
-                <leftValueReference>Get_Vote_Record.ParentId</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>selectedVote</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Get_Vote_Record.Type</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>5</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Get_Vote_Record.Type</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Up</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Update_Negative_Vote</targetReference>
-            </connector>
-            <label>Update Negative Votes</label>
-        </rules>
-    </decisions>
     <description>Flow Screen component used for rating knowledge articles.</description>
+    <environments>Default</environments>
     <interviewLabel>afl_ArticleFeedbackFlow {!$Flow.CurrentDateTime}</interviewLabel>
     <isTemplate>true</isTemplate>
     <label>afl_ArticleFeedbackFlow</label>
     <loops>
         <name>For_each_File_Id</name>
         <label>For each File Id</label>
-        <locationX>930</locationX>
-        <locationY>1634</locationY>
+        <locationX>402</locationX>
+        <locationY>758</locationY>
         <collectionReference>FileAttachedToFeedback.contentDocIds</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -266,8 +114,8 @@
         <description>Creates the Article Feedback record.</description>
         <name>Create_Article_Feedback</name>
         <label>Create Article Feedback</label>
-        <locationX>930</locationX>
-        <locationY>1514</locationY>
+        <locationX>402</locationX>
+        <locationY>638</locationY>
         <connector>
             <targetReference>For_each_File_Id</targetReference>
         </connector>
@@ -380,110 +228,10 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <description>Inserts a new negative vote</description>
-        <name>Create_Negative_Vote</name>
-        <label>Create Negative Vote</label>
-        <locationX>1018</locationX>
-        <locationY>998</locationY>
-        <connector>
-            <targetReference>Create_Article_Feedback</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Create_Negative_Vote_of_Type_Down</targetReference>
-        </faultConnector>
-        <inputAssignments>
-            <field>ParentId</field>
-            <value>
-                <elementReference>Get_Data_From_Article.kaId</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Type</field>
-            <value>
-                <stringValue>1</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Vote</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>Create_Negative_Vote_of_Type_Down</name>
-        <label>Create Negative Vote of Type Down</label>
-        <locationX>1282</locationX>
-        <locationY>1118</locationY>
-        <connector>
-            <targetReference>Create_Article_Feedback</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>ParentId</field>
-            <value>
-                <elementReference>Get_Data_From_Article.kaId</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Type</field>
-            <value>
-                <stringValue>Down</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Vote</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <description>Inserts a new positive vote</description>
-        <name>Create_Positive_Vote</name>
-        <label>Create Positive Vote</label>
-        <locationX>490</locationX>
-        <locationY>998</locationY>
-        <connector>
-            <targetReference>Create_Article_Feedback</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Create_Positive_Vote_of_Type_Up</targetReference>
-        </faultConnector>
-        <inputAssignments>
-            <field>ParentId</field>
-            <value>
-                <elementReference>Get_Data_From_Article.kaId</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Type</field>
-            <value>
-                <stringValue>5</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Vote</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>Create_Positive_Vote_of_Type_Up</name>
-        <label>Create Positive Vote of Type Up</label>
-        <locationX>754</locationX>
-        <locationY>1118</locationY>
-        <connector>
-            <targetReference>Create_Article_Feedback</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>ParentId</field>
-            <value>
-                <elementReference>Get_Data_From_Article.kaId</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Type</field>
-            <value>
-                <stringValue>Up</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Vote</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
         <name>Link_Feedback_To_File</name>
         <label>Link Feedback To File</label>
-        <locationX>1018</locationX>
-        <locationY>1754</locationY>
+        <locationX>490</locationX>
+        <locationY>878</locationY>
         <connector>
             <targetReference>For_each_File_Id</targetReference>
         </connector>
@@ -508,144 +256,11 @@
         <object>ContentDocumentLink</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
-    <recordLookups>
-        <description>Gets the Vote record associated to the user and the article</description>
-        <name>Get_Vote_Record</name>
-        <label>Get Vote Record</label>
-        <locationX>1546</locationX>
-        <locationY>758</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Check_Vote_Type</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>ParentId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Get_Data_From_Article.kaId</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>CreatedById</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$User.Id</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Vote</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordUpdates>
-        <description>Updates user vote to negative</description>
-        <name>Update_Negative_Vote</name>
-        <label>Update Negative Vote</label>
-        <locationX>2074</locationX>
-        <locationY>998</locationY>
-        <connector>
-            <targetReference>Create_Article_Feedback</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Update_Negative_Vote_of_Type_Down</targetReference>
-        </faultConnector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Get_Vote_Record.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Type</field>
-            <value>
-                <stringValue>1</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Vote</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Update_Negative_Vote_of_Type_Down</name>
-        <label>Update Negative Vote of Type Down</label>
-        <locationX>2338</locationX>
-        <locationY>1118</locationY>
-        <connector>
-            <targetReference>Create_Article_Feedback</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Get_Vote_Record.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Type</field>
-            <value>
-                <stringValue>Down</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Vote</object>
-    </recordUpdates>
-    <recordUpdates>
-        <description>Updates user vote to positive</description>
-        <name>Update_Positive_Vote</name>
-        <label>Update Positive Vote</label>
-        <locationX>1546</locationX>
-        <locationY>998</locationY>
-        <connector>
-            <targetReference>Create_Article_Feedback</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Update_Positive_Vote_of_Type_Up</targetReference>
-        </faultConnector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Get_Vote_Record.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Type</field>
-            <value>
-                <stringValue>5</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Vote</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Update_Positive_Vote_of_Type_Up</name>
-        <label>Update Positive Vote of Type Up</label>
-        <locationX>1810</locationX>
-        <locationY>1118</locationY>
-        <connector>
-            <targetReference>Create_Article_Feedback</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Get_Vote_Record.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Type</field>
-            <value>
-                <stringValue>Up</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Vote</object>
-    </recordUpdates>
     <runInMode>SystemModeWithSharing</runInMode>
     <screens>
         <name>Article_Feedback_Screen</name>
         <label>Article Feedback Screen</label>
-        <locationX>490</locationX>
+        <locationX>226</locationX>
         <locationY>278</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -673,6 +288,12 @@
                 <name>dependentFieldValue</name>
                 <value>
                     <elementReference>selectedReason</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>showVotes</name>
+                <value>
+                    <booleanValue>false</booleanValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -740,8 +361,8 @@
     <screens>
         <name>Error_Screen</name>
         <label>Error Screen</label>
-        <locationX>2778</locationX>
-        <locationY>1634</locationY>
+        <locationX>666</locationX>
+        <locationY>758</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -756,7 +377,7 @@
     <screens>
         <name>Inappropriate_Record_Page</name>
         <label>Inappropriate Record Page</label>
-        <locationX>3042</locationX>
+        <locationX>930</locationX>
         <locationY>278</locationY>
         <allowBack>true</allowBack>
         <allowFinish>false</allowFinish>
@@ -772,8 +393,8 @@
     <screens>
         <name>Success_Screen</name>
         <label>Success Screen</label>
-        <locationX>930</locationX>
-        <locationY>1970</locationY>
+        <locationX>402</locationX>
+        <locationY>1094</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -786,13 +407,13 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>1640</locationX>
+        <locationX>452</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Check_component_is_inside_a_Knowledge_record_page</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <description>Stores the Id of the Knowledge record.</description>
         <name>recordId</name>
