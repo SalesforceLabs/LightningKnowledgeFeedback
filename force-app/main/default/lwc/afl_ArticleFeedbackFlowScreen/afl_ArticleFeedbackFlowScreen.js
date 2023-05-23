@@ -9,6 +9,11 @@ import voteCounts from '@salesforce/apex/afl_ArticleThumbVoteCtrl.voteCounts';
 import upsertOnlyVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.upsertOnlyVote';
 import isGuest from '@salesforce/user/isGuest';
 
+const likeCountVisibleClass = 'slds-m-right--medium';
+const likeCountHiddenClass = 'slds-hide';
+const dislikeCountVisibleClass = '';
+const dislikeCountHiddenClass = 'slds-hide';
+
 export default class Afl_ArticleFeedbackFlowScreen extends LightningElement {
 
 	@api showVotes;
@@ -33,10 +38,10 @@ export default class Afl_ArticleFeedbackFlowScreen extends LightningElement {
     isSameVote = false;	
 
     isGuestUser = isGuest;
-	likeCountVisibility = 'slds-hide';
-	dislikeCountVisibility = 'slds-hide';
+	likeCountVisibility = likeCountHiddenClass;
+	dislikeCountVisibility = dislikeCountHiddenClass;
 
-	votingPanelVisibility = 'slds-hide';
+
 
 	@wire(getObjectInfo, { objectApiName: FeedbackObject })
 	objectInfo;
@@ -85,22 +90,12 @@ export default class Afl_ArticleFeedbackFlowScreen extends LightningElement {
 
 	checkVoteCountVisibility(){
 		if(this.showVotes){
-			this.likeCountVisibility = 'slds-m-right--medium';
-			this.dislikeCountVisibility = '';
+			this.likeCountVisibility = likeCountVisibleClass;
+			this.dislikeCountVisibility = dislikeCountVisibleClass;
 		} else {
-			this.likeCountVisibility = 'slds-hide';
-			this.dislikeCountVisibility = 'slds-hide';
+			this.likeCountVisibility = likeCountHiddenClass; 
+			this.dislikeCountVisibility = dislikeCountHiddenClass;
 		}
-	}
-
-	checkVotingPanelVisibility(){
-		if(this.isGuestUser){
-			this.votingPanelVisibility = 'slds-hide'; 
-		} else {
-			this.votingPanelVisibility = 'slds-float_right'; 
-
-		}
-
 	}
 
 	connectedCallback() {
@@ -195,15 +190,17 @@ export default class Afl_ArticleFeedbackFlowScreen extends LightningElement {
         this.disliked = false;
 		this.controllingFieldValue = true;
         this.checkSameVote();
-        await this.upsertSingleVote(
-			this.recordId,
-            this.liked,
-            this.isSameVote,
-            this.hasNoRate
-			);
         this.setLikeValues(); 
         this.savedVote = '5';
-        await this.getVoteCounts();
+		if(!this.isGuestUser){
+			await this.upsertSingleVote(
+				this.recordId,
+				this.liked,
+				this.isSameVote,
+				this.hasNoRate
+				);
+			await this.getVoteCounts();
+		}
     }
 
 	async handleToggleDislike() {
@@ -211,15 +208,17 @@ export default class Afl_ArticleFeedbackFlowScreen extends LightningElement {
 		this.disliked = true;
 		this.controllingFieldValue = false;
 		this.checkSameVote();
-		await this.upsertSingleVote(
-			this.recordId,
-            this.liked,
-            this.isSameVote,
-            this.hasNoRate			
-		);
 		this.savedVote = '1';
 		this.setDislikeValues();
-		await this.getVoteCounts();
+		if(!this.isGuestUser){
+			await this.upsertSingleVote(
+				this.recordId,
+				this.liked,
+				this.isSameVote,
+				this.hasNoRate			
+				);
+			await this.getVoteCounts();
+		}
 	}
 
 	setLikeValues() {
