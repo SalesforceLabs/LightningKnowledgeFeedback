@@ -1,0 +1,17 @@
+<apex:page standardController="afl_Article_Feedback__c" extensions="afl_ArticleFeedbackRelatedCtrl" showHeader="true" tabStyle="afl_Article_Feedback__c">
+    <apex:form >
+        <apex:detail subject="{!afl_Article_Feedback__c.Id}" relatedList="true" showChatter="True" title="true" inlineEdit="true" oncomplete="location.reload()"/>
+    </apex:form>
+
+    <apex:pageBlock title="Related Article Feedback" rendered="{!records.size!=0}">
+        <apex:pageBlockTable value="{!records}" var="r">
+            <apex:column headerValue="Name"> <apex:outputLink value="/{!r.Id}" target="_parent" >{!r.Name}</apex:outputLink> </apex:column>
+            <apex:column headerValue="Feedback" value="{!r.Feedback__c}"/>
+            <apex:column headerValue="Status" value="{!r.Feedback_Status__c}"/>
+            <apex:column headerValue="Assigned To" value="{!r.Assigned_To__c}"/>
+            <apex:column headerValue="Source" value="{!r.Feedback_Source__c}"/>
+            <apex:column headerValue="Community Name" value="{!r.Community_Name__c}"/>
+            <apex:column headerValue="Created Date" value="{!r.CreatedDate}"/>
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+</apex:page>

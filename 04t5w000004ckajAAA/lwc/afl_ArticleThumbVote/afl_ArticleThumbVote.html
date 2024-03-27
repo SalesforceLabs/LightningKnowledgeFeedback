@@ -1,0 +1,60 @@
+<template>
+    <div>
+        <template if:false={invalidRecordId}>
+            <lightning-card title={label.cardTitle}>
+                <div class="removeSpace">
+                    <center>
+                        <lightning-spinner variant="brand" size="small" class={showHideSpinner}></lightning-spinner>
+                    </center>
+    
+                    <div class="slds-float_right moveUp">
+                        <lightning-button-icon-stateful class="slds-m-right_x-small" icon-name="utility:like" selected={liked} onclick={handleToggleLike}></lightning-button-icon-stateful>
+                        <lightning-formatted-number class="slds-m-right--medium" value={likeCount}></lightning-formatted-number>
+                        <lightning-button-icon-stateful class="slds-m-right_x-small" icon-name="utility:dislike" selected={disliked} onclick={handleToggleDislike}></lightning-button-icon-stateful>
+                        <lightning-formatted-number value={dislikeCount}></lightning-formatted-number>
+                    </div>
+    
+                    <br></br>
+                    <div class={showHideFeedback}>
+                        <div class="slds-m-left_medium slds-m-right_medium moveUp">
+                            <lightning-combobox 
+                                    class="comboboxOver"
+                                    label={label.chooseGeneralReason}
+                                    name="comboGroup"
+                                    onchange={handleReasonChange} 
+                                    options={reasonTypeOptions} 
+                                    value={reasonType}
+                                    disabled={isEmpty}></lightning-combobox>
+                                <lightning-textarea class="slds-m-top_medium slds-m-bottom_small" label={label.description} value={voteReasonDescription} placeholder={label.descriptionPlaceholder} maxlength="29000"></lightning-textarea>
+                                
+                                <!--  File Attachment Section -->
+                                <div class={showHideFileUpload}>
+                                    <div class="slds-m-bottom_medium">
+                                        <lightning-file-upload 
+                                            label={label.uploadFileLabel} 
+                                            name="fileUploader" 
+                                            accept=".png, .jpg, .jpeg, .zip, .doc, .docx, .pdf, .xlsx, .xls"
+                                            onuploadfinished={handleUploadFinished} 
+                                            multiple>
+                                        </lightning-file-upload>
+                                    </div>
+                                </div>
+
+                                <center>
+                                    <lightning-button variant="brand" label={label.submit} onclick={handleClick}></lightning-button>
+                                </center>
+                        </div>    
+                    </div>
+                </div>  
+            </lightning-card>
+        </template>
+
+        <template if:true={invalidRecordId}>
+            <lightning-card title={label.noInfoTitle}>
+                <p class="slds-p-horizontal_medium">
+                    {label.appropriateRecPage}
+                </p>
+            </lightning-card>
+        </template>
+    </div>
+</template>

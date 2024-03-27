@@ -1,0 +1,4 @@
+<design:component label="Article Rating and Feedback">
+    <design:attribute name="alwaysDisplayFeedDescription" label="Always display feedback section?"/>
+    <design:attribute name="requireRating" label="Make rating required?"/>
+</design:component>
