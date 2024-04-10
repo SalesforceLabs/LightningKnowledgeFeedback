@@ -6,8 +6,17 @@ import cardTitle from '@salesforce/label/c.Was_this_article_helpful';
 import chooseGeneralReason from '@salesforce/label/c.Choose_a_general_reason';
 import getVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.getVote';
 import voteCounts from '@salesforce/apex/afl_ArticleThumbVoteCtrl.voteCounts';
+import upsertOnlyVote from '@salesforce/apex/afl_ArticleThumbVoteCtrl.upsertOnlyVote';
+import isGuest from '@salesforce/user/isGuest';
+
+const likeCountVisibleClass = 'slds-m-right--medium';
+const likeCountHiddenClass = 'slds-hide';
+const dislikeCountVisibleClass = '';
+const dislikeCountHiddenClass = 'slds-hide';
 
 export default class Afl_ArticleFeedbackFlowScreen extends LightningElement {
+
+	@api showVotes;
 	@api recordId;
 	@api likeCount;
 	@api dislikeCount;
@@ -24,6 +33,15 @@ export default class Afl_ArticleFeedbackFlowScreen extends LightningElement {
 	optionsValueToLabelMap;
 	optionsLabelToValueMap;
 	totalDependentValues = [];
+
+    hasNoRate = false;
+    isSameVote = false;	
+
+    isGuestUser = isGuest;
+	likeCountVisibility = likeCountHiddenClass;
+	dislikeCountVisibility = dislikeCountHiddenClass;
+
+
 
 	@wire(getObjectInfo, { objectApiName: FeedbackObject })
 	objectInfo;
@@ -53,7 +71,35 @@ export default class Afl_ArticleFeedbackFlowScreen extends LightningElement {
 		chooseGeneralReason
 	};
 
+ 	async upsertSingleVote(recordId, isLiked, isSameVote, hasNoRate){
+        await upsertOnlyVote({
+            recordId : recordId,
+            isLiked : isLiked,
+            isSameVote : isSameVote,
+            hasNoRate : hasNoRate,
+        })
+    }
+	
+    checkSameVote(){
+        if ((this.savedVote === '5' && this.liked === true) || (this.savedVote === '1' && this.disliked === true)) {
+            this.isSameVote = true;
+        } else {
+            this.isSameVote = false;
+        }
+    }
+
+	checkVoteCountVisibility(){
+		if(this.showVotes){
+			this.likeCountVisibility = likeCountVisibleClass;
+			this.dislikeCountVisibility = dislikeCountVisibleClass;
+		} else {
+			this.likeCountVisibility = likeCountHiddenClass; 
+			this.dislikeCountVisibility = dislikeCountHiddenClass;
+		}
+	}
+
 	connectedCallback() {
+		this.checkVoteCountVisibility();
 		if (this.controllingFieldValue === undefined && this.dependentFieldValue === undefined) {
 			this.getUserVote();
 		} else {
@@ -78,7 +124,6 @@ export default class Afl_ArticleFeedbackFlowScreen extends LightningElement {
 					this.disliked = true;
 					this.controllingFieldValue = false;
 				}
-
 				if (parsedVote.feedbackReason) {
 					this.selectedValue = parsedVote.feedbackReason;
                     this.dependentFieldValue = parsedVote.feedbackReason;
@@ -140,11 +185,40 @@ export default class Afl_ArticleFeedbackFlowScreen extends LightningElement {
 		}
 	}
 
-	handleToggleLike() {
+    async handleToggleLike() {   
 		this.liked = true;
-		this.disliked = false;
+        this.disliked = false;
 		this.controllingFieldValue = true;
-		this.setLikeValues();
+        this.checkSameVote();
+        this.setLikeValues(); 
+        this.savedVote = '5';
+		if(!this.isGuestUser){
+			await this.upsertSingleVote(
+				this.recordId,
+				this.liked,
+				this.isSameVote,
+				this.hasNoRate
+				);
+			await this.getVoteCounts();
+		}
+    }
+
+	async handleToggleDislike() {
+		this.liked = false;
+		this.disliked = true;
+		this.controllingFieldValue = false;
+		this.checkSameVote();
+		this.savedVote = '1';
+		this.setDislikeValues();
+		if(!this.isGuestUser){
+			await this.upsertSingleVote(
+				this.recordId,
+				this.liked,
+				this.isSameVote,
+				this.hasNoRate			
+				);
+			await this.getVoteCounts();
+		}
 	}
 
 	setLikeValues() {
@@ -172,13 +246,6 @@ export default class Afl_ArticleFeedbackFlowScreen extends LightningElement {
 		const selectedOption = event.detail.value;
 		this.reasonType = selectedOption;
 		this.dependentFieldValue = selectedOption;
-	}
-
-	handleToggleDislike() {
-		this.liked = false;
-		this.disliked = true;
-		this.controllingFieldValue = false;
-		this.setDislikeValues();
 	}
 
 	setDislikeValues() {

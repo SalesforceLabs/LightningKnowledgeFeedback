@@ -17,6 +17,7 @@
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
     <label>Article Feedback</label>
     <navType>Standard</navType>
     <tabs>afl_Article_Feedback__c</tabs>

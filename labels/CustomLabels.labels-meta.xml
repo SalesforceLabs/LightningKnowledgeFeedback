@@ -54,7 +54,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Description</shortDescription>
-        <value>Description</value>
+        <value>Feedback</value>
     </labels>
     <labels>
         <fullName>Description_placeholder</fullName>
@@ -239,12 +239,5 @@
         <protected>true</protected>
         <shortDescription>Was this article helpful</shortDescription>
         <value>Was this article helpful?</value>
-    </labels>
-    <labels>
-        <fullName>Upload_Files_Label</fullName>
-        <language>en_US</language>
-        <protected>true</protected>
-        <shortDescription>Upload Files Label for Article Feedback</shortDescription>
-        <value>Upload Files</value>
     </labels>
 </CustomLabels>
