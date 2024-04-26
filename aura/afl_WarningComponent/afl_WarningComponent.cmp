@@ -1,3 +1,0 @@
-<aura:component implements="lightning:actionOverride" access="global">
-    <aura:handler name="init" value="{!this}" action="{!c.onLoad}"/>
-</aura:component>
