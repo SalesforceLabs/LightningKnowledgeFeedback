@@ -240,4 +240,12 @@
         <shortDescription>Was this article helpful</shortDescription>
         <value>Was this article helpful?</value>
     </labels>
+    <labels>
+        <fullName>Upload_Files_Label</fullName>
+        <categories>Article Feedback</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Upload Files Label</shortDescription>
+        <value>Upload Files</value>
+    </labels>
 </CustomLabels>
