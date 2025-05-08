@@ -34,6 +34,7 @@ private class afl_UpdatedArticleFeedback_Test{
         afeedback.Internal_Notes__c = 'Test notes';
         afeedback.Article_Feed_Update__c = '';
         afeedback.Parent_FeedItem__c = post.Id;
+        afeedback.afl__Knowledge_Article_Version_Id__c = (String) kavObj.get('Id');
 		INSERT afeedback;
 
     	System.Test.startTest();

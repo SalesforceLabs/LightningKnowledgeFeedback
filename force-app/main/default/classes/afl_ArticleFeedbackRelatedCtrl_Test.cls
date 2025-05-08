@@ -7,7 +7,11 @@
 @isTest
 private class afl_ArticleFeedbackRelatedCtrl_Test {
 	@isTest
-    static void testTrigger() {
+    static void testTrigger() {        
+        // Create Knowledge Article Version record
+		SObject knowledgeObject = afl_TestDataFactory.createKnowledgeArticle();
+		String kavId = (String) knowledgeObject.get('Id');
+        
 		// Creates dummy Article Feedback objects
 		afl_Article_Feedback__c afeedback = new afl_Article_Feedback__c();
         afeedback.Feedback_Status__c = 'New';
@@ -16,6 +20,7 @@ private class afl_ArticleFeedbackRelatedCtrl_Test {
         afeedback.Record_Type__c = 'Test Article Type';
         afeedback.Article_Version__c = 1;
         afeedback.Internal_Notes__c = 'Test notes 1';
+        afeedback.afl__Knowledge_Article_Version_Id__c = kavId;
 
         afl_Article_Feedback__c afeedback2 = new afl_Article_Feedback__c();
         afeedback2.Feedback_Status__c = 'New';
@@ -24,6 +29,7 @@ private class afl_ArticleFeedbackRelatedCtrl_Test {
         afeedback2.Record_Type__c = 'Test Article Type';
         afeedback2.Article_Version__c = 1;
         afeedback2.Internal_Notes__c = 'Test notes 2';
+        afeedback2.afl__Knowledge_Article_Version_Id__c = kavId;
 
 		INSERT afeedback;
         INSERT afeedback2;
